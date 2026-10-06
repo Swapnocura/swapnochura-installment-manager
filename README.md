@@ -1,1 +1,0 @@
-# swapnochura-installment-manager
