@@ -3,21 +3,1059 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>স্বপ্নচূড়া Installment Manager</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Arial,
+        "Noto Sans Bengali",
+        sans-serif;
+      background: #f3f6fa;
+      color: #1f2937;
+    }
+
+    /* =========================
+       LOGIN
+    ========================== */
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+    }
+
+    .logo-title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 800;
+      color: #1565c0;
+      margin-bottom: 5px;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #1565c0;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #1565c0;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #loginMessage {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #d32f2f;
+      min-height: 20px;
+    }
+
+
+    /* =========================
+       DASHBOARD
+    ========================== */
+
+    #dashboard {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: #1565c0;
+      color: white;
+      padding: 15px 20px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand-small {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+
+    .logout-btn {
+      border: none;
+      background: white;
+      color: #1565c0;
+      padding: 9px 15px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 18px;
+    }
+
+    .welcome {
+      margin-bottom: 20px;
+    }
+
+    .welcome h2 {
+      margin: 0 0 5px;
+    }
+
+    .welcome p {
+      margin: 0;
+      color: #6b7280;
+    }
+
+    /* =========================
+       STAT CARDS
+    ========================== */
+
+    .stats {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 13px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+    }
+
+    .stat-title {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .stat-number {
+      font-size: 30px;
+      font-weight: 800;
+      margin-top: 8px;
+      color: #111827;
+    }
+
+    /* =========================
+       MENU
+    ========================== */
+
+    .section-title {
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 15px;
+    }
+
+    .menu-card {
+      background: white;
+      padding: 20px;
+      border-radius: 13px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+    }
+
+    .menu-card h3 {
+      margin-top: 0;
+      margin-bottom: 7px;
+    }
+
+    .menu-card p {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .menu-btn {
+      width: 100%;
+      border: none;
+      padding: 11px;
+      background: #1565c0;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* =========================
+       STATUS
+    ========================== */
+
+    #systemStatus {
+      margin-top: 20px;
+      padding: 13px;
+      border-radius: 9px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      font-size: 14px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 800px) {
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    @media (max-width: 480px) {
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-number {
+        font-size: 24px;
+      }
+
+    }
+
+  </style>
 </head>
+
+
 <body>
 
-  <h1>স্বপ্নচূড়া Installment Manager</h1>
 
-  <p>Admin Panel</p>
+  <!-- =====================================================
+       LOGIN PAGE
+  ====================================================== -->
 
-  <button onclick="login()">Admin Login</button>
+  <section id="loginPage">
 
-  <script>
-    function login() {
-      alert("Firebase Admin Login পরবর্তী ধাপে যুক্ত করা হবে।");
+    <div class="login-card">
+
+      <div class="logo-title">
+        স্বপ্নচূড়া
+      </div>
+
+      <div class="login-subtitle">
+        Installment Device Manager
+      </div>
+
+
+      <div class="input-group">
+
+        <label for="email">
+          Admin Email
+        </label>
+
+        <input
+          type="email"
+          id="email"
+          placeholder="Admin Email লিখুন"
+          autocomplete="email"
+        >
+
+      </div>
+
+
+      <div class="input-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          type="password"
+          id="password"
+          placeholder="Password লিখুন"
+          autocomplete="current-password"
+        >
+
+      </div>
+
+
+      <button
+        class="login-btn"
+        id="loginButton"
+        onclick="adminLogin()"
+      >
+        Admin Login
+      </button>
+
+
+      <div id="loginMessage"></div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       ADMIN DASHBOARD
+  ====================================================== -->
+
+  <section id="dashboard">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+      <div>
+
+        <div class="brand">
+          স্বপ্নচূড়া
+        </div>
+
+        <div class="brand-small">
+          Installment Device Manager
+        </div>
+
+      </div>
+
+
+      <button
+        class="logout-btn"
+        onclick="adminLogout()"
+      >
+        Logout
+      </button>
+
+    </div>
+
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+      <div class="welcome">
+
+        <h2>
+          Admin Dashboard
+        </h2>
+
+        <p>
+          স্বাগতম,
+          <span id="adminEmail"></span>
+        </p>
+
+      </div>
+
+
+
+      <!-- STATISTICS -->
+
+      <div class="stats">
+
+
+        <div class="stat-card">
+
+          <div class="stat-title">
+            মোট Customer
+          </div>
+
+          <div
+            class="stat-number"
+            id="customerCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-title">
+            মোট Device
+          </div>
+
+          <div
+            class="stat-number"
+            id="deviceCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-title">
+            মোট Contract
+          </div>
+
+          <div
+            class="stat-number"
+            id="contractCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-title">
+            মোট Payment
+          </div>
+
+          <div
+            class="stat-number"
+            id="paymentCount"
+          >
+            0
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- SYSTEM STATUS -->
+
+      <div id="systemStatus">
+        Firebase সংযোগ পরীক্ষা করা হচ্ছে...
+      </div>
+
+
+
+      <!-- MANAGEMENT MENU -->
+
+      <div class="section-title">
+        Management
+      </div>
+
+
+      <div class="menu-grid">
+
+
+        <div class="menu-card">
+
+          <h3>
+            Customers
+          </h3>
+
+          <p>
+            কিস্তিতে ফোন নেওয়া Customer পরিচালনা করুন।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Customer Management')"
+          >
+            Open Customers
+          </button>
+
+        </div>
+
+
+        <div class="menu-card">
+
+          <h3>
+            Devices
+          </h3>
+
+          <p>
+            Customer-এর Device এবং Management Status দেখুন।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Device Management')"
+          >
+            Open Devices
+          </button>
+
+        </div>
+
+
+        <div class="menu-card">
+
+          <h3>
+            Installment Contracts
+          </h3>
+
+          <p>
+            কিস্তির চুক্তি, বকেয়া ও Due Date পরিচালনা করুন।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Contract Management')"
+          >
+            Open Contracts
+          </button>
+
+        </div>
+
+
+        <div class="menu-card">
+
+          <h3>
+            Payments
+          </h3>
+
+          <p>
+            Customer-এর কিস্তি Payment রেকর্ড করুন।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Payment Management')"
+          >
+            Open Payments
+          </button>
+
+        </div>
+
+
+        <div class="menu-card">
+
+          <h3>
+            Lock / Unlock
+          </h3>
+
+          <p>
+            অনুমোদিত Device-control integration-এর মাধ্যমে Lock/Unlock command পরিচালনা করা হবে।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Device Lock Management')"
+          >
+            Open Lock Manager
+          </button>
+
+        </div>
+
+
+        <div class="menu-card">
+
+          <h3>
+            Reports
+          </h3>
+
+          <p>
+            কিস্তি, Payment এবং Device management report দেখুন।
+          </p>
+
+          <button
+            class="menu-btn"
+            onclick="comingSoon('Reports')"
+          >
+            Open Reports
+          </button>
+
+        </div>
+
+
+      </div>
+
+
+    </main>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       FIREBASE
+  ====================================================== -->
+
+  <script type="module">
+
+
+    /*
+      Firebase App
+    */
+
+    import {
+      initializeApp
+    } from
+      "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+    /*
+      Firebase Authentication
+    */
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from
+      "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    /*
+      Firebase Firestore
+    */
+
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from
+      "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+    /*
+      YOUR FIREBASE WEB CONFIG
+    */
+
+    const firebaseConfig = {
+
+      apiKey:
+        "AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg",
+
+      authDomain:
+        "swapnochura-lock-management.firebaseapp.com",
+
+      projectId:
+        "swapnochura-lock-management",
+
+      storageBucket:
+        "swapnochura-lock-management.firebasestorage.app",
+
+      messagingSenderId:
+        "414941510200",
+
+      appId:
+        "1:414941510200:web:2fabf0cc954c39a4e844cd",
+
+      measurementId:
+        "G-13FNHDYZ7M"
+
+    };
+
+
+    /*
+      Initialize Firebase
+    */
+
+    const app =
+      initializeApp(firebaseConfig);
+
+
+    const auth =
+      getAuth(app);
+
+
+    const db =
+      getFirestore(app);
+
+
+
+    /*
+      ADMIN LOGIN
+    */
+
+    window.adminLogin = async function () {
+
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+
+      const message =
+        document
+          .getElementById("loginMessage");
+
+
+      const button =
+        document
+          .getElementById("loginButton");
+
+
+      if (!email || !password) {
+
+        message.innerText =
+          "Email এবং Password দিন।";
+
+        return;
+
+      }
+
+
+      message.innerText =
+        "Login হচ্ছে...";
+
+
+      button.disabled = true;
+
+
+      try {
+
+
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+        message.innerText = "";
+
+
+      } catch (error) {
+
+
+        console.error(
+          "Login error:",
+          error
+        );
+
+
+        let errorMessage =
+          "Login ব্যর্থ হয়েছে।";
+
+
+        if (
+          error.code ===
+          "auth/invalid-credential"
+        ) {
+
+          errorMessage =
+            "Email অথবা Password ভুল।";
+
+        }
+
+
+        if (
+          error.code ===
+          "auth/user-not-found"
+        ) {
+
+          errorMessage =
+            "এই Email-এর কোনো Admin account নেই।";
+
+        }
+
+
+        if (
+          error.code ===
+          "auth/wrong-password"
+        ) {
+
+          errorMessage =
+            "Password ভুল।";
+
+        }
+
+
+        if (
+          error.code ===
+          "auth/too-many-requests"
+        ) {
+
+          errorMessage =
+            "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+
+        }
+
+
+        message.innerText =
+          errorMessage;
+
+
+      } finally {
+
+        button.disabled = false;
+
+      }
+
+    };
+
+
+
+    /*
+      ADMIN LOGOUT
+    */
+
+    window.adminLogout = async function () {
+
+      try {
+
+        await signOut(auth);
+
+      } catch (error) {
+
+        console.error(
+          "Logout error:",
+          error
+        );
+
+      }
+
+    };
+
+
+
+    /*
+      AUTH STATE
+    */
+
+    onAuthStateChanged(
+      auth,
+      async (user) => {
+
+
+        if (user) {
+
+
+          document
+            .getElementById("loginPage")
+            .style.display = "none";
+
+
+          document
+            .getElementById("dashboard")
+            .style.display = "block";
+
+
+          document
+            .getElementById("adminEmail")
+            .innerText =
+              user.email || "";
+
+
+          document
+            .getElementById("systemStatus")
+            .innerText =
+              "Admin Login সফল। Firebase সংযোগ সক্রিয়।";
+
+
+          await loadDashboard();
+
+
+        } else {
+
+
+          document
+            .getElementById("loginPage")
+            .style.display = "flex";
+
+
+          document
+            .getElementById("dashboard")
+            .style.display = "none";
+
+
+        }
+
+      }
+    );
+
+
+
+    /*
+      LOAD DASHBOARD
+    */
+
+    async function loadDashboard() {
+
+
+      try {
+
+
+        const customersSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "customers"
+            )
+          );
+
+
+        const devicesSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "devices"
+            )
+          );
+
+
+        const contractsSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "contracts"
+            )
+          );
+
+
+        const paymentsSnapshot =
+          await getDocs(
+            collection(
+              db,
+              "payments"
+            )
+          );
+
+
+        document
+          .getElementById("customerCount")
+          .innerText =
+            customersSnapshot.size;
+
+
+        document
+          .getElementById("deviceCount")
+          .innerText =
+            devicesSnapshot.size;
+
+
+        document
+          .getElementById("contractCount")
+          .innerText =
+            contractsSnapshot.size;
+
+
+        document
+          .getElementById("paymentCount")
+          .innerText =
+            paymentsSnapshot.size;
+
+
+        document
+          .getElementById("systemStatus")
+          .innerText =
+            "Firebase সংযোগ সফল। Dashboard প্রস্তুত।";
+
+
+      } catch (error) {
+
+
+        console.error(
+          "Firestore error:",
+          error
+        );
+
+
+        document
+          .getElementById("systemStatus")
+          .innerText =
+            "Firebase সংযোগ হয়েছে, কিন্তু Firestore data পড়তে সমস্যা হয়েছে।";
+
+
+      }
+
     }
+
+
+
+    /*
+      TEMPORARY MENU
+    */
+
+    window.comingSoon = function (name) {
+
+      alert(
+        name +
+        " পরবর্তী ধাপে যুক্ত করা হবে।"
+      );
+
+    };
+
+
   </script>
+
 
 </body>
 </html>
