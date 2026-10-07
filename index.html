@@ -3,662 +3,2893 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>স্বপ্নচূড়া কিস্তি ডিভাইস ম্যানেজার</title>
+
 <style>
-body{font-family:system-ui,"Noto Sans Bengali",sans-serif;background:#f4f6fa;margin:0;color:#172033}
-header{background:#111827;color:white;padding:14px;display:flex;justify-content:space-between}
-main{max-width:1200px;margin:auto;padding:16px}.card{background:white;border:1px solid #ddd;border-radius:12px;padding:15px;margin:12px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.metric{font-size:28px;font-weight:800}
-button{padding:10px 14px;border:0;border-radius:8px;font-weight:700;cursor:pointer}.primary{background:#2563eb;color:white}.danger{background:#dc2626;color:white}.success{background:#059669;color:white}.muted{background:#e5e7eb}
-input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
-.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
-.tabs button.active{background:#111827;color:white}.tab{display:none}.tab.active{display:block}
-table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
-.table{overflow:auto}.hidden{display:none}.notice{background:#eff6ff;padding:12px;border-radius:10px;font-size:13px}
-.login{max-width:420px;margin:10vh auto}.small{font-size:13px;word-break:break-word}
-.toast{position:fixed;right:16px;bottom:16px;z-index:9999;max-width:420px;padding:14px 16px;border-radius:10px;background:#111827;color:#fff;box-shadow:0 8px 30px #0002;display:none}
-.toast.show{display:block}.toast.success{background:#047857}.toast.error{background:#b91c1c}.toast.warn{background:#b45309}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  font-family:system-ui,"Noto Sans Bengali",sans-serif;
+  background:#f4f6fa;
+  margin:0;
+  color:#172033;
+}
+
+header{
+  background:#111827;
+  color:white;
+  padding:10px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  min-height:68px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.brand img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:50%;
+  background:#fff;
+  padding:2px;
+  flex-shrink:0;
+}
+
+.brand-text{
+  font-size:16px;
+  font-weight:800;
+  line-height:1.3;
+}
+
+main{
+  max-width:1200px;
+  margin:auto;
+  padding:16px;
+}
+
+.card{
+  background:white;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:15px;
+  margin:12px 0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:12px;
+}
+
+.metric{
+  font-size:28px;
+  font-weight:800;
+}
+
+button{
+  padding:10px 14px;
+  border:0;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.primary{
+  background:#2563eb;
+  color:white;
+}
+
+.danger{
+  background:#dc2626;
+  color:white;
+}
+
+.success{
+  background:#059669;
+  color:white;
+}
+
+.muted{
+  background:#e5e7eb;
+  color:#172033;
+}
+
+input,
+select{
+  width:100%;
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  box-sizing:border-box;
+  background:white;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:10px;
+}
+
+.tabs{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:12px 0;
+}
+
+.tabs button.active{
+  background:#111827;
+  color:white;
+}
+
+.tab{
+  display:none;
+}
+
+.tab.active{
+  display:block;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:8px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:13px;
+}
+
+.table{
+  overflow:auto;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.notice{
+  background:#eff6ff;
+  padding:12px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+.login{
+  max-width:420px;
+  margin:7vh auto;
+  text-align:center;
+}
+
+.login-logo{
+  display:block;
+  width:135px;
+  height:135px;
+  object-fit:contain;
+  margin:0 auto 15px;
+  border-radius:50%;
+}
+
+.login input{
+  text-align:left;
+}
+
+.small{
+  font-size:13px;
+  word-break:break-word;
+}
+
+.toast{
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  z-index:9999;
+  max-width:420px;
+  padding:14px 16px;
+  border-radius:10px;
+  background:#111827;
+  color:#fff;
+  box-shadow:0 8px 30px #0002;
+  display:none;
+}
+
+.toast.show{
+  display:block;
+}
+
+.toast.success{
+  background:#047857;
+}
+
+.toast.error{
+  background:#b91c1c;
+}
+
+.toast.warn{
+  background:#b45309;
+}
+
+.logout-btn{
+  white-space:nowrap;
+}
+
+@media(max-width:600px){
+
+  header{
+    padding:8px 10px;
+  }
+
+  .brand img{
+    width:40px;
+    height:40px;
+  }
+
+  .brand-text{
+    font-size:13px;
+  }
+
+  .logout-btn{
+    padding:8px 10px;
+    font-size:12px;
+  }
+
+  main{
+    padding:10px;
+  }
+
+  .card{
+    padding:12px;
+  }
+
+  .metric{
+    font-size:24px;
+  }
+
+  .login{
+    margin:5vh 12px;
+  }
+
+  .login-logo{
+    width:115px;
+    height:115px;
+  }
+
+  .tabs button{
+    font-size:12px;
+    padding:8px 10px;
+  }
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<b>স্বপ্নচূড়া কিস্তি ডিভাইস ম্যানেজার</b>
-<button id="logout" class="muted hidden">লগআউট</button>
+
+  <div class="brand">
+
+    <img
+      src="logo.png"
+      alt="স্বপ্নচূড়া লোগো"
+      onerror="this.style.display='none'"
+    >
+
+    <div class="brand-text">
+      স্বপ্নচূড়া কিস্তি ডিভাইস ম্যানেজার
+    </div>
+
+  </div>
+
+  <button
+    id="logout"
+    class="muted logout-btn hidden"
+  >
+    লগআউট
+  </button>
+
 </header>
 
+
+<!-- =========================
+     LOGIN
+========================= -->
+
 <div id="login" class="card login">
-<h2>অ্যাডমিন লগইন</h2>
-<input id="email" type="email" placeholder="ইমেইল">
-<br><br>
-<input id="password" type="password" placeholder="পাসওয়ার্ড">
-<br><br>
-<button id="loginBtn" class="primary">লগইন</button>
-<p id="loginMsg"></p>
+
+  <img
+    src="logo.png"
+    class="login-logo"
+    alt="স্বপ্নচূড়া লোগো"
+  >
+
+  <h2>অ্যাডমিন লগইন</h2>
+
+  <input
+    id="email"
+    type="email"
+    placeholder="ইমেইল"
+  >
+
+  <br><br>
+
+  <input
+    id="password"
+    type="password"
+    placeholder="পাসওয়ার্ড"
+  >
+
+  <br><br>
+
+  <button
+    id="loginBtn"
+    class="primary"
+  >
+    লগইন
+  </button>
+
+  <p id="loginMsg"></p>
+
 </div>
+
+
+<!-- =========================
+     MAIN APP
+========================= -->
 
 <main id="app" class="hidden">
 
-<div class="notice">
-<b>বাস্তব ফোন লক:</b> এই প্যানেল Provider/OEM API-তে কমান্ড পাঠায়।
-শুধু Firebase রেকর্ড পরিবর্তন করলে ফোনের OS-level লক হয় না।
-Samsung-এর জন্য Knox Guard adapter প্রস্তুত আছে।
-</div>
+  <div class="notice">
 
-<div class="grid">
-<div class="card">কাস্টমার<div id="mc" class="metric">0</div></div>
-<div class="card">ডিভাইস<div id="md" class="metric">0</div></div>
-<div class="card">কিস্তির চুক্তি<div id="mk" class="metric">0</div></div>
-<div class="card">বকেয়া<div id="mb" class="metric">৳0</div></div>
-</div>
+    <b>বাস্তব ফোন লক:</b>
+    এই প্যানেল Provider/OEM API-তে কমান্ড পাঠায়।
+    শুধু Firebase রেকর্ড পরিবর্তন করলে ফোনের OS-level লক হয় না।
+    Samsung-এর জন্য Knox Guard adapter প্রস্তুত আছে।
 
-<div class="tabs">
-<button class="active" data-t="customers">কাস্টমার</button>
-<button data-t="devices">ডিভাইস</button>
-<button data-t="contracts">কিস্তি</button>
-<button data-t="payments">পেমেন্ট</button>
-<button data-t="control">লক / আনলক</button>
-<button data-t="qr">QR এনরোলমেন্ট</button>
-<button data-t="audit">কার্যক্রমের ইতিহাস</button>
-</div>
+  </div>
 
-<section id="customers" class="tab active">
-<div class="card">
-<h2>কাস্টমার যোগ করুন</h2>
-<div class="row">
-<input id="cn" placeholder="নাম">
-<input id="cp" placeholder="ফোন নম্বর">
-<input id="ca" placeholder="ঠিকানা">
-<input id="nid" placeholder="NID / রেফারেন্স (ঐচ্ছিক)">
-</div><br>
-<button id="addC" class="primary">কাস্টমার যোগ করুন</button>
-</div>
-<div class="card table">
-<table><thead><tr><th>নাম</th><th>ফোন</th><th>ঠিকানা</th></tr></thead>
-<tbody id="cr"></tbody></table>
-</div>
-</section>
 
-<section id="devices" class="tab">
-<div class="card">
-<h2>ফোন / ডিভাইস যোগ করুন</h2>
-<div class="row">
-<select id="dc"></select>
-<select id="db">
-<option value="Samsung">Samsung</option>
-<option value="Xiaomi / Redmi">Xiaomi / Redmi</option>
-<option value="OPPO">OPPO</option>
-<option value="TECNO">TECNO</option>
-<option value="Infinix">Infinix</option>
-<option value="realme">realme</option>
-<option value="Symphony">Symphony</option>
-</select>
-<input id="dm" placeholder="মডেল">
-<input id="di" placeholder="IMEI 1">
-<input id="di2" placeholder="IMEI 2">
-<input id="ds" placeholder="সিরিয়াল নম্বর">
-<select id="dp">
-<option value="samsung-knox-guard">Samsung Knox Guard</option>
-<option value="oem-approved">অনুমোদিত OEM Provider</option>
-<option value="custom-provider">Custom Provider</option>
-</select>
-</div><br>
-<button id="addD" class="primary">ডিভাইস যোগ করুন</button>
-</div>
-<div class="card table">
-<table><thead><tr><th>কাস্টমার</th><th>ব্র্যান্ড</th><th>মডেল</th><th>IMEI</th><th>অবস্থা</th></tr></thead>
-<tbody id="dr"></tbody></table>
-</div>
-</section>
+  <!-- DASHBOARD -->
 
-<section id="contracts" class="tab">
-<div class="card">
-<h2>কিস্তির চুক্তি</h2>
-<div class="row">
-<select id="kc"></select><select id="kd"></select>
-<input id="kt" type="number" placeholder="মোট মূল্য">
-<input id="kn" type="number" placeholder="অগ্রিম">
-<input id="ki" type="number" placeholder="কিস্তির পরিমাণ">
-<input id="kcnt" type="number" placeholder="কিস্তির সংখ্যা">
-<input id="kdue" type="date">
-<input id="kgr" type="number" value="3" placeholder="গ্রেস ডে">
-</div><br>
-<button id="addK" class="primary">কিস্তির চুক্তি তৈরি করুন</button>
-</div>
-<div class="card table">
-<table><thead><tr><th>কাস্টমার</th><th>ডিভাইস</th><th>মোট মূল্য</th><th>পরিশোধ</th><th>বাকি</th><th>পরবর্তী তারিখ</th><th>অবস্থা</th></tr></thead>
-<tbody id="kr"></tbody></table>
-</div>
-</section>
+  <div class="grid">
 
-<section id="payments" class="tab">
-<div class="card">
-<h2>পেমেন্ট রেকর্ড</h2>
-<div class="row">
-<select id="pc"></select>
-<input id="pa" type="number" placeholder="পরিমাণ">
-<select id="pm"><option>নগদ</option><option>bKash</option><option>Nagad</option><option>Rocket</option><option>ব্যাংক</option></select>
-<input id="pt" placeholder="Transaction ID">
-</div><br>
-<button id="addP" class="success">পেমেন্ট রেকর্ড করুন</button>
-</div>
-<div class="card table">
-<table><thead><tr><th>চুক্তি</th><th>পরিমাণ</th><th>মাধ্যম</th><th>তারিখ</th></tr></thead>
-<tbody id="pr"></tbody></table>
-</div>
-</section>
+    <div class="card">
+      কাস্টমার
+      <div id="mc" class="metric">0</div>
+    </div>
 
-<section id="control" class="tab">
-<div class="card">
-<h2>ডিভাইস নিয়ন্ত্রণ</h2>
-<div class="row"><select id="xc"></select><select id="xd"></select></div><br>
-<button id="lock" class="danger">🔒 লক</button>
-<button id="unlock" class="success">🔓 আনলক</button>
-<button id="release" class="primary">✅ ডিরেজিস্টার</button>
-<p id="msg"></p>
-<small>ডিরেজিস্টার শুধুমাত্র সম্পূর্ণ পেমেন্টের পর করা যাবে।</small>
-</div>
-<div class="card table">
-<table><thead><tr><th>কাজ</th><th>ব্র্যান্ড</th><th>ডিভাইস</th><th>Provider</th><th>অবস্থা</th></tr></thead>
-<tbody id="xr"></tbody></table>
-</div>
-</section>
+    <div class="card">
+      ডিভাইস
+      <div id="md" class="metric">0</div>
+    </div>
 
-<section id="qr" class="tab">
-<div class="card">
-<h2>📲 কাস্টমার ফোন এনরোলমেন্ট QR</h2>
-<div class="notice">
-এই QR একটি <b>একবার ব্যবহারযোগ্য নিরাপদ এনরোলমেন্ট লিংক</b> তৈরি করবে।
-কাস্টমার স্ক্যান করলে সম্মতি/এনরোলমেন্ট পেজ খুলবে।
-সাধারণ QR স্ক্যান করে কোনো ফোনে গোপনে “সব অ্যাক্সেস” নেওয়া যায় না;
-বাস্তব ডিভাইস ম্যানেজমেন্টের জন্য Android Enterprise/OEM-approved enrollment প্রয়োজন।
-</div>
-<div class="row"><select id="qc"></select><select id="qdqr"></select></div><br>
-<button id="makeQR" class="primary">QR তৈরি করুন</button>
-<button id="clearQR" class="muted">পরিষ্কার করুন</button>
-<div id="qrBox" style="margin-top:16px;text-align:center"></div>
-<p id="qrInfo" class="small"></p>
-</div>
-<div class="card">
-<h3>এনরোলমেন্টের ইতিহাস</h3><p class="small">সফল সম্মতির পর কাস্টমারের ফোন ও নির্দিষ্ট ডিভাইসের জন্য একটি <b>deviceEnrollments</b> রেকর্ড তৈরি হবে।</p>
-<div class="table">
-<table><thead><tr><th>কাস্টমার</th><th>ডিভাইস</th><th>টোকেন</th><th>অবস্থা</th><th>তারিখ</th></tr></thead>
-<tbody id="qrRows"></tbody></table>
-</div>
-</div>
-</section>
+    <div class="card">
+      কিস্তির চুক্তি
+      <div id="mk" class="metric">0</div>
+    </div>
 
-<section id="audit" class="tab">
-<div class="card table">
-<table><thead><tr><th>ধরন</th><th>বিবরণ</th><th>তারিখ</th></tr></thead>
-<tbody id="ar"></tbody></table>
-</div>
-</section>
+    <div class="card">
+      বকেয়া
+      <div id="mb" class="metric">৳0</div>
+    </div>
+
+  </div>
+
+
+  <!-- TABS -->
+
+  <div class="tabs">
+
+    <button
+      class="active"
+      data-t="customers"
+    >
+      কাস্টমার
+    </button>
+
+    <button data-t="devices">
+      ডিভাইস
+    </button>
+
+    <button data-t="contracts">
+      কিস্তি
+    </button>
+
+    <button data-t="payments">
+      পেমেন্ট
+    </button>
+
+    <button data-t="control">
+      লক / আনলক
+    </button>
+
+    <button data-t="qr">
+      QR এনরোলমেন্ট
+    </button>
+
+    <button data-t="audit">
+      কার্যক্রমের ইতিহাস
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       CUSTOMERS
+  ========================= -->
+
+  <section
+    id="customers"
+    class="tab active"
+  >
+
+    <div class="card">
+
+      <h2>কাস্টমার যোগ করুন</h2>
+
+      <div class="row">
+
+        <input
+          id="cn"
+          placeholder="নাম"
+        >
+
+        <input
+          id="cp"
+          placeholder="ফোন নম্বর"
+        >
+
+        <input
+          id="ca"
+          placeholder="ঠিকানা"
+        >
+
+        <input
+          id="nid"
+          placeholder="NID / রেফারেন্স (ঐচ্ছিক)"
+        >
+
+      </div>
+
+      <br>
+
+      <button
+        id="addC"
+        class="primary"
+      >
+        কাস্টমার যোগ করুন
+      </button>
+
+    </div>
+
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>নাম</th>
+            <th>ফোন</th>
+            <th>ঠিকানা</th>
+          </tr>
+        </thead>
+
+        <tbody id="cr"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       DEVICES
+  ========================= -->
+
+  <section
+    id="devices"
+    class="tab"
+  >
+
+    <div class="card">
+
+      <h2>ফোন / ডিভাইস যোগ করুন</h2>
+
+      <div class="row">
+
+        <select id="dc"></select>
+
+        <select id="db">
+
+          <option value="Samsung">
+            Samsung
+          </option>
+
+          <option value="Xiaomi / Redmi">
+            Xiaomi / Redmi
+          </option>
+
+          <option value="OPPO">
+            OPPO
+          </option>
+
+          <option value="TECNO">
+            TECNO
+          </option>
+
+          <option value="Infinix">
+            Infinix
+          </option>
+
+          <option value="realme">
+            realme
+          </option>
+
+          <option value="Symphony">
+            Symphony
+          </option>
+
+        </select>
+
+        <input
+          id="dm"
+          placeholder="মডেল"
+        >
+
+        <input
+          id="di"
+          placeholder="IMEI 1"
+        >
+
+        <input
+          id="di2"
+          placeholder="IMEI 2"
+        >
+
+        <input
+          id="ds"
+          placeholder="সিরিয়াল নম্বর"
+        >
+
+        <select id="dp">
+
+          <option value="samsung-knox-guard">
+            Samsung Knox Guard
+          </option>
+
+          <option value="oem-approved">
+            অনুমোদিত OEM Provider
+          </option>
+
+          <option value="custom-provider">
+            Custom Provider
+          </option>
+
+        </select>
+
+      </div>
+
+      <br>
+
+      <button
+        id="addD"
+        class="primary"
+      >
+        ডিভাইস যোগ করুন
+      </button>
+
+    </div>
+
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>কাস্টমার</th>
+            <th>ব্র্যান্ড</th>
+            <th>মডেল</th>
+            <th>IMEI</th>
+            <th>অবস্থা</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="dr"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CONTRACTS
+  ========================= -->
+
+  <section
+    id="contracts"
+    class="tab"
+  >
+
+    <div class="card">
+
+      <h2>কিস্তির চুক্তি</h2>
+
+      <div class="row">
+
+        <select id="kc"></select>
+
+        <select id="kd"></select>
+
+        <input
+          id="kt"
+          type="number"
+          placeholder="মোট মূল্য"
+        >
+
+        <input
+          id="kn"
+          type="number"
+          placeholder="অগ্রিম"
+        >
+
+        <input
+          id="ki"
+          type="number"
+          placeholder="কিস্তির পরিমাণ"
+        >
+
+        <input
+          id="kcnt"
+          type="number"
+          placeholder="কিস্তির সংখ্যা"
+        >
+
+        <input
+          id="kdue"
+          type="date"
+        >
+
+        <input
+          id="kgr"
+          type="number"
+          value="3"
+          placeholder="গ্রেস ডে"
+        >
+
+      </div>
+
+      <br>
+
+      <button
+        id="addK"
+        class="primary"
+      >
+        কিস্তির চুক্তি তৈরি করুন
+      </button>
+
+    </div>
+
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>কাস্টমার</th>
+            <th>ডিভাইস</th>
+            <th>মোট মূল্য</th>
+            <th>পরিশোধ</th>
+            <th>বাকি</th>
+            <th>পরবর্তী তারিখ</th>
+            <th>অবস্থা</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="kr"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PAYMENTS
+  ========================= -->
+
+  <section
+    id="payments"
+    class="tab"
+  >
+
+    <div class="card">
+
+      <h2>পেমেন্ট রেকর্ড</h2>
+
+      <div class="row">
+
+        <select id="pc"></select>
+
+        <input
+          id="pa"
+          type="number"
+          placeholder="পরিমাণ"
+        >
+
+        <select id="pm">
+
+          <option>নগদ</option>
+          <option>bKash</option>
+          <option>Nagad</option>
+          <option>Rocket</option>
+          <option>ব্যাংক</option>
+
+        </select>
+
+        <input
+          id="pt"
+          placeholder="Transaction ID"
+        >
+
+      </div>
+
+      <br>
+
+      <button
+        id="addP"
+        class="success"
+      >
+        পেমেন্ট রেকর্ড করুন
+      </button>
+
+    </div>
+
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>চুক্তি</th>
+            <th>পরিমাণ</th>
+            <th>মাধ্যম</th>
+            <th>তারিখ</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="pr"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CONTROL
+  ========================= -->
+
+  <section
+    id="control"
+    class="tab"
+  >
+
+    <div class="card">
+
+      <h2>ডিভাইস নিয়ন্ত্রণ</h2>
+
+      <div class="row">
+
+        <select id="xc"></select>
+
+        <select id="xd"></select>
+
+      </div>
+
+      <br>
+
+      <button
+        id="lock"
+        class="danger"
+      >
+        🔒 লক
+      </button>
+
+      <button
+        id="unlock"
+        class="success"
+      >
+        🔓 আনলক
+      </button>
+
+      <button
+        id="release"
+        class="primary"
+      >
+        ✅ ডিরেজিস্টার
+      </button>
+
+      <p id="msg"></p>
+
+      <small>
+        ডিরেজিস্টার শুধুমাত্র সম্পূর্ণ পেমেন্টের পর করা যাবে।
+      </small>
+
+    </div>
+
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>কাজ</th>
+            <th>ব্র্যান্ড</th>
+            <th>ডিভাইস</th>
+            <th>Provider</th>
+            <th>অবস্থা</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="xr"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       QR
+  ========================= -->
+
+  <section
+    id="qr"
+    class="tab"
+  >
+
+    <div class="card">
+
+      <h2>
+        📲 কাস্টমার ফোন এনরোলমেন্ট QR
+      </h2>
+
+      <div class="notice">
+
+        এই QR একটি
+        <b>একবার ব্যবহারযোগ্য নিরাপদ এনরোলমেন্ট লিংক</b>
+        তৈরি করবে।
+
+        কাস্টমার স্ক্যান করলে সম্মতি/এনরোলমেন্ট পেজ খুলবে।
+
+        সাধারণ QR স্ক্যান করে কোনো ফোনে গোপনে
+        “সব অ্যাক্সেস” নেওয়া যায় না।
+
+        বাস্তব ডিভাইস ম্যানেজমেন্টের জন্য
+        Android Enterprise/OEM-approved enrollment প্রয়োজন।
+
+      </div>
+
+      <div class="row">
+
+        <select id="qc"></select>
+
+        <select id="qdqr"></select>
+
+      </div>
+
+      <br>
+
+      <button
+        id="makeQR"
+        class="primary"
+      >
+        QR তৈরি করুন
+      </button>
+
+      <button
+        id="clearQR"
+        class="muted"
+      >
+        পরিষ্কার করুন
+      </button>
+
+      <div
+        id="qrBox"
+        style="margin-top:16px;text-align:center"
+      ></div>
+
+      <p
+        id="qrInfo"
+        class="small"
+      ></p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>এনরোলমেন্টের ইতিহাস</h3>
+
+      <p class="small">
+
+        সফল সম্মতির পর কাস্টমারের ফোন ও নির্দিষ্ট
+        ডিভাইসের জন্য একটি
+        <b>deviceEnrollments</b>
+        রেকর্ড তৈরি হবে।
+
+      </p>
+
+      <div class="table">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>কাস্টমার</th>
+              <th>ডিভাইস</th>
+              <th>টোকেন</th>
+              <th>অবস্থা</th>
+              <th>তারিখ</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="qrRows"></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       AUDIT
+  ========================= -->
+
+  <section
+    id="audit"
+    class="tab"
+  >
+
+    <div class="card table">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>ধরন</th>
+            <th>বিবরণ</th>
+            <th>তারিখ</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="ar"></tbody>
+
+      </table>
+
+    </div>
+
+  </section>
 
 </main>
-<div id="toast" class="toast" role="alert" aria-live="polite"></div>
+
+
+<div
+  id="toast"
+  class="toast"
+  role="alert"
+  aria-live="polite"
+></div>
+
+
+<!-- =========================
+     FIREBASE
+========================= -->
 
 <script type="module">
-import{initializeApp}from'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
-import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-import{getFirestore,collection,addDoc,getDocs,doc,updateDoc,serverTimestamp}from'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+
+import {
+  initializeApp
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  serverTimestamp
+} from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
 
 const cfg={
-apiKey:'AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg',
-authDomain:'swapnochura-lock-management.firebaseapp.com',
-projectId:'swapnochura-lock-management',
-storageBucket:'swapnochura-lock-management.firebasestorage.app',
-messagingSenderId:'414941510200',
-appId:'1:414941510200:web:2fabf0cc954c39a4e844cd'
+
+  apiKey:'AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg',
+
+  authDomain:
+    'swapnochura-lock-management.firebaseapp.com',
+
+  projectId:
+    'swapnochura-lock-management',
+
+  storageBucket:
+    'swapnochura-lock-management.firebasestorage.app',
+
+  messagingSenderId:
+    '414941510200',
+
+  appId:
+    '1:414941510200:web:2fabf0cc954c39a4e844cd'
+
 };
+
 
 const firebaseApp=initializeApp(cfg);
+
 const auth=getAuth(firebaseApp);
+
 const db=getFirestore(firebaseApp);
+
+
+/* =========================
+   ADMIN UID
+========================= */
+
 const UID='L425ICXf7JVWjGconcbFoqG1vft1';
 
-let C=[],D=[],K=[],P=[],X=[],A=[];
+
+/* =========================
+   DATA
+========================= */
+
+let C=[];
+let D=[];
+let K=[];
+let P=[];
+let X=[];
+let A=[];
+let E=[];
+
+
 const $=x=>document.getElementById(x);
-const money=n=>'৳'+Number(n||0).toLocaleString('en-BD');
-const customerNameById=id=>(C.find(x=>x.id===id)||{}).name||id||'অজানা কাস্টমার';
-const dev=id=>D.find(x=>x.id===id)||{};
 
-function showMessage(message,type='info'){
+
+const money=n=>
+  '৳'+Number(n||0).toLocaleString('en-BD');
+
+
+const customerNameById=id=>
+  (C.find(x=>x.id===id)||{}).name||
+  id||
+  'অজানা কাস্টমার';
+
+
+const dev=id=>
+  D.find(x=>x.id===id)||{};
+
+
+/* =========================
+   TOAST
+========================= */
+
+function showMessage(
+  message,
+  type='info'
+){
+
   const t=$('toast');
+
   t.textContent=message;
-  t.className='toast show '+(type==='success'?'success':type==='error'?'error':type==='warn'?'warn':'');
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer=setTimeout(()=>t.className='toast',4500);
-}
 
-function firebaseBanglaError(e,defaultMsg='কাজটি সম্পন্ন করা যায়নি।'){
-  console.error(e);
-  const code=e?.code||'';
-  if(code.includes('permission-denied'))return 'এই কাজটি করার অনুমতি আপনার নেই। অ্যাডমিন অ্যাকাউন্ট দিয়ে লগইন করা আছে কি না যাচাই করুন।';
-  if(code.includes('unauthenticated'))return 'আপনার লগইন সেশন শেষ হয়েছে। আবার লগইন করুন।';
-  if(code.includes('network')||code.includes('unavailable'))return 'ইন্টারনেট বা Firebase সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
-  if(code.includes('already-exists'))return 'এই তথ্যটি আগে থেকেই রয়েছে।';
-  if(code.includes('not-found'))return 'প্রয়োজনীয় তথ্য পাওয়া যায়নি।';
-  if(code.includes('failed-precondition'))return 'Firebase-এর প্রয়োজনীয় সেটিংস সম্পূর্ণ নয়।';
-  if(code.includes('invalid-argument'))return 'কিছু তথ্য সঠিকভাবে দেওয়া হয়নি। তথ্যগুলো যাচাই করুন।';
-  return defaultMsg;
-}
-
-async function safeRun(fn,successMsg=null){
-  try{
-    const result=await fn();
-    if(successMsg)showMessage(successMsg,'success');
-    return result;
-  }catch(e){
-    showMessage(firebaseBanglaError(e),'error');
-    return null;
-  }
-}
-
-const load=async c=>(await getDocs(collection(db,c))).docs.map(x=>({id:x.id,...x.data()}));
-
-async function log(type,message){
-  await addDoc(collection(db,'auditLogs'),{
-    type,message,createdAt:serverTimestamp(),uid:auth.currentUser?.uid||UID
-  });
-}
-
-async function all(){
-  [C,D,K,P,X,A]=await Promise.all(
-    ['customers','devices','contracts','payments','lockCommands','auditLogs','deviceEnrollments'].map(load)
-  );
-  render();
-}
-
-function opts(id,arr,label){
-  $(id).innerHTML='<option value="">নির্বাচন করুন</option>'+
-    arr.map(x=>`<option value="${x.id}">${label(x)}</option>`).join('');
-}
-
-function statusBangla(v){
-  const m={
-    ACTIVE:'সক্রিয়',
-    LOCKED:'লক',
-    RELEASED:'ডিরেজিস্টার করা',
-    REGISTERED:'নিবন্ধিত',
-    DEREGISTERED:'ডিরেজিস্টার করা',
-    COMPLETED:'সম্পূর্ণ',
-    PENDING:'অপেক্ষমাণ',
-    PENDING_PROVIDER:'Provider-এর জন্য অপেক্ষমাণ',
-    SENT:'পাঠানো হয়েছে',
-    FAILED:'ব্যর্থ',
-    VERIFIED:'যাচাই করা হয়েছে',
-    USED:'ব্যবহৃত'
-  };
-  return m[v]||v||'অজানা';
-}
-
-function providerBangla(v){
-  const m={
-    'samsung-knox-guard':'Samsung Knox Guard',
-    'oem-approved':'অনুমোদিত OEM Provider',
-    'custom-provider':'Custom Provider'
-  };
-  return m[v]||v||'অজানা';
-}
-
-function render(){
-  $('mc').textContent=C.length;
-  $('md').textContent=D.length;
-  $('mk').textContent=K.length;
-  $('mb').textContent=money(K.reduce((a,x)=>a+Number(x.remainingAmount||0),0));
-
-  $('cr').innerHTML=C.map(x=>`<tr><td>${x.name||''}</td><td>${x.phone||''}</td><td>${x.address||''}</td></tr>`).join('');
-
-  $('dr').innerHTML=D.map(x=>`<tr>
-  <td>${customerNameById(x.customerId)}</td><td>${x.brand||''}</td><td>${x.model||''}</td>
-  <td>${x.imei1||''}</td><td>${statusBangla(x.lockState||'ACTIVE')}</td></tr>`).join('');
-
-  $('kr').innerHTML=K.map(x=>`<tr>
-  <td>${customerNameById(x.customerId)}</td><td>${dev(x.deviceId).model||x.deviceId}</td>
-  <td>${money(x.totalPrice)}</td><td>${money(x.paidAmount)}</td><td>${money(x.remainingAmount)}</td>
-  <td>${x.nextDueDate||''}</td><td>${x.status==='COMPLETED'?'সম্পূর্ণ':'সক্রিয়'}</td></tr>`).join('');
-
-  $('pr').innerHTML=P.map(x=>`<tr>
-  <td>${x.contractId||''}</td><td>${money(x.amount)}</td><td>${x.method||''}</td>
-  <td>${x.paymentDate?.toDate?.().toLocaleString('bn-BD')||''}</td></tr>`).join('');
-
-  $('xr').innerHTML=X.map(x=>`<tr>
-  <td>${x.action==='LOCK'?'লক':x.action==='UNLOCK'?'আনলক':'ডিরেজিস্টার'}</td>
-  <td>${x.brand||''}</td><td>${dev(x.deviceId).model||x.deviceId||''}</td>
-  <td>${providerBangla(x.provider)}</td><td>${statusBangla(x.status)}</td></tr>`).join('');
-
-  $('ar').innerHTML=A.map(x=>`<tr>
-  <td>${x.type||''}</td><td>${x.message||''}</td>
-  <td>${x.createdAt?.toDate?.().toLocaleString('bn-BD')||''}</td></tr>`).join('');
-
-  opts('dc',C,x=>x.name||'নাম নেই');
-  opts('kc',C,x=>x.name||'নাম নেই');
-  opts('xc',C,x=>x.name||'নাম নেই');
-  opts('pc',K,x=>`${customerNameById(x.customerId)} — ${dev(x.deviceId).model||''} — ${money(x.remainingAmount)}`);
-  opts('qc',C,x=>x.name||'নাম নেই');
-
-  devicesFor('kc','kd');
-  devicesFor('xc','xd');
-  devicesFor('qc','qdqr');
-}
-
-function devicesFor(customerSelectId,deviceSelectId){
-  const id=$(customerSelectId).value;
-  opts(deviceSelectId,D.filter(x=>!id||x.customerId===id),
-    x=>`${x.brand||''} ${x.model||''} — ${x.imei1||''}`);
-}
-
-$('kc').onchange=()=>devicesFor('kc','kd');
-$('xc').onchange=()=>devicesFor('xc','xd');
-$('qc').onchange=()=>devicesFor('qc','qdqr');
-
-$('loginBtn').onclick=async()=>{
-  const email=$('email').value.trim();
-  const password=$('password').value;
-  if(!email||!password){
-    $('loginMsg').textContent='ইমেইল ও পাসওয়ার্ড দিন।';
-    showMessage('ইমেইল ও পাসওয়ার্ড দিন।','warn');
-    return;
-  }
-  try{
-    await signInWithEmailAndPassword(auth,email,password);
-    $('loginMsg').textContent='লগইন সফল হয়েছে।';
-  }catch(e){
-    const m=firebaseBanglaError(e,'লগইন করা যায়নি। ইমেইল ও পাসওয়ার্ড যাচাই করুন।');
-    $('loginMsg').textContent=m;
-    showMessage(m,'error');
-  }
-};
-
-$('logout').onclick=async()=>{
-  try{await signOut(auth);showMessage('সফলভাবে লগআউট হয়েছে।','success')}
-  catch(e){showMessage(firebaseBanglaError(e,'লগআউট করা যায়নি।'),'error')}
-};
-
-onAuthStateChanged(auth,async u=>{
-  if(u&&u.uid===UID){
-    $('login').classList.add('hidden');
-    $('app').classList.remove('hidden');
-    $('logout').classList.remove('hidden');
-    const ok=await safeRun(all);
-    if(ok!==null)await renderQRHistory();
-  }else if(u){
-    await signOut(auth);
-    showMessage('এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।','error');
-  }else{
-    $('login').classList.remove('hidden');
-    $('app').classList.add('hidden');
-    $('logout').classList.add('hidden');
-  }
-});
-
-document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
-  document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));
-  b.classList.add('active');
-  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-  $(b.dataset.t).classList.add('active');
-});
-
-$('addC').onclick=async()=>{
-  const name=$('cn').value.trim();
-  const phone=$('cp').value.trim();
-  if(!name)return showMessage('দয়া করে কাস্টমারের নাম লিখুন।','warn');
-  if(!phone)return showMessage('দয়া করে কাস্টমারের ফোন নম্বর লিখুন।','warn');
-
-  const result=await safeRun(async()=>{
-    await addDoc(collection(db,'customers'),{
-      name,phone,
-      address:$('ca').value.trim(),
-      nidRef:$('nid').value.trim(),
-      createdAt:serverTimestamp()
-    });
-    await log('কাস্টমার যোগ',name);
-    await all();
-  },'কাস্টমার সফলভাবে যোগ হয়েছে।');
-
-  if(result===null)return;
-  $('cn').value='';$('cp').value='';$('ca').value='';$('nid').value='';
-};
-
-$('addD').onclick=async()=>{
-  const customerId=$('dc').value;
-  const brand=$('db').value;
-  const model=$('dm').value.trim();
-  const imei1=$('di').value.trim();
-  const imei2=$('di2').value.trim();
-  const serialNumber=$('ds').value.trim();
-  const provider=$('dp').value;
-
-  if(!customerId)return showMessage('দয়া করে কাস্টমার নির্বাচন করুন।','warn');
-  if(!model)return showMessage('দয়া করে ডিভাইসের মডেল লিখুন।','warn');
-  if(!imei1)return showMessage('দয়া করে IMEI 1 নম্বর লিখুন।','warn');
-  if(!/^\d{10,20}$/.test(imei1))return showMessage('IMEI 1 সঠিক নয়। ১০–২০ সংখ্যার IMEI দিন।','warn');
-  if(imei2&&!/^\d{10,20}$/.test(imei2))return showMessage('IMEI 2 সঠিক নয়। ১০–২০ সংখ্যার IMEI দিন।','warn');
-
-  const x={
-    customerId,brand,model,imei1,imei2,serialNumber,provider,
-    lockState:'ACTIVE',managementState:'REGISTERED',createdAt:serverTimestamp()
-  };
-
-  const result=await safeRun(async()=>{
-    await addDoc(collection(db,'devices'),x);
-    await log('ডিভাইস যোগ',imei1);
-    await all();
-  },'ডিভাইস সফলভাবে যোগ হয়েছে।');
-
-  if(result===null)return;
-  $('dm').value='';$('di').value='';$('di2').value='';$('ds').value='';
-};
-
-$('addK').onclick=async()=>{
-  const total=+$('kt').value||0;
-  const down=+$('kn').value||0;
-  if(!$('kc').value)return showMessage('দয়া করে কাস্টমার নির্বাচন করুন।','warn');
-  if(!$('kd').value)return showMessage('দয়া করে ডিভাইস নির্বাচন করুন।','warn');
-  if(total<=0)return showMessage('মোট মূল্য সঠিকভাবে লিখুন।','warn');
-  if(down>total)return showMessage('অগ্রিম মোট মূল্যের চেয়ে বেশি হতে পারবে না।','warn');
-
-  const x={
-    customerId:$('kc').value,deviceId:$('kd').value,totalPrice:total,
-    downPayment:down,paidAmount:down,remainingAmount:Math.max(0,total-down),
-    financedAmount:Math.max(0,total-down),installmentAmount:+$('ki').value||0,
-    installmentCount:+$('kcnt').value||0,nextDueDate:$('kdue').value,
-    gracePeriodDays:+$('kgr').value||0,status:'ACTIVE',
-    autoLockEnabled:true,createdAt:serverTimestamp()
-  };
-
-  const result=await safeRun(async()=>{
-    await addDoc(collection(db,'contracts'),x);
-    await log('কিস্তির চুক্তি তৈরি',x.customerId);
-    await all();
-  },'কিস্তির চুক্তি সফলভাবে তৈরি হয়েছে।');
-
-  if(result===null)return;
-};
-
-$('addP').onclick=async()=>{
-  const id=$('pc').value;
-  const amt=+$('pa').value||0;
-  if(!id)return showMessage('দয়া করে কিস্তির চুক্তি নির্বাচন করুন।','warn');
-  if(amt<=0)return showMessage('পেমেন্টের পরিমাণ সঠিকভাবে লিখুন।','warn');
-
-  const c=K.find(x=>x.id===id);
-  if(!c)return showMessage('চুক্তিটি পাওয়া যায়নি। আবার নির্বাচন করুন।','error');
-
-  const paid=+c.paidAmount+amt;
-  const rem=Math.max(0,+c.totalPrice-paid);
-
-  const result=await safeRun(async()=>{
-    await addDoc(collection(db,'payments'),{
-      contractId:id,customerId:c.customerId,deviceId:c.deviceId,
-      amount:amt,method:$('pm').value,transactionId:$('pt').value.trim(),
-      status:'VERIFIED',paymentDate:serverTimestamp(),createdAt:serverTimestamp()
-    });
-    await updateDoc(doc(db,'contracts',id),{
-      paidAmount:paid,remainingAmount:rem,
-      status:rem===0?'COMPLETED':'ACTIVE',updatedAt:serverTimestamp()
-    });
-    await log('পেমেন্ট',`${id} ${amt}`);
-    await all();
-  },'পেমেন্ট সফলভাবে রেকর্ড হয়েছে।');
-
-  if(result===null)return;
-  $('pa').value='';$('pt').value='';
-};
-
-async function action(a){
-  const id=$('xd').value;
-  const d=dev(id);
-
-  if(!id)return showMessage('দয়া করে কাস্টমার ও ডিভাইস নির্বাচন করুন।','warn');
-  if(!d.id)return showMessage('নির্বাচিত ডিভাইসটি পাওয়া যায়নি।','error');
-
-  const k=K.filter(x=>x.deviceId===id)
-    .sort((a,b)=>Number(b.createdAt?.seconds||0)-Number(a.createdAt?.seconds||0))[0];
-
-  if(a==='DEREGISTER'&&(!k||Number(k.remainingAmount)>0)){
-    return showMessage('সম্পূর্ণ পেমেন্ট না হলে ডিরেজিস্টার করা যাবে না।','warn');
-  }
-
-  // Firebase-এ পাঠানোর কমান্ড। এটি এখন Provider/Backend ছাড়াই কাজ করবে।
-  const payload={
-    action:a,
-    deviceId:id,
-    customerId:d.customerId,
-    brand:d.brand||'',
-    model:d.model||'',
-    provider:d.provider||'',
-    imei1:d.imei1||'',
-    imei2:d.imei2||'',
-    serialNumber:d.serialNumber||'',
-    contractId:k?.id||null,
-    createdBy:auth.currentUser?.uid||null
-  };
-
-  try{
-    const ref=await addDoc(collection(db,'lockCommands'),{
-      ...payload,
-      status:'PENDING',
-      createdAt:serverTimestamp(),
-      updatedAt:serverTimestamp()
-    });
-
-    // গুরুত্বপূর্ণ: Firebase command তৈরি হওয়ার আগে device status বদলানো হবে না।
-    // Customer phone-এর Device Management App পরে এই PENDING command পড়ে
-    // অনুমোদিতভাবে LOCK/UNLOCK সম্পন্ন করবে এবং status আপডেট করবে।
-    await log(
-      'লক/আনলক কমান্ড',
-      `${a==='LOCK'?'লক':a==='UNLOCK'?'আনলক':'ডিরেজিস্টার'} কমান্ড তৈরি: ${d.brand||''} ${d.model||''}`
+  t.className=
+    'toast show '+
+    (
+      type==='success'
+      ?'success'
+      :type==='error'
+      ?'error'
+      :type==='warn'
+      ?'warn'
+      :''
     );
 
-    $('msg').textContent=
-      `${a==='LOCK'?'লক':a==='UNLOCK'?'আনলক':'ডিরেজিস্টার'}: Firebase-এ কমান্ড জমা হয়েছে — অপেক্ষমাণ`;
+  clearTimeout(window.__toastTimer);
 
-    await all();
+  window.__toastTimer=setTimeout(
+    ()=>{
+      t.className='toast';
+    },
+    4500
+  );
+
+}
+
+
+/* =========================
+   FIREBASE ERROR
+========================= */
+
+function firebaseBanglaError(
+  e,
+  defaultMsg='কাজটি সম্পন্ন করা যায়নি।'
+){
+
+  console.error(e);
+
+  const code=e?.code||'';
+
+  if(code.includes('permission-denied'))
+    return 'এই কাজটি করার অনুমতি আপনার নেই। অ্যাডমিন অ্যাকাউন্ট দিয়ে লগইন করা আছে কি না যাচাই করুন।';
+
+  if(code.includes('unauthenticated'))
+    return 'আপনার লগইন সেশন শেষ হয়েছে। আবার লগইন করুন।';
+
+  if(
+    code.includes('network')||
+    code.includes('unavailable')
+  )
+    return 'ইন্টারনেট বা Firebase সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+
+  if(code.includes('already-exists'))
+    return 'এই তথ্যটি আগে থেকেই রয়েছে।';
+
+  if(code.includes('not-found'))
+    return 'প্রয়োজনীয় তথ্য পাওয়া যায়নি।';
+
+  if(code.includes('failed-precondition'))
+    return 'Firebase-এর প্রয়োজনীয় সেটিংস সম্পূর্ণ নয়।';
+
+  if(code.includes('invalid-argument'))
+    return 'কিছু তথ্য সঠিকভাবে দেওয়া হয়নি। তথ্যগুলো যাচাই করুন।';
+
+  return defaultMsg;
+
+}
+
+
+/* =========================
+   SAFE RUN
+========================= */
+
+async function safeRun(
+  fn,
+  successMsg=null
+){
+
+  try{
+
+    const result=await fn();
+
+    if(successMsg)
+      showMessage(
+        successMsg,
+        'success'
+      );
+
+    return result;
+
+  }catch(e){
 
     showMessage(
-      a==='LOCK'?'লক কমান্ড Firebase-এ সফলভাবে জমা হয়েছে। ফোনের Device Management App এটি প্রক্রিয়া করবে।':
-      a==='UNLOCK'?'আনলক কমান্ড Firebase-এ সফলভাবে জমা হয়েছে। ফোনের Device Management App এটি প্রক্রিয়া করবে।':
-      'ডিরেজিস্টার কমান্ড Firebase-এ সফলভাবে জমা হয়েছে।',
+      firebaseBanglaError(e),
+      'error'
+    );
+
+    return null;
+
+  }
+
+}
+
+
+/* =========================
+   LOAD COLLECTION
+========================= */
+
+const load=async c=>
+  (
+    await getDocs(
+      collection(db,c)
+    )
+  ).docs.map(
+    x=>({
+      id:x.id,
+      ...x.data()
+    })
+  );
+
+
+/* =========================
+   AUDIT LOG
+========================= */
+
+async function log(
+  type,
+  message
+){
+
+  await addDoc(
+    collection(db,'auditLogs'),
+    {
+      type,
+      message,
+      createdAt:serverTimestamp(),
+      uid:auth.currentUser?.uid||UID
+    }
+  );
+
+}
+
+
+/* =========================
+   LOAD ALL DATA
+========================= */
+
+async function all(){
+
+  const data=await Promise.all([
+
+    load('customers'),
+
+    load('devices'),
+
+    load('contracts'),
+
+    load('payments'),
+
+    load('lockCommands'),
+
+    load('auditLogs'),
+
+    load('deviceEnrollments')
+
+  ]);
+
+
+  /*
+    এখানে আগের কোডের একটি সমস্যা ঠিক করা হয়েছে।
+    ৭টি collection-এর জন্য ৭টি variable ব্যবহার করা হয়েছে।
+  */
+
+  C=data[0];
+  D=data[1];
+  K=data[2];
+  P=data[3];
+  X=data[4];
+  A=data[5];
+  E=data[6];
+
+
+  render();
+
+}
+
+
+/* =========================
+   SELECT OPTIONS
+========================= */
+
+function opts(
+  id,
+  arr,
+  label
+){
+
+  $(id).innerHTML=
+    '<option value="">নির্বাচন করুন</option>'+
+    arr.map(
+      x=>
+        `<option value="${x.id}">
+          ${label(x)}
+        </option>`
+    ).join('');
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function statusBangla(v){
+
+  const m={
+
+    ACTIVE:'সক্রিয়',
+
+    LOCKED:'লক',
+
+    RELEASED:'ডিরেজিস্টার করা',
+
+    REGISTERED:'নিবন্ধিত',
+
+    DEREGISTERED:'ডিরেজিস্টার করা',
+
+    COMPLETED:'সম্পূর্ণ',
+
+    PENDING:'অপেক্ষমাণ',
+
+    PENDING_PROVIDER:
+      'Provider-এর জন্য অপেক্ষমাণ',
+
+    SENT:'পাঠানো হয়েছে',
+
+    FAILED:'ব্যর্থ',
+
+    VERIFIED:'যাচাই করা হয়েছে',
+
+    USED:'ব্যবহৃত'
+
+  };
+
+  return m[v]||v||'অজানা';
+
+}
+
+
+/* =========================
+   PROVIDER
+========================= */
+
+function providerBangla(v){
+
+  const m={
+
+    'samsung-knox-guard':
+      'Samsung Knox Guard',
+
+    'oem-approved':
+      'অনুমোদিত OEM Provider',
+
+    'custom-provider':
+      'Custom Provider'
+
+  };
+
+  return m[v]||v||'অজানা';
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render(){
+
+  $('mc').textContent=C.length;
+
+  $('md').textContent=D.length;
+
+  $('mk').textContent=K.length;
+
+  $('mb').textContent=
+    money(
+      K.reduce(
+        (a,x)=>
+          a+
+          Number(
+            x.remainingAmount||0
+          ),
+        0
+      )
+    );
+
+
+  /* CUSTOMERS */
+
+  $('cr').innerHTML=
+    C.map(
+      x=>
+        `<tr>
+          <td>${x.name||''}</td>
+          <td>${x.phone||''}</td>
+          <td>${x.address||''}</td>
+        </tr>`
+    ).join('');
+
+
+  /* DEVICES */
+
+  $('dr').innerHTML=
+    D.map(
+      x=>
+        `<tr>
+          <td>${customerNameById(x.customerId)}</td>
+          <td>${x.brand||''}</td>
+          <td>${x.model||''}</td>
+          <td>${x.imei1||''}</td>
+          <td>${statusBangla(
+            x.lockState||'ACTIVE'
+          )}</td>
+        </tr>`
+    ).join('');
+
+
+  /* CONTRACTS */
+
+  $('kr').innerHTML=
+    K.map(
+      x=>
+        `<tr>
+          <td>${customerNameById(x.customerId)}</td>
+
+          <td>
+            ${dev(x.deviceId).model||x.deviceId}
+          </td>
+
+          <td>${money(x.totalPrice)}</td>
+
+          <td>${money(x.paidAmount)}</td>
+
+          <td>${money(x.remainingAmount)}</td>
+
+          <td>${x.nextDueDate||''}</td>
+
+          <td>
+            ${
+              x.status==='COMPLETED'
+              ?'সম্পূর্ণ'
+              :'সক্রিয়'
+            }
+          </td>
+
+        </tr>`
+    ).join('');
+
+
+  /* PAYMENTS */
+
+  $('pr').innerHTML=
+    P.map(
+      x=>
+        `<tr>
+
+          <td>${x.contractId||''}</td>
+
+          <td>${money(x.amount)}</td>
+
+          <td>${x.method||''}</td>
+
+          <td>
+            ${
+              x.paymentDate?.toDate?.()
+              ?.toLocaleString('bn-BD')
+              ||''
+            }
+          </td>
+
+        </tr>`
+    ).join('');
+
+
+  /* LOCK COMMANDS */
+
+  $('xr').innerHTML=
+    X.map(
+      x=>
+        `<tr>
+
+          <td>
+            ${
+              x.action==='LOCK'
+              ?'লক'
+              :x.action==='UNLOCK'
+              ?'আনলক'
+              :'ডিরেজিস্টার'
+            }
+          </td>
+
+          <td>${x.brand||''}</td>
+
+          <td>
+            ${dev(x.deviceId).model||x.deviceId||''}
+          </td>
+
+          <td>
+            ${providerBangla(x.provider)}
+          </td>
+
+          <td>
+            ${statusBangla(x.status)}
+          </td>
+
+        </tr>`
+    ).join('');
+
+
+  /* AUDIT */
+
+  $('ar').innerHTML=
+    A.map(
+      x=>
+        `<tr>
+
+          <td>${x.type||''}</td>
+
+          <td>${x.message||''}</td>
+
+          <td>
+            ${
+              x.createdAt?.toDate?.()
+              ?.toLocaleString('bn-BD')
+              ||''
+            }
+          </td>
+
+        </tr>`
+    ).join('');
+
+
+  /* SELECTS */
+
+  opts(
+    'dc',
+    C,
+    x=>x.name||'নাম নেই'
+  );
+
+  opts(
+    'kc',
+    C,
+    x=>x.name||'নাম নেই'
+  );
+
+  opts(
+    'xc',
+    C,
+    x=>x.name||'নাম নেই'
+  );
+
+  opts(
+    'pc',
+    K,
+    x=>
+      `${customerNameById(x.customerId)}
+       — ${dev(x.deviceId).model||''}
+       — ${money(x.remainingAmount)}`
+  );
+
+  opts(
+    'qc',
+    C,
+    x=>x.name||'নাম নেই'
+  );
+
+
+  devicesFor(
+    'kc',
+    'kd'
+  );
+
+  devicesFor(
+    'xc',
+    'xd'
+  );
+
+  devicesFor(
+    'qc',
+    'qdqr'
+  );
+
+}
+
+
+/* =========================
+   DEVICES BY CUSTOMER
+========================= */
+
+function devicesFor(
+  customerSelectId,
+  deviceSelectId
+){
+
+  const id=
+    $(customerSelectId).value;
+
+  opts(
+    deviceSelectId,
+
+    D.filter(
+      x=>
+        !id||
+        x.customerId===id
+    ),
+
+    x=>
+      `${x.brand||''}
+       ${x.model||''}
+       — ${x.imei1||''}`
+  );
+
+}
+
+
+/* =========================
+   SELECT CHANGE
+========================= */
+
+$('kc').onchange=
+  ()=>{
+    devicesFor(
+      'kc',
+      'kd'
+    );
+  };
+
+
+$('xc').onchange=
+  ()=>{
+    devicesFor(
+      'xc',
+      'xd'
+    );
+  };
+
+
+$('qc').onchange=
+  ()=>{
+    devicesFor(
+      'qc',
+      'qdqr'
+    );
+  };
+
+
+/* =========================
+   LOGIN
+========================= */
+
+$('loginBtn').onclick=
+async()=>{
+
+  const email=
+    $('email').value.trim();
+
+  const password=
+    $('password').value;
+
+
+  if(!email||!password){
+
+    $('loginMsg').textContent=
+      'ইমেইল ও পাসওয়ার্ড দিন।';
+
+    showMessage(
+      'ইমেইল ও পাসওয়ার্ড দিন।',
+      'warn'
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    $('loginMsg').textContent=
+      'লগইন সফল হয়েছে।';
+
+  }catch(e){
+
+    const m=
+      firebaseBanglaError(
+        e,
+        'লগইন করা যায়নি। ইমেইল ও পাসওয়ার্ড যাচাই করুন।'
+      );
+
+    $('loginMsg').textContent=m;
+
+    showMessage(
+      m,
+      'error'
+    );
+
+  }
+
+};
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+$('logout').onclick=
+async()=>{
+
+  try{
+
+    await signOut(auth);
+
+    showMessage(
+      'সফলভাবে লগআউট হয়েছে।',
       'success'
     );
+
   }catch(e){
-    showMessage(firebaseBanglaError(e,'Firebase-এ লক/আনলক কমান্ড জমা দেওয়া যায়নি।'),'error');
+
+    showMessage(
+      firebaseBanglaError(
+        e,
+        'লগআউট করা যায়নি।'
+      ),
+      'error'
+    );
+
   }
+
+};
+
+
+/* =========================
+   AUTH STATE
+========================= */
+
+onAuthStateChanged(
+  auth,
+  async u=>{
+
+    if(
+      u&&
+      u.uid===UID
+    ){
+
+      $('login')
+        .classList
+        .add('hidden');
+
+      $('app')
+        .classList
+        .remove('hidden');
+
+      $('logout')
+        .classList
+        .remove('hidden');
+
+
+      const ok=
+        await safeRun(
+          all
+        );
+
+
+      if(ok!==null){
+
+        await renderQRHistory();
+
+      }
+
+    }
+
+    else if(u){
+
+      await signOut(auth);
+
+      showMessage(
+        'এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।',
+        'error'
+      );
+
+    }
+
+    else{
+
+      $('login')
+        .classList
+        .remove('hidden');
+
+      $('app')
+        .classList
+        .add('hidden');
+
+      $('logout')
+        .classList
+        .add('hidden');
+
+    }
+
+  }
+);
+
+
+/* =========================
+   TABS
+========================= */
+
+document
+  .querySelectorAll('.tabs button')
+  .forEach(
+    b=>
+
+      b.onclick=()=>{
+
+        document
+          .querySelectorAll(
+            '.tabs button'
+          )
+          .forEach(
+            x=>
+              x.classList
+               .remove('active')
+          );
+
+
+        b.classList.add('active');
+
+
+        document
+          .querySelectorAll('.tab')
+          .forEach(
+            x=>
+              x.classList
+               .remove('active')
+          );
+
+
+        $(b.dataset.t)
+          .classList
+          .add('active');
+
+      }
+  );
+
+
+/* =========================
+   ADD CUSTOMER
+========================= */
+
+$('addC').onclick=
+async()=>{
+
+  const name=
+    $('cn').value.trim();
+
+  const phone=
+    $('cp').value.trim();
+
+
+  if(!name)
+    return showMessage(
+      'দয়া করে কাস্টমারের নাম লিখুন।',
+      'warn'
+    );
+
+
+  if(!phone)
+    return showMessage(
+      'দয়া করে কাস্টমারের ফোন নম্বর লিখুন।',
+      'warn'
+    );
+
+
+  const result=
+    await safeRun(
+      async()=>{
+
+        await addDoc(
+          collection(
+            db,
+            'customers'
+          ),
+          {
+            name,
+            phone,
+            address:
+              $('ca').value.trim(),
+            nidRef:
+              $('nid').value.trim(),
+            createdAt:
+              serverTimestamp()
+          }
+        );
+
+
+        await log(
+          'কাস্টমার যোগ',
+          name
+        );
+
+
+        await all();
+
+      },
+      'কাস্টমার সফলভাবে যোগ হয়েছে।'
+    );
+
+
+  if(result===null)
+    return;
+
+
+  $('cn').value='';
+  $('cp').value='';
+  $('ca').value='';
+  $('nid').value='';
+
+};
+
+
+/* =========================
+   ADD DEVICE
+========================= */
+
+$('addD').onclick=
+async()=>{
+
+  const customerId=
+    $('dc').value;
+
+  const brand=
+    $('db').value;
+
+  const model=
+    $('dm').value.trim();
+
+  const imei1=
+    $('di').value.trim();
+
+  const imei2=
+    $('di2').value.trim();
+
+  const serialNumber=
+    $('ds').value.trim();
+
+  const provider=
+    $('dp').value;
+
+
+  if(!customerId)
+    return showMessage(
+      'দয়া করে কাস্টমার নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(!model)
+    return showMessage(
+      'দয়া করে ডিভাইসের মডেল লিখুন।',
+      'warn'
+    );
+
+
+  if(!imei1)
+    return showMessage(
+      'দয়া করে IMEI 1 নম্বর লিখুন।',
+      'warn'
+    );
+
+
+  if(!/^\d{10,20}$/.test(imei1))
+    return showMessage(
+      'IMEI 1 সঠিক নয়। ১০–২০ সংখ্যার IMEI দিন।',
+      'warn'
+    );
+
+
+  if(
+    imei2&&
+    !/^\d{10,20}$/.test(imei2)
+  )
+    return showMessage(
+      'IMEI 2 সঠিক নয়। ১০–২০ সংখ্যার IMEI দিন।',
+      'warn'
+    );
+
+
+  const x={
+
+    customerId,
+
+    brand,
+
+    model,
+
+    imei1,
+
+    imei2,
+
+    serialNumber,
+
+    provider,
+
+    lockState:'ACTIVE',
+
+    managementState:'REGISTERED',
+
+    createdAt:
+      serverTimestamp()
+
+  };
+
+
+  const result=
+    await safeRun(
+      async()=>{
+
+        await addDoc(
+          collection(
+            db,
+            'devices'
+          ),
+          x
+        );
+
+
+        await log(
+          'ডিভাইস যোগ',
+          imei1
+        );
+
+
+        await all();
+
+      },
+      'ডিভাইস সফলভাবে যোগ হয়েছে।'
+    );
+
+
+  if(result===null)
+    return;
+
+
+  $('dm').value='';
+  $('di').value='';
+  $('di2').value='';
+  $('ds').value='';
+
+};
+
+
+/* =========================
+   ADD CONTRACT
+========================= */
+
+$('addK').onclick=
+async()=>{
+
+  const total=
+    +$('kt').value||0;
+
+  const down=
+    +$('kn').value||0;
+
+
+  if(!$('kc').value)
+    return showMessage(
+      'দয়া করে কাস্টমার নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(!$('kd').value)
+    return showMessage(
+      'দয়া করে ডিভাইস নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(total<=0)
+    return showMessage(
+      'মোট মূল্য সঠিকভাবে লিখুন।',
+      'warn'
+    );
+
+
+  if(down>total)
+    return showMessage(
+      'অগ্রিম মোট মূল্যের চেয়ে বেশি হতে পারবে না।',
+      'warn'
+    );
+
+
+  const x={
+
+    customerId:
+      $('kc').value,
+
+    deviceId:
+      $('kd').value,
+
+    totalPrice:
+      total,
+
+    downPayment:
+      down,
+
+    paidAmount:
+      down,
+
+    remainingAmount:
+      Math.max(
+        0,
+        total-down
+      ),
+
+    financedAmount:
+      Math.max(
+        0,
+        total-down
+      ),
+
+    installmentAmount:
+      +$('ki').value||0,
+
+    installmentCount:
+      +$('kcnt').value||0,
+
+    nextDueDate:
+      $('kdue').value,
+
+    gracePeriodDays:
+      +$('kgr').value||0,
+
+    status:'ACTIVE',
+
+    autoLockEnabled:true,
+
+    createdAt:
+      serverTimestamp()
+
+  };
+
+
+  const result=
+    await safeRun(
+      async()=>{
+
+        await addDoc(
+          collection(
+            db,
+            'contracts'
+          ),
+          x
+        );
+
+
+        await log(
+          'কিস্তির চুক্তি তৈরি',
+          x.customerId
+        );
+
+
+        await all();
+
+      },
+      'কিস্তির চুক্তি সফলভাবে তৈরি হয়েছে।'
+    );
+
+
+  if(result===null)
+    return;
+
+};
+
+
+/* =========================
+   ADD PAYMENT
+========================= */
+
+$('addP').onclick=
+async()=>{
+
+  const id=
+    $('pc').value;
+
+  const amt=
+    +$('pa').value||0;
+
+
+  if(!id)
+    return showMessage(
+      'দয়া করে কিস্তির চুক্তি নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(amt<=0)
+    return showMessage(
+      'পেমেন্টের পরিমাণ সঠিকভাবে লিখুন।',
+      'warn'
+    );
+
+
+  const c=
+    K.find(
+      x=>x.id===id
+    );
+
+
+  if(!c)
+    return showMessage(
+      'চুক্তিটি পাওয়া যায়নি। আবার নির্বাচন করুন।',
+      'error'
+    );
+
+
+  const paid=
+    +c.paidAmount+
+    amt;
+
+
+  const rem=
+    Math.max(
+      0,
+      +c.totalPrice-paid
+    );
+
+
+  if(
+    amt>
+    Number(c.remainingAmount||0)
+  )
+    return showMessage(
+      'পেমেন্টের পরিমাণ বাকি টাকার চেয়ে বেশি হতে পারবে না।',
+      'warn'
+    );
+
+
+  const result=
+    await safeRun(
+      async()=>{
+
+        await addDoc(
+          collection(
+            db,
+            'payments'
+          ),
+          {
+
+            contractId:id,
+
+            customerId:
+              c.customerId,
+
+            deviceId:
+              c.deviceId,
+
+            amount:amt,
+
+            method:
+              $('pm').value,
+
+            transactionId:
+              $('pt').value.trim(),
+
+            status:'VERIFIED',
+
+            paymentDate:
+              serverTimestamp(),
+
+            createdAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        await updateDoc(
+          doc(
+            db,
+            'contracts',
+            id
+          ),
+          {
+
+            paidAmount:
+              paid,
+
+            remainingAmount:
+              rem,
+
+            status:
+              rem===0
+              ?'COMPLETED'
+              :'ACTIVE',
+
+            updatedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        await log(
+          'পেমেন্ট',
+          `${id} ${amt}`
+        );
+
+
+        await all();
+
+      },
+      'পেমেন্ট সফলভাবে রেকর্ড হয়েছে।'
+    );
+
+
+  if(result===null)
+    return;
+
+
+  $('pa').value='';
+  $('pt').value='';
+
+};
+
+
+/* =========================
+   LOCK / UNLOCK
+========================= */
+
+async function action(a){
+
+  const id=
+    $('xd').value;
+
+  const d=
+    dev(id);
+
+
+  if(!id)
+    return showMessage(
+      'দয়া করে কাস্টমার ও ডিভাইস নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(!d.id)
+    return showMessage(
+      'নির্বাচিত ডিভাইসটি পাওয়া যায়নি।',
+      'error'
+    );
+
+
+  const k=
+    K
+      .filter(
+        x=>x.deviceId===id
+      )
+      .sort(
+        (a,b)=>
+          Number(
+            b.createdAt?.seconds||0
+          )-
+          Number(
+            a.createdAt?.seconds||0
+          )
+      )[0];
+
+
+  if(
+    a==='DEREGISTER'&&
+    (!k||
+     Number(k.remainingAmount)>0)
+  ){
+
+    return showMessage(
+      'সম্পূর্ণ পেমেন্ট না হলে ডিরেজিস্টার করা যাবে না।',
+      'warn'
+    );
+
+  }
+
+
+  const payload={
+
+    action:a,
+
+    deviceId:id,
+
+    customerId:
+      d.customerId,
+
+    brand:
+      d.brand||'',
+
+    model:
+      d.model||'',
+
+    provider:
+      d.provider||'',
+
+    imei1:
+      d.imei1||'',
+
+    imei2:
+      d.imei2||'',
+
+    serialNumber:
+      d.serialNumber||'',
+
+    contractId:
+      k?.id||null,
+
+    createdBy:
+      auth.currentUser?.uid||null
+
+  };
+
+
+  try{
+
+    await addDoc(
+      collection(
+        db,
+        'lockCommands'
+      ),
+      {
+
+        ...payload,
+
+        status:'PENDING',
+
+        createdAt:
+          serverTimestamp(),
+
+        updatedAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    await log(
+      'লক/আনলক কমান্ড',
+
+      `${
+        a==='LOCK'
+        ?'লক'
+        :a==='UNLOCK'
+        ?'আনলক'
+        :'ডিরেজিস্টার'
+      } কমান্ড তৈরি:
+      ${d.brand||''}
+      ${d.model||''}`
+    );
+
+
+    $('msg').textContent=
+      `${
+        a==='LOCK'
+        ?'লক'
+        :a==='UNLOCK'
+        ?'আনলক'
+        :'ডিরেজিস্টার'
+      }:
+      Firebase-এ কমান্ড জমা হয়েছে — অপেক্ষমাণ`;
+
+
+    await all();
+
+
+    showMessage(
+
+      a==='LOCK'
+
+      ?'লক কমান্ড Firebase-এ সফলভাবে জমা হয়েছে। ফোনের Device Management App এটি প্রক্রিয়া করবে।'
+
+      :a==='UNLOCK'
+
+      ?'আনলক কমান্ড Firebase-এ সফলভাবে জমা হয়েছে। ফোনের Device Management App এটি প্রক্রিয়া করবে।'
+
+      :'ডিরেজিস্টার কমান্ড Firebase-এ সফলভাবে জমা হয়েছে।',
+
+      'success'
+
+    );
+
+
+  }catch(e){
+
+    showMessage(
+      firebaseBanglaError(
+        e,
+        'Firebase-এ লক/আনলক কমান্ড জমা দেওয়া যায়নি।'
+      ),
+      'error'
+    );
+
+  }
+
 }
 
-$('lock').onclick=()=>action('LOCK');
-$('unlock').onclick=()=>action('UNLOCK');
-$('release').onclick=()=>action('DEREGISTER');
 
-const QR_LIB='https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+$('lock').onclick=
+  ()=>action('LOCK');
+
+
+$('unlock').onclick=
+  ()=>action('UNLOCK');
+
+
+$('release').onclick=
+  ()=>action('DEREGISTER');
+
+
+/* =========================
+   QR LIBRARY
+========================= */
+
+const QR_LIB=
+  'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+
 
 function loadQRLib(){
-  return new Promise((resolve,reject)=>{
-    if(window.QRCode)return resolve();
-    const sc=document.createElement('script');
-    sc.src=QR_LIB;
-    sc.onload=resolve;
-    sc.onerror=()=>reject(new Error('qr_library_failed'));
-    document.head.appendChild(sc);
-  });
+
+  return new Promise(
+    (resolve,reject)=>{
+
+      if(window.QRCode)
+        return resolve();
+
+
+      const sc=
+        document.createElement(
+          'script'
+        );
+
+
+      sc.src=QR_LIB;
+
+
+      sc.onload=resolve;
+
+
+      sc.onerror=
+        ()=>reject(
+          new Error(
+            'qr_library_failed'
+          )
+        );
+
+
+      document.head.appendChild(sc);
+
+    }
+  );
+
 }
+
+
+/* =========================
+   QR HISTORY
+========================= */
 
 async function renderQRHistory(){
+
   try{
-    const rows=await load('enrollmentTokens');
-    $('qrRows').innerHTML=rows.map(x=>`<tr>
-    <td>${customerNameById(x.customerId)}</td>
-    <td>${dev(x.deviceId).model||x.deviceId||''}</td>
-    <td>${(x.token||'').slice(0,12)}…</td>
-    <td>${statusBangla(x.status)}</td>
-    <td>${x.createdAt?.toDate?.().toLocaleString('bn-BD')||''}</td>
-    </tr>`).join('');
+
+    const rows=
+      await load(
+        'enrollmentTokens'
+      );
+
+
+    $('qrRows').innerHTML=
+      rows.map(
+        x=>
+          `<tr>
+
+            <td>
+              ${customerNameById(
+                x.customerId
+              )}
+            </td>
+
+            <td>
+              ${
+                dev(x.deviceId).model||
+                x.deviceId||
+                ''
+              }
+            </td>
+
+            <td>
+              ${(x.token||'').slice(0,12)}…
+            </td>
+
+            <td>
+              ${statusBangla(x.status)}
+            </td>
+
+            <td>
+              ${
+                x.createdAt?.toDate?.()
+                ?.toLocaleString('bn-BD')
+                ||''
+              }
+            </td>
+
+          </tr>`
+      ).join('');
+
+
   }catch(e){
-    showMessage(firebaseBanglaError(e,'QR এনরোলমেন্টের ইতিহাস লোড করা যায়নি।'),'error');
+
+    showMessage(
+      firebaseBanglaError(
+        e,
+        'QR এনরোলমেন্টের ইতিহাস লোড করা যায়নি।'
+      ),
+      'error'
+    );
+
   }
+
 }
 
-$('makeQR').onclick=async()=>{
-  const customerId=$('qc').value;
-  const deviceId=$('qdqr').value;
 
-  if(!customerId)return showMessage('দয়া করে কাস্টমার নির্বাচন করুন।','warn');
-  if(!deviceId)return showMessage('দয়া করে ডিভাইস নির্বাচন করুন।','warn');
+/* =========================
+   MAKE QR
+========================= */
+
+$('makeQR').onclick=
+async()=>{
+
+  const customerId=
+    $('qc').value;
+
+  const deviceId=
+    $('qdqr').value;
+
+
+  if(!customerId)
+    return showMessage(
+      'দয়া করে কাস্টমার নির্বাচন করুন।',
+      'warn'
+    );
+
+
+  if(!deviceId)
+    return showMessage(
+      'দয়া করে ডিভাইস নির্বাচন করুন।',
+      'warn'
+    );
+
 
   try{
+
     await loadQRLib();
 
-    const token=crypto.randomUUID().replaceAll('-','');
-    const exp=Date.now()+10*60*1000;
 
-    const selectedCustomer=C.find(x=>x.id===customerId)||{};
-    const selectedDevice=D.find(x=>x.id===deviceId)||{};
-    const contract=K.filter(x=>x.deviceId===deviceId && x.customerId===customerId)
-      .sort((a,b)=>Number(b.createdAt?.seconds||0)-Number(a.createdAt?.seconds||0))[0]||{};
+    const token=
+      crypto
+        .randomUUID()
+        .replaceAll(
+          '-',
+          ''
+        );
 
-    await addDoc(collection(db,'enrollmentTokens'),{
-      token,customerId,deviceId,status:'ACTIVE',expiresAt:exp,
-      customerName:selectedCustomer.name||'',
-      customerPhone:selectedCustomer.phone||'',
-      brand:selectedDevice.brand||'',
-      model:selectedDevice.model||'',
-      imei1:selectedDevice.imei1||'',
-      imei2:selectedDevice.imei2||'',
-      serialNumber:selectedDevice.serialNumber||'',
-      contractId:contract.id||null,
-      contractStatus:contract.status||'',
-      createdAt:serverTimestamp(),createdBy:auth.currentUser.uid
-    });
 
-    const url=location.origin+
-      location.pathname.replace(/\/$/,'')+
-      '/enroll.html?token='+encodeURIComponent(token);
+    const exp=
+      Date.now()+
+      10*60*1000;
+
+
+    const selectedCustomer=
+      C.find(
+        x=>x.id===customerId
+      )||{};
+
+
+    const selectedDevice=
+      D.find(
+        x=>x.id===deviceId
+      )||{};
+
+
+    const contract=
+      K
+        .filter(
+          x=>
+            x.deviceId===deviceId&&
+            x.customerId===customerId
+        )
+        .sort(
+          (a,b)=>
+            Number(
+              b.createdAt?.seconds||0
+            )-
+            Number(
+              a.createdAt?.seconds||0
+            )
+        )[0]||{};
+
+
+    await addDoc(
+      collection(
+        db,
+        'enrollmentTokens'
+      ),
+      {
+
+        token,
+
+        customerId,
+
+        deviceId,
+
+        status:'ACTIVE',
+
+        expiresAt:exp,
+
+        customerName:
+          selectedCustomer.name||'',
+
+        customerPhone:
+          selectedCustomer.phone||'',
+
+        brand:
+          selectedDevice.brand||'',
+
+        model:
+          selectedDevice.model||'',
+
+        imei1:
+          selectedDevice.imei1||'',
+
+        imei2:
+          selectedDevice.imei2||'',
+
+        serialNumber:
+          selectedDevice.serialNumber||'',
+
+        contractId:
+          contract.id||null,
+
+        contractStatus:
+          contract.status||'',
+
+        createdAt:
+          serverTimestamp(),
+
+        createdBy:
+          auth.currentUser.uid
+
+      }
+    );
+
+
+    const url=
+      location.origin+
+      location.pathname.replace(
+        /\/$/,
+        ''
+      )+
+      '/enroll.html?token='+
+      encodeURIComponent(token);
+
 
     $('qrBox').innerHTML='';
-    new QRCode($('qrBox'),{
-      text:url,width:260,height:260,
-      correctLevel:QRCode.CorrectLevel.M
-    });
+
+
+    new QRCode(
+      $('qrBox'),
+      {
+
+        text:url,
+
+        width:260,
+
+        height:260,
+
+        correctLevel:
+          QRCode.CorrectLevel.M
+
+      }
+    );
+
 
     $('qrInfo').textContent=
-      'QR-এর মেয়াদ ১০ মিনিট • একবার ব্যবহারযোগ্য • স্ক্যান লিংক: '+url;
+      'QR-এর মেয়াদ ১০ মিনিট • একবার ব্যবহারযোগ্য • স্ক্যান লিংক: '+
+      url;
 
-    await log('QR এনরোলমেন্ট তৈরি',`${customerId} / ${deviceId}`);
+
+    await log(
+      'QR এনরোলমেন্ট তৈরি',
+      `${customerId} / ${deviceId}`
+    );
+
+
     await renderQRHistory();
-    showMessage('QR সফলভাবে তৈরি হয়েছে।','success');
+
+
+    showMessage(
+      'QR সফলভাবে তৈরি হয়েছে।',
+      'success'
+    );
+
 
   }catch(e){
-    showMessage(firebaseBanglaError(e,'QR তৈরি করা যায়নি। আবার চেষ্টা করুন।'),'error');
+
+    showMessage(
+      firebaseBanglaError(
+        e,
+        'QR তৈরি করা যায়নি। আবার চেষ্টা করুন।'
+      ),
+      'error'
+    );
+
   }
+
 };
 
-$('clearQR').onclick=()=>{
+
+/* =========================
+   CLEAR QR
+========================= */
+
+$('clearQR').onclick=
+()=>{
+
   $('qrBox').innerHTML='';
+
   $('qrInfo').textContent='';
-  showMessage('QR প্রদর্শন পরিষ্কার করা হয়েছে।','success');
+
+  showMessage(
+    'QR প্রদর্শন পরিষ্কার করা হয়েছে।',
+    'success'
+  );
+
 };
+
 </script>
+
 </body>
 </html>
