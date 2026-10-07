@@ -177,6 +177,30 @@ h1,h2,h3{margin-top:0}
 
 .wide{width:100%}
 
+.reset-btn{
+  display:block;
+  width:100%;
+  margin-top:10px;
+  border:0;
+  background:transparent;
+  color:var(--blue2);
+  font-weight:700;
+  padding:8px;
+  cursor:pointer
+}
+
+.reset-btn:hover{
+  text-decoration:underline
+}
+
+.error-detail{
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid rgba(167,25,41,.18);
+  font-size:12px;
+  word-break:break-word
+}
+
 .msg{
   padding:10px 12px;
   border-radius:10px;
@@ -399,6 +423,7 @@ th{
     <div id="loginMsg"></div>
 
     <div class="field">
+
       <label>ইমেইল</label>
 
       <input
@@ -407,9 +432,11 @@ th{
         autocomplete="username"
         placeholder="Admin email"
       >
+
     </div>
 
     <div class="field">
+
       <label>পাসওয়ার্ড</label>
 
       <input
@@ -418,6 +445,7 @@ th{
         autocomplete="current-password"
         placeholder="Password"
       >
+
     </div>
 
     <button
@@ -426,6 +454,14 @@ th{
       type="button"
     >
       লগইন
+    </button>
+
+    <button
+      id="resetPasswordBtn"
+      class="reset-btn"
+      type="button"
+    >
+      পাসওয়ার্ড ভুলে গেছেন?
     </button>
 
   </div>
@@ -472,9 +508,7 @@ th{
 <div id="globalMsg"></div>
 
 
-<!-- =====================================================
-     DASHBOARD
-===================================================== -->
+<!-- DASHBOARD -->
 
 <section class="dashboard">
 
@@ -506,9 +540,7 @@ th{
 </section>
 
 
-<!-- =====================================================
-     TABS
-===================================================== -->
+<!-- TABS -->
 
 <nav class="tabs">
 
@@ -543,9 +575,7 @@ Audit Log
 </nav>
 
 
-<!-- =====================================================
-     CUSTOMERS
-===================================================== -->
+<!-- CUSTOMERS -->
 
 <section id="customers" class="panel tab-panel">
 
@@ -563,71 +593,40 @@ Audit Log
 
 </div>
 
-
 <div class="grid3">
 
 <div class="field">
-
 <label>নাম</label>
-
-<input
-id="cName"
-placeholder="কাস্টমারের নাম"
->
-
+<input id="cName" placeholder="কাস্টমারের নাম">
 </div>
 
-
 <div class="field">
-
 <label>মোবাইল</label>
-
-<input
-id="cPhone"
-placeholder="01XXXXXXXXX"
->
-
+<input id="cPhone" placeholder="01XXXXXXXXX">
 </div>
-
 
 <div class="field">
-
 <label>ঠিকানা</label>
-
-<input
-id="cAddress"
-placeholder="ঠিকানা"
->
-
+<input id="cAddress" placeholder="ঠিকানা">
 </div>
 
 </div>
 
-
-<button
-id="addCustomerBtn"
-class="btn primary"
-type="button"
->
+<button id="addCustomerBtn" class="btn primary" type="button">
 কাস্টমার যোগ করুন
 </button>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>নাম</th>
 <th>মোবাইল</th>
 <th>ঠিকানা</th>
 <th>অ্যাকশন</th>
-
 </tr>
-
 </thead>
 
 <tbody id="cr"></tbody>
@@ -639,14 +638,9 @@ type="button"
 </section>
 
 
-<!-- =====================================================
-     DEVICES
-===================================================== -->
+<!-- DEVICES -->
 
-<section
-id="devices"
-class="panel tab-panel hidden"
->
+<section id="devices" class="panel tab-panel hidden">
 
 <h2>ডিভাইস</h2>
 
@@ -654,68 +648,40 @@ class="panel tab-panel hidden"
 গ্রাহকের Android ডিভাইস সংযুক্ত করুন।
 </p>
 
-
 <div class="grid3">
 
 <div class="field">
-
 <label>কাস্টমার</label>
-
 <select id="dCustomer"></select>
-
 </div>
 
-
 <div class="field">
-
 <label>ডিভাইস নাম</label>
-
-<input
-id="dName"
-placeholder="Samsung A15"
->
-
+<input id="dName" placeholder="Samsung A15">
 </div>
-
 
 <div class="field">
-
 <label>Device ID</label>
-
-<input
-id="dDeviceId"
-placeholder="Android Device ID"
->
-
+<input id="dDeviceId" placeholder="Android Device ID">
 </div>
 
 </div>
 
-
-<button
-id="addDeviceBtn"
-class="btn primary"
-type="button"
->
+<button id="addDeviceBtn" class="btn primary" type="button">
 ডিভাইস যোগ করুন
 </button>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>ডিভাইস</th>
 <th>কাস্টমার</th>
 <th>Device ID</th>
 <th>স্ট্যাটাস</th>
-
 </tr>
-
 </thead>
 
 <tbody id="dr"></tbody>
@@ -727,14 +693,9 @@ type="button"
 </section>
 
 
-<!-- =====================================================
-     CONTRACTS
-===================================================== -->
+<!-- CONTRACTS -->
 
-<section
-id="contracts"
-class="panel tab-panel hidden"
->
+<section id="contracts" class="panel tab-panel hidden">
 
 <h2>কিস্তি চুক্তি</h2>
 
@@ -742,111 +703,57 @@ class="panel tab-panel hidden"
 মোট মূল্য, ডাউন পেমেন্ট ও কিস্তির তথ্য।
 </p>
 
-
 <div class="grid3">
 
 <div class="field">
-
 <label>কাস্টমার</label>
-
 <select id="kCustomer"></select>
-
 </div>
 
-
 <div class="field">
-
 <label>ডিভাইস</label>
-
 <select id="kDevice"></select>
-
 </div>
 
-
 <div class="field">
-
 <label>মোট মূল্য</label>
-
-<input
-id="kTotal"
-type="number"
-min="0"
-placeholder="0"
->
-
+<input id="kTotal" type="number" min="0" placeholder="0">
 </div>
 
-
 <div class="field">
-
 <label>ডাউন পেমেন্ট</label>
-
-<input
-id="kDown"
-type="number"
-min="0"
-value="0"
->
-
+<input id="kDown" type="number" min="0" value="0">
 </div>
 
-
 <div class="field">
-
 <label>কিস্তির সংখ্যা</label>
-
-<input
-id="kCount"
-type="number"
-min="1"
-placeholder="12"
->
-
+<input id="kCount" type="number" min="1" placeholder="12">
 </div>
-
 
 <div class="field">
-
 <label>প্রতি কিস্তি</label>
-
-<input
-id="kInstallment"
-type="number"
-min="0"
-placeholder="0"
->
-
+<input id="kInstallment" type="number" min="0" placeholder="0">
 </div>
 
 </div>
 
-
-<button
-id="addContractBtn"
-class="btn primary"
-type="button"
->
+<button id="addContractBtn" class="btn primary" type="button">
 চুক্তি যোগ করুন
 </button>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>কাস্টমার</th>
 <th>ডিভাইস</th>
 <th>মোট</th>
 <th>ডাউন</th>
 <th>কিস্তি</th>
 <th>স্ট্যাটাস</th>
-
 </tr>
-
 </thead>
 
 <tbody id="kr"></tbody>
@@ -858,14 +765,9 @@ type="button"
 </section>
 
 
-<!-- =====================================================
-     PAYMENTS
-===================================================== -->
+<!-- PAYMENTS -->
 
-<section
-id="payments"
-class="panel tab-panel hidden"
->
+<section id="payments" class="panel tab-panel hidden">
 
 <h2>পেমেন্ট</h2>
 
@@ -873,108 +775,64 @@ class="panel tab-panel hidden"
 কিস্তি বা পেমেন্ট রেকর্ড করুন।
 </p>
 
-
 <div class="grid3">
 
 <div class="field">
-
 <label>কাস্টমার</label>
-
 <select id="pCustomer"></select>
-
 </div>
 
-
 <div class="field">
-
 <label>চুক্তি</label>
-
 <select id="pContract"></select>
-
 </div>
-
 
 <div class="field">
-
 <label>পরিমাণ</label>
-
-<input
-id="pAmount"
-type="number"
-min="0"
-placeholder="0"
->
-
+<input id="pAmount" type="number" min="0" placeholder="0">
 </div>
-
 
 <div class="field">
 
 <label>পদ্ধতি</label>
 
 <select id="pMethod">
-
 <option value="Cash">Cash</option>
 <option value="bKash">bKash</option>
 <option value="Nagad">Nagad</option>
 <option value="Bank">Bank</option>
-
 </select>
 
 </div>
 
-
 <div class="field">
-
 <label>রেফারেন্স</label>
-
-<input
-id="pRef"
-placeholder="Transaction ID"
->
-
+<input id="pRef" placeholder="Transaction ID">
 </div>
-
 
 <div class="field">
-
 <label>নোট</label>
-
-<input
-id="pNote"
-placeholder="নোট"
->
-
+<input id="pNote" placeholder="নোট">
 </div>
 
 </div>
 
-
-<button
-id="addPaymentBtn"
-class="btn primary"
-type="button"
->
+<button id="addPaymentBtn" class="btn primary" type="button">
 পেমেন্ট যোগ করুন
 </button>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>তারিখ</th>
 <th>কাস্টমার</th>
 <th>পরিমাণ</th>
 <th>পদ্ধতি</th>
 <th>রেফারেন্স</th>
-
 </tr>
-
 </thead>
 
 <tbody id="pr"></tbody>
@@ -986,14 +844,9 @@ type="button"
 </section>
 
 
-<!-- =====================================================
-     DEVICE CONTROL
-===================================================== -->
+<!-- DEVICE CONTROL -->
 
-<section
-id="control"
-class="panel tab-panel hidden"
->
+<section id="control" class="panel tab-panel hidden">
 
 <h2>ডিভাইস কন্ট্রোল</h2>
 
@@ -1002,60 +855,43 @@ class="panel tab-panel hidden"
 Android Device Owner/DPC অ্যাপকে command execute করতে হবে।
 </p>
 
-
 <div class="grid2">
 
 <div class="field">
-
 <label>ডিভাইস</label>
-
 <select id="xDevice"></select>
-
 </div>
-
 
 <div class="field">
 
 <label>কমান্ড</label>
 
 <select id="xCommand">
-
 <option value="LOCK">LOCK</option>
 <option value="UNLOCK">UNLOCK</option>
 <option value="REBOOT">REBOOT</option>
 <option value="SYNC">SYNC</option>
-
 </select>
 
 </div>
 
 </div>
 
-
-<button
-id="sendCommandBtn"
-class="btn primary"
-type="button"
->
+<button id="sendCommandBtn" class="btn primary" type="button">
 কমান্ড পাঠান
 </button>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>ডিভাইস</th>
 <th>কমান্ড</th>
 <th>স্ট্যাটাস</th>
 <th>সময়</th>
-
 </tr>
-
 </thead>
 
 <tbody id="xr"></tbody>
@@ -1067,14 +903,9 @@ type="button"
 </section>
 
 
-<!-- =====================================================
-     QR ENROLLMENT
-===================================================== -->
+<!-- QR -->
 
-<section
-id="qr"
-class="panel tab-panel hidden"
->
+<section id="qr" class="panel tab-panel hidden">
 
 <h2>QR Enrollment</h2>
 
@@ -1082,62 +913,37 @@ class="panel tab-panel hidden"
 Enrollment token তৈরি করুন।
 </p>
 
-
 <div class="grid2">
 
 <div class="field">
-
 <label>কাস্টমার</label>
-
 <select id="eCustomer"></select>
-
 </div>
-
 
 <div class="field">
-
 <label>ডিভাইস নাম</label>
-
-<input
-id="eDeviceName"
-placeholder="Samsung A15"
->
-
+<input id="eDeviceName" placeholder="Samsung A15">
 </div>
 
 </div>
 
-
-<button
-id="createEnrollmentBtn"
-class="btn primary"
-type="button"
->
+<button id="createEnrollmentBtn" class="btn primary" type="button">
 Enrollment Token তৈরি করুন
 </button>
 
-
-<div
-id="qrResult"
-class="msg hidden"
-></div>
-
+<div id="qrResult" class="msg hidden"></div>
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>কাস্টমার</th>
 <th>ডিভাইস</th>
 <th>Token</th>
 <th>স্ট্যাটাস</th>
-
 </tr>
-
 </thead>
 
 <tbody id="er"></tbody>
@@ -1149,45 +955,31 @@ class="msg hidden"
 </section>
 
 
-<!-- =====================================================
-     AUDIT LOG
-===================================================== -->
+<!-- AUDIT -->
 
-<section
-id="audit"
-class="panel tab-panel hidden"
->
+<section id="audit" class="panel tab-panel hidden">
 
 <div class="section-head">
 
 <h2>Audit Log</h2>
 
-<button
-id="refreshBtn"
-class="btn secondary"
-type="button"
->
+<button id="refreshBtn" class="btn secondary" type="button">
 Refresh
 </button>
 
 </div>
-
 
 <div class="table-wrap">
 
 <table>
 
 <thead>
-
 <tr>
-
 <th>সময়</th>
 <th>অ্যাকশন</th>
 <th>বিবরণ</th>
 <th>Admin UID</th>
-
 </tr>
-
 </thead>
 
 <tbody id="ar"></tbody>
@@ -1208,10 +1000,6 @@ Refresh
 </div>
 
 
-<!-- =====================================================
-     FIREBASE + APP JAVASCRIPT
-===================================================== -->
-
 <script type="module">
 
 /* =====================================================
@@ -1220,20 +1008,17 @@ Refresh
 
 import {
   initializeApp
-}
-from
+} from
 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
-
 
 import {
   getAuth,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   onAuthStateChanged,
   signOut
-}
-from
+} from
 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-
 
 import {
   getFirestore,
@@ -1243,8 +1028,7 @@ import {
   doc,
   deleteDoc,
   serverTimestamp
-}
-from
+} from
 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
 
@@ -1376,10 +1160,16 @@ function firebaseBanglaError(
   const code=
     e?.code||'';
 
+  const rawMessage=
+    e?.message||'';
+
 
   const m={
 
     'auth/invalid-credential':
+    'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
+
+    'auth/invalid-login-credentials':
     'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
 
     'auth/wrong-password':
@@ -1400,6 +1190,9 @@ function firebaseBanglaError(
     'auth/operation-not-allowed':
     'Firebase Authentication-এ Email/Password চালু করা নেই।',
 
+    'auth/admin-restricted-operation':
+    'এই Firebase Authentication অপারেশনটি অ্যাডমিন দ্বারা সীমাবদ্ধ।',
+
     'auth/network-request-failed':
     'ইন্টারনেট সংযোগে সমস্যা হয়েছে।',
 
@@ -1412,11 +1205,17 @@ function firebaseBanglaError(
     'auth/app-not-authorized':
     'এই ডোমেইন Firebase-এ অনুমোদিত নয়।',
 
+    'auth/configuration-not-found':
+    'Firebase Authentication configuration পাওয়া যায়নি।',
+
     'auth/internal-error':
     'Firebase-এ একটি অভ্যন্তরীণ সমস্যা হয়েছে।',
 
     'auth/invalid-user-token':
-    'লগইন সেশন আর বৈধ নেই। আবার লগইন করুন।'
+    'লগইন সেশন আর বৈধ নেই। আবার লগইন করুন।',
+
+    'auth/requires-recent-login':
+    'নিরাপত্তার কারণে আবার লগইন করতে হবে।'
 
   };
 
@@ -1443,7 +1242,21 @@ function firebaseBanglaError(
   }
 
 
-  return defaultMsg;
+  /*
+    অজানা error হলে এবার code এবং message
+    দেখা যাবে। এতে আসল সমস্যাটি বোঝা সহজ হবে।
+  */
+
+  return `
+    ${defaultMsg}
+    <div class="error-detail">
+      <strong>Firebase Error Code:</strong>
+      ${escapeHTML(code||'অজানা')}
+      <br>
+      <strong>Message:</strong>
+      ${escapeHTML(rawMessage||'কোনো message পাওয়া যায়নি।')}
+    </div>
+  `;
 
 }
 
@@ -1485,7 +1298,8 @@ function showMessage(
 
 function loginMessage(
   msg,
-  type='error'
+  type='error',
+  allowHTML=false
 ){
 
   const el=
@@ -1494,9 +1308,15 @@ function loginMessage(
   if(!el)return;
 
 
+  const content=
+    allowHTML
+    ? msg
+    : escapeHTML(msg);
+
+
   el.innerHTML=
   `<div class="msg ${type}">
-    ${escapeHTML(msg)}
+    ${content}
   </div>`;
 
 }
@@ -1534,10 +1354,25 @@ async function safeRun(
     console.error(e);
 
 
-    showMessage(
-      firebaseBanglaError(e),
-      'error'
-    );
+    const error=
+      firebaseBanglaError(e);
+
+
+    /*
+      firebaseBanglaError-এর HTML অংশ দরকার হতে পারে।
+    */
+
+    const el=
+      $('globalMsg');
+
+    if(el){
+
+      el.innerHTML=
+      `<div class="msg error">
+        ${error}
+      </div>`;
+
+    }
 
 
     return null;
@@ -1656,16 +1491,24 @@ async function all(){
     console.error(e);
 
 
-    showMessage(
-
+    const error=
       firebaseBanglaError(
         e,
         'ডেটা লোড করা যায়নি।'
-      ),
+      );
 
-      'error'
 
-    );
+    const el=
+      $('globalMsg');
+
+    if(el){
+
+      el.innerHTML=
+      `<div class="msg error">
+        ${error}
+      </div>`;
+
+    }
 
   }
 
@@ -1856,19 +1699,13 @@ function render(){
   if(!$('mCustomers'))return;
 
 
-  /* DASHBOARD */
+  $('mCustomers').textContent=C.length;
 
-  $('mCustomers').textContent=
-    C.length;
+  $('mDevices').textContent=D.length;
 
-  $('mDevices').textContent=
-    D.length;
+  $('mContracts').textContent=K.length;
 
-  $('mContracts').textContent=
-    K.length;
-
-  $('mPayments').textContent=
-    P.length;
+  $('mPayments').textContent=P.length;
 
   $('mCommands').textContent=
     X.filter(
@@ -1878,10 +1715,6 @@ function render(){
       ).toUpperCase()==='PENDING'
     ).length;
 
-
-  /* ===================================================
-     CUSTOMERS
-  =================================================== */
 
   $('cr').innerHTML=
 
@@ -1924,10 +1757,6 @@ function render(){
     </tr>`;
 
 
-  /* ===================================================
-     DEVICES
-  =================================================== */
-
   $('dr').innerHTML=
 
     D.map(x=>`
@@ -1968,10 +1797,6 @@ function render(){
       </td>
     </tr>`;
 
-
-  /* ===================================================
-     CONTRACTS
-  =================================================== */
 
   $('kr').innerHTML=
 
@@ -2028,10 +1853,6 @@ function render(){
     </tr>`;
 
 
-  /* ===================================================
-     PAYMENTS
-  =================================================== */
-
   $('pr').innerHTML=
 
     P.map(x=>`
@@ -2074,10 +1895,6 @@ function render(){
     </tr>`;
 
 
-  /* ===================================================
-     COMMANDS
-  =================================================== */
-
   $('xr').innerHTML=
 
     X.map(x=>`
@@ -2119,10 +1936,6 @@ function render(){
     </tr>`;
 
 
-  /* ===================================================
-     ENROLLMENTS
-  =================================================== */
-
   $('er').innerHTML=
 
     E.map(x=>`
@@ -2162,10 +1975,6 @@ function render(){
     </tr>`;
 
 
-  /* ===================================================
-     AUDIT
-  =================================================== */
-
   $('ar').innerHTML=
 
     A.map(x=>`
@@ -2201,12 +2010,8 @@ function render(){
     </tr>`;
 
 
-  /* SELECTS */
-
   refreshSelects();
 
-
-  /* DELETE BUTTONS */
 
   document
     .querySelectorAll(
@@ -2234,9 +2039,7 @@ function render(){
 async function deleteCustomer(id){
 
   const customer=
-    C.find(
-      x=>x.id===id
-    );
+    C.find(x=>x.id===id);
 
 
   if(!customer){
@@ -2412,8 +2215,6 @@ async()=>{
     );
 
 
-    /* ADMIN UID CHECK */
-
     if(
       result.user.uid!==UID
     ){
@@ -2467,6 +2268,11 @@ async()=>{
       m=
       'এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।';
 
+      loginMessage(
+        m,
+        'error'
+      );
+
     }else{
 
       m=
@@ -2478,13 +2284,14 @@ async()=>{
 
       );
 
+
+      loginMessage(
+        m,
+        'error',
+        true
+      );
+
     }
-
-
-    loginMessage(
-      m,
-      'error'
-    );
 
 
   }finally{
@@ -2493,6 +2300,93 @@ async()=>{
 
     btn.textContent=
       'লগইন';
+
+  }
+
+};
+
+
+/* =====================================================
+   PASSWORD RESET
+===================================================== */
+
+$('resetPasswordBtn').onclick=
+async()=>{
+
+  const email=
+    $('email')
+      .value
+      .trim();
+
+
+  if(!email){
+
+    loginMessage(
+      'পাসওয়ার্ড রিসেট করতে আগে আপনার ইমেইল লিখুন।',
+      'warn'
+    );
+
+    $('email').focus();
+
+    return;
+
+  }
+
+
+  const btn=
+    $('resetPasswordBtn');
+
+
+  btn.disabled=true;
+
+  btn.textContent=
+    'রিসেট লিংক পাঠানো হচ্ছে...';
+
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      email
+    );
+
+
+    loginMessage(
+      'পাসওয়ার্ড রিসেট করার লিংক আপনার ইমেইলে পাঠানো হয়েছে। Email Inbox এবং Spam/Junk ফোল্ডারও দেখুন।',
+      'ok'
+    );
+
+
+  }catch(e){
+
+    console.error(
+      'Password reset failed:',
+      e?.code,
+      e?.message,
+      e
+    );
+
+
+    const m=
+      firebaseBanglaError(
+        e,
+        'পাসওয়ার্ড রিসেট লিংক পাঠানো যায়নি।'
+      );
+
+
+    loginMessage(
+      m,
+      'error',
+      true
+    );
+
+
+  }finally{
+
+    btn.disabled=false;
+
+    btn.textContent=
+      'পাসওয়ার্ড ভুলে গেছেন?';
 
   }
 
@@ -2533,10 +2427,21 @@ async()=>{
 
     console.error(e);
 
-    showMessage(
-      firebaseBanglaError(e),
-      'error'
-    );
+    const error=
+      firebaseBanglaError(e);
+
+
+    const el=
+      $('globalMsg');
+
+    if(el){
+
+      el.innerHTML=
+      `<div class="msg error">
+        ${error}
+      </div>`;
+
+    }
 
   }
 
@@ -3199,8 +3104,6 @@ onAuthStateChanged(
     );
 
 
-    /* ADMIN USER */
-
     if(
       u &&
       u.uid===UID
@@ -3223,8 +3126,6 @@ onAuthStateChanged(
 
     }
 
-
-    /* WRONG USER */
 
     if(u){
 
@@ -3260,8 +3161,6 @@ onAuthStateChanged(
     }
 
 
-    /* NOT LOGGED IN */
-
     $('loginPage')
       .classList
       .remove('hidden');
@@ -3276,20 +3175,12 @@ onAuthStateChanged(
 );
 
 
-/* =====================================================
-   JAVASCRIPT STARTUP MESSAGE
-===================================================== */
-
 console.log(
   'স্বপ্নচূড়া Installment Manager loaded successfully.'
 );
 
 </script>
 
-
-<!-- =====================================================
-     GLOBAL JAVASCRIPT ERROR DETECTOR
-===================================================== -->
 
 <script>
 
