@@ -1,68 +1,943 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>স্বপ্নচূড়া — ডিভাইস এনরোলমেন্ট</title>
-<style>
-*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#172033;font-family:Arial,"Noto Sans Bengali",sans-serif}.wrap{max-width:620px;margin:auto;padding:18px}.card{background:#fff;border:1px solid #e3e8f0;border-radius:18px;padding:20px;box-shadow:0 8px 28px rgba(20,35,60,.08)}h1{margin:0 0 5px;text-align:center;font-size:24px}.sub{text-align:center;color:#667085;margin:0 0 18px}.status{padding:12px 14px;border-radius:12px;background:#eef4ff;color:#2454a6;margin-bottom:16px}.status.ok{background:#ecfdf3;color:#067647}.status.bad{background:#fff1f2;color:#be123c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{background:#f8fafc;border:1px solid #e6ebf2;border-radius:12px;padding:12px}.label{font-size:12px;color:#667085}.value{font-weight:700;margin-top:4px;word-break:break-word}.notice{margin:16px 0;padding:14px;border-radius:12px;background:#fff8e7;border:1px solid #f3d48a;line-height:1.65;font-size:14px}label{display:flex;gap:10px;line-height:1.55;font-size:14px;margin:16px 0}input{width:20px;height:20px;flex:0 0 auto;margin-top:2px}button{width:100%;min-height:48px;border:0;border-radius:12px;background:#1457d9;color:white;font-size:16px;font-weight:700}button:disabled{opacity:.55}.success{display:none;text-align:center;padding:10px}.success h2{color:#067647}.small{font-size:12px;color:#667085;line-height:1.6;text-align:center}@media(max-width:480px){.grid{grid-template-columns:1fr}}
-</style>
-</head><body><div class="wrap"><div class="card">
-<h1>স্বপ্নচূড়া</h1><p class="sub">কাস্টমার ফোন এনরোলমেন্ট</p>
-<div id="status" class="status">QR তথ্য যাচাই করা হচ্ছে...</div>
-<div id="content" style="display:none">
-<div class="grid">
-<div class="item"><div class="label">কাস্টমারের নাম</div><div class="value" id="customerName">—</div></div>
-<div class="item"><div class="label">ফোন নম্বর</div><div class="value" id="customerPhone">—</div></div>
-<div class="item"><div class="label">ব্র্যান্ড</div><div class="value" id="brand">—</div></div>
-<div class="item"><div class="label">মডেল</div><div class="value" id="model">—</div></div>
-<div class="item"><div class="label">IMEI 1</div><div class="value" id="imei1">—</div></div>
-<div class="item"><div class="label">IMEI 2</div><div class="value" id="imei2">—</div></div>
-<div class="item"><div class="label">চুক্তি আইডি</div><div class="value" id="contractId">—</div></div>
-<div class="item"><div class="label">কিস্তির অবস্থা</div><div class="value" id="contractStatus">—</div></div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>স্বপ্নচূড়া — ডিভাইস এনরোলমেন্ট</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #172033;
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
+    }
+
+    .container {
+      max-width: 620px;
+      margin: auto;
+      padding: 18px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0 0 5px;
+      font-size: 25px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #667085;
+    }
+
+    .status {
+      padding: 13px;
+      border-radius: 12px;
+      background: #eef4ff;
+      color: #2454a6;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    .status.success {
+      background: #ecfdf3;
+      color: #067647;
+    }
+
+    .status.error {
+      background: #fff1f2;
+      color: #be123c;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .info {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #667085;
+      margin-bottom: 5px;
+    }
+
+    .value {
+      font-size: 15px;
+      font-weight: bold;
+      word-break: break-word;
+    }
+
+    .notice {
+      background: #fff8e7;
+      border: 1px solid #f0d58a;
+      border-radius: 12px;
+      padding: 15px;
+      line-height: 1.65;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .consent input {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    button {
+      width: 100%;
+      min-height: 50px;
+      border: 0;
+      border-radius: 12px;
+      background: #1457d9;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .success-box h2 {
+      color: #067647;
+      margin-bottom: 8px;
+    }
+
+    .small {
+      text-align: center;
+      color: #667085;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-top: 15px;
+    }
+
+    @media(max-width: 500px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <div class="header">
+      <h1>স্বপ্নচূড়া</h1>
+      <p>ডিভাইস এনরোলমেন্ট</p>
+    </div>
+
+    <div id="status" class="status">
+      তথ্য যাচাই করা হচ্ছে...
+    </div>
+
+    <div id="mainContent" style="display:none;">
+
+      <div class="info-grid">
+
+        <div class="info">
+          <div class="label">কাস্টমারের নাম</div>
+          <div class="value" id="customerName">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">ফোন নম্বর</div>
+          <div class="value" id="customerPhone">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">ব্র্যান্ড</div>
+          <div class="value" id="brand">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">মডেল</div>
+          <div class="value" id="model">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">IMEI 1</div>
+          <div class="value" id="imei1">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">IMEI 2</div>
+          <div class="value" id="imei2">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">চুক্তি আইডি</div>
+          <div class="value" id="contractId">—</div>
+        </div>
+
+        <div class="info">
+          <div class="label">কিস্তির অবস্থা</div>
+          <div class="value" id="contractStatus">—</div>
+        </div>
+
+      </div>
+
+      <div class="notice">
+
+        <strong>গুরুত্বপূর্ণ তথ্য</strong><br><br>
+
+        এই এনরোলমেন্টের মাধ্যমে আপনার ডিভাইসটি
+        কিস্তির চুক্তির সাথে নিবন্ধিত হবে।
+
+        <br><br>
+
+        এই ওয়েব পেজ আপনার Photos, WhatsApp, SMS,
+        Password, Banking App অথবা ব্যক্তিগত ফাইলের
+        গোপন অ্যাক্সেস গ্রহণ করে না।
+
+        <br><br>
+
+        ভবিষ্যতে ডিভাইস Lock/Unlock করার জন্য
+        অনুমোদিত Android Device Management / DPC
+        অথবা OEM financing ব্যবস্থা প্রয়োজন।
+      </div>
+
+      <label class="consent">
+
+        <input type="checkbox" id="consent">
+
+        <span>
+          আমি উপরের তথ্য পড়েছি এবং কিস্তির চুক্তি অনুযায়ী
+          এই ডিভাইসটি এনরোল করার জন্য সম্মতি দিচ্ছি।
+        </span>
+
+      </label>
+
+      <button id="enrollButton" disabled>
+        আমি সম্মত — ডিভাইস এনরোল করুন
+      </button>
+
+      <div class="small">
+        এই QR লিংক একবার ব্যবহারের জন্য।
+        মেয়াদ শেষ হলে নতুন QR কোড তৈরি করতে হবে।
+      </div>
+
+    </div>
+
+
+    <div id="successBox" class="success-box">
+
+      <h2>✓ এনরোলমেন্ট সফল হয়েছে</h2>
+
+      <p>
+        আপনার ডিভাইসটি সফলভাবে কিস্তির চুক্তির
+        সাথে নিবন্ধিত হয়েছে।
+      </p>
+
+      <p class="small">
+        এখন আপনি এই পেজটি বন্ধ করতে পারেন।
+      </p>
+
+    </div>
+
+  </div>
+
 </div>
-<div class="notice"><b>গুরুত্বপূর্ণ:</b><br>এই ধাপে আপনার সম্মতি নিয়ে নির্দিষ্ট কাস্টমার ও নির্দিষ্ট ডিভাইসের মধ্যে একটি এনরোলমেন্ট রেকর্ড তৈরি হবে। এই পেজ আপনার Photos, WhatsApp, SMS, Password, Banking App বা ব্যক্তিগত ফাইলের অ্যাক্সেস নেয় না। প্রকৃত ডিভাইস লক/আনলকের জন্য অনুমোদিত Android Device Management/DPC বা OEM ব্যবস্থা প্রয়োজন।</div>
-<label><input id="consent" type="checkbox"><span>আমি তথ্যগুলো পড়েছি এবং কিস্তির চুক্তি অনুযায়ী এই নির্দিষ্ট ডিভাইসটি এনরোল করার জন্য সম্মতি দিচ্ছি।</span></label>
-<button id="enrollBtn" disabled>আমি সম্মত — এনরোল করুন</button>
-<p class="small">QR একবার ব্যবহারযোগ্য এবং ১০ মিনিট পর মেয়াদ শেষ হবে।</p>
-</div>
-<div id="success" class="success"><h2>✓ এনরোলমেন্ট সফল</h2><p>এই কাস্টমার ও নির্দিষ্ট ডিভাইসের জন্য এনরোলমেন্ট রেকর্ড তৈরি হয়েছে।</p><p class="small">এখন এই পেজটি বন্ধ করতে পারেন।</p></div>
-</div></div>
+
+
 <script type="module">
-import{initializeApp}from'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
-import{getFirestore,doc,getDoc,runTransaction,collection}from'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
-const cfg={apiKey:'AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg',authDomain:'swapnochura-lock-management.firebaseapp.com',projectId:'swapnochura-lock-management',storageBucket:'swapnochura-lock-management.firebasestorage.app',messagingSenderId:'414941510200',appId:'1:414941510200:web:2fabf0cc954c39a4e844cd',measurementId:'G-13FNHDYZ7M'};
-const app=initializeApp(cfg),db=getFirestore(app),$=id=>document.getElementById(id);
-const token=(new URLSearchParams(location.search).get('token')||'').trim();let tokenRef,tokenData;
-function status(msg,type=''){const s=$('status');s.textContent=msg;s.className='status '+type}
-function v(x){return x??'—'}
-async function load(){
- if(!token)return status('এই QR লিংকটি সঠিক নয়।','bad');
- try{
-  tokenRef=doc(db,'enrollmentTokens',token);const snap=await getDoc(tokenRef);
-  if(!snap.exists())return status('এই এনরোলমেন্ট লিংক পাওয়া যায়নি।','bad');
-  tokenData=snap.data();
-  if(tokenData.status!=='ACTIVE')return status('এই QR লিংকটি ইতোমধ্যে ব্যবহার করা হয়েছে বা নিষ্ক্রিয়।','bad');
-  if(Number(tokenData.expiresAt||0)<=Date.now())return status('এই QR লিংকের মেয়াদ শেষ হয়েছে। নতুন QR তৈরি করুন।','bad');
-  $('customerName').textContent=v(tokenData.customerName);$('customerPhone').textContent=v(tokenData.customerPhone);$('brand').textContent=v(tokenData.brand);$('model').textContent=v(tokenData.model);$('imei1').textContent=v(tokenData.imei1||tokenData.deviceId);$('imei2').textContent=v(tokenData.imei2);$('contractId').textContent=v(tokenData.contractId);$('contractStatus').textContent=v(tokenData.contractStatus);
-  $('content').style.display='block';status('তথ্য যাচাই সফল হয়েছে। আপনার সম্মতি প্রয়োজন।','ok');
- }catch(e){console.error(e);status(e?.code?.includes('permission-denied')?'এই QR তথ্য দেখার অনুমতি নেই।':'ইন্টারনেট/Firebase সংযোগে সমস্যা হয়েছে।','bad')}
-}
-$('consent').addEventListener('change',e=>$('enrollBtn').disabled=!e.target.checked);
-$('enrollBtn').addEventListener('click',async()=>{
- if(!tokenRef||!tokenData||!$('consent').checked)return;
- $('enrollBtn').disabled=true;$('enrollBtn').textContent='এনরোল করা হচ্ছে...';
- try{
-  const enrollmentRef=doc(collection(db,'deviceEnrollments'));
-  await runTransaction(db,async tx=>{
-   const latest=await tx.get(tokenRef);
-   if(!latest.exists())throw new Error('TOKEN_NOT_FOUND');
-   const t=latest.data();
-   if(t.status!=='ACTIVE')throw new Error('TOKEN_USED');
-   if(Number(t.expiresAt||0)<=Date.now())throw new Error('TOKEN_EXPIRED');
-   tx.set(enrollmentRef,{tokenId:token,customerId:t.customerId,deviceId:t.deviceId,customerName:t.customerName||'',customerPhone:t.customerPhone||'',brand:t.brand||'',model:t.model||'',imei1:t.imei1||'',imei2:t.imei2||'',serialNumber:t.serialNumber||'',contractId:t.contractId||null,status:'ENROLLED',enrolledAt:new Date(),createdAt:new Date()});
-   tx.update(tokenRef,{status:'USED',usedAt:new Date(),enrollmentId:enrollmentRef.id});
-  });
-  $('content').style.display='none';$('status').style.display='none';$('success').style.display='block';
- }catch(e){console.error(e);$('enrollBtn').disabled=false;$('enrollBtn').textContent='আমি সম্মত — এনরোল করুন';const m={TOKEN_NOT_FOUND:'QR লিংক পাওয়া যায়নি।',TOKEN_USED:'এই QR লিংক ইতোমধ্যে ব্যবহার হয়েছে।',TOKEN_EXPIRED:'এই QR লিংকের মেয়াদ শেষ হয়েছে।'};status(m[e.message]||'এনরোলমেন্ট সম্পন্ন করা যায়নি।','bad')}
-});load();
-</script></body></html>
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+  /* ===============================
+     FIREBASE CONFIG
+  =============================== */
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg",
+
+    authDomain:
+      "swapnochura-lock-management.firebaseapp.com",
+
+    projectId:
+      "swapnochura-lock-management",
+
+    storageBucket:
+      "swapnochura-lock-management.firebasestorage.app",
+
+    messagingSenderId:
+      "414941510200",
+
+    appId:
+      "1:414941510200:web:2fabf0cc954c39a4e844cd",
+
+    measurementId:
+      "G-13FNHDYZ7M"
+
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+
+  const db = getFirestore(app);
+
+
+  /* ===============================
+     ELEMENTS
+  =============================== */
+
+  const $ = id =>
+    document.getElementById(id);
+
+
+  const statusBox =
+    $("status");
+
+  const mainContent =
+    $("mainContent");
+
+  const successBox =
+    $("successBox");
+
+  const consent =
+    $("consent");
+
+  const enrollButton =
+    $("enrollButton");
+
+
+  /* ===============================
+     TOKEN
+  =============================== */
+
+  const params =
+    new URLSearchParams(location.search);
+
+  const token =
+    (params.get("token") || "").trim();
+
+
+  let tokenRef = null;
+
+  let tokenData = null;
+
+
+  /* ===============================
+     STATUS
+  =============================== */
+
+  function showStatus(
+    message,
+    type = ""
+  ) {
+
+    statusBox.textContent =
+      message;
+
+    statusBox.className =
+      "status";
+
+    if (type) {
+
+      statusBox.classList.add(
+        type
+      );
+
+    }
+
+  }
+
+
+  /* ===============================
+     SAFE VALUE
+  =============================== */
+
+  function safeValue(value) {
+
+    if (
+      value === undefined ||
+      value === null ||
+      value === ""
+    ) {
+
+      return "—";
+
+    }
+
+    return String(value);
+
+  }
+
+
+  /* ===============================
+     CONTRACT STATUS
+  =============================== */
+
+  function contractStatus(value) {
+
+    const map = {
+
+      ACTIVE: "সক্রিয়",
+
+      COMPLETED: "সম্পন্ন",
+
+      DEFAULTED: "বকেয়া",
+
+      PAUSED: "স্থগিত",
+
+      CANCELLED: "বাতিল"
+
+    };
+
+    return map[value] ||
+      safeValue(value);
+
+  }
+
+
+  /* ===============================
+     LOAD QR TOKEN
+  =============================== */
+
+  async function loadToken() {
+
+    if (!token) {
+
+      showStatus(
+        "এই QR লিংকটি সঠিক নয়।",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    try {
+
+      tokenRef =
+        doc(
+          db,
+          "enrollmentTokens",
+          token
+        );
+
+
+      const snapshot =
+        await getDoc(tokenRef);
+
+
+      if (!snapshot.exists()) {
+
+        showStatus(
+          "এই এনরোলমেন্ট লিংক পাওয়া যায়নি।",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      tokenData =
+        snapshot.data();
+
+
+      /* TOKEN STATUS */
+
+      if (
+        tokenData.status !==
+        "ACTIVE"
+      ) {
+
+        showStatus(
+          "এই QR লিংকটি ইতোমধ্যে ব্যবহার করা হয়েছে বা নিষ্ক্রিয়।",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      /* TOKEN EXPIRATION */
+
+      const expiresAt =
+        Number(
+          tokenData.expiresAt || 0
+        );
+
+
+      if (
+        !expiresAt ||
+        expiresAt <= Date.now()
+      ) {
+
+        showStatus(
+          "এই QR লিংকের মেয়াদ শেষ হয়েছে। Admin Panel থেকে নতুন QR তৈরি করুন।",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      /* ===============================
+         SHOW INFORMATION
+      =============================== */
+
+      $("customerName").textContent =
+        safeValue(
+          tokenData.customerName
+        );
+
+
+      $("customerPhone").textContent =
+        safeValue(
+          tokenData.customerPhone
+        );
+
+
+      $("brand").textContent =
+        safeValue(
+          tokenData.brand
+        );
+
+
+      $("model").textContent =
+        safeValue(
+          tokenData.model
+        );
+
+
+      $("imei1").textContent =
+        safeValue(
+          tokenData.imei1 ||
+          tokenData.deviceId
+        );
+
+
+      $("imei2").textContent =
+        safeValue(
+          tokenData.imei2
+        );
+
+
+      $("contractId").textContent =
+        safeValue(
+          tokenData.contractId
+        );
+
+
+      $("contractStatus").textContent =
+        contractStatus(
+          tokenData.contractStatus
+        );
+
+
+      mainContent.style.display =
+        "block";
+
+
+      showStatus(
+        "তথ্য যাচাই সফল হয়েছে। আপনার সম্মতি প্রয়োজন।",
+        "success"
+      );
+
+
+    }
+
+    catch (error) {
+
+      console.error(error);
+
+
+      if (
+        error?.code ===
+        "permission-denied"
+      ) {
+
+        showStatus(
+          "এই QR তথ্য দেখার অনুমতি পাওয়া যায়নি।",
+          "error"
+        );
+
+      }
+
+      else {
+
+        showStatus(
+          "ইন্টারনেট বা Firebase সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন।",
+          "error"
+        );
+
+      }
+
+    }
+
+  }
+
+
+  /* ===============================
+     CONSENT
+  =============================== */
+
+  consent.addEventListener(
+    "change",
+    () => {
+
+      enrollButton.disabled =
+        !consent.checked;
+
+    }
+  );
+
+
+  /* ===============================
+     ENROLL
+  =============================== */
+
+  enrollButton.addEventListener(
+    "click",
+    async () => {
+
+      if (
+        !tokenRef ||
+        !tokenData ||
+        !consent.checked
+      ) {
+
+        return;
+
+      }
+
+
+      enrollButton.disabled =
+        true;
+
+      enrollButton.textContent =
+        "এনরোল করা হচ্ছে...";
+
+
+      try {
+
+        /* ===============================
+           RECHECK TOKEN
+        =============================== */
+
+        const latestSnapshot =
+          await getDoc(
+            tokenRef
+          );
+
+
+        if (
+          !latestSnapshot.exists()
+        ) {
+
+          throw new Error(
+            "TOKEN_NOT_FOUND"
+          );
+
+        }
+
+
+        const latest =
+          latestSnapshot.data();
+
+
+        /* STATUS CHECK */
+
+        if (
+          latest.status !==
+          "ACTIVE"
+        ) {
+
+          showStatus(
+            "এই QR লিংকটি ইতোমধ্যে ব্যবহার করা হয়েছে।",
+            "error"
+          );
+
+          enrollButton.textContent =
+            "এনরোল করুন";
+
+          return;
+
+        }
+
+
+        /* EXPIRATION CHECK */
+
+        if (
+          Number(
+            latest.expiresAt || 0
+          ) <= Date.now()
+        ) {
+
+          showStatus(
+            "এই QR লিংকের মেয়াদ শেষ হয়েছে।",
+            "error"
+          );
+
+          enrollButton.textContent =
+            "এনরোল করুন";
+
+          return;
+
+        }
+
+
+        /* ===============================
+           REQUIRED DATA
+        =============================== */
+
+        const customerId =
+          latest.customerId || "";
+
+
+        const deviceId =
+          latest.deviceId || "";
+
+
+        if (
+          !customerId ||
+          !deviceId
+        ) {
+
+          showStatus(
+            "এই QR টোকেনে কাস্টমার বা ডিভাইসের তথ্য নেই। Admin Panel থেকে নতুন QR তৈরি করুন।",
+            "error"
+          );
+
+          enrollButton.disabled =
+            false;
+
+          enrollButton.textContent =
+            "আমি সম্মত — ডিভাইস এনরোল করুন";
+
+          return;
+
+        }
+
+
+        /* ===============================
+           STEP 1
+           CREATE ENROLLMENT RECORD
+        =============================== */
+
+        const enrollmentRef =
+          doc(
+            db,
+            "deviceEnrollments",
+            token
+          );
+
+
+        await setDoc(
+          enrollmentRef,
+          {
+
+            tokenId:
+              token,
+
+            customerId:
+              customerId,
+
+            deviceId:
+              deviceId,
+
+            customerName:
+              latest.customerName ||
+              "",
+
+            customerPhone:
+              latest.customerPhone ||
+              "",
+
+            brand:
+              latest.brand ||
+              "",
+
+            model:
+              latest.model ||
+              "",
+
+            imei1:
+              latest.imei1 ||
+              "",
+
+            imei2:
+              latest.imei2 ||
+              "",
+
+            contractId:
+              latest.contractId ||
+              "",
+
+            contractStatus:
+              latest.contractStatus ||
+              "",
+
+            status:
+              "ENROLLED",
+
+            enrolledAt:
+              serverTimestamp()
+
+          }
+
+        );
+
+
+        /* ===============================
+           STEP 2
+           MARK TOKEN USED
+        =============================== */
+
+        await updateDoc(
+          tokenRef,
+          {
+
+            status:
+              "USED",
+
+            usedAt:
+              serverTimestamp()
+
+          }
+        );
+
+
+        /* ===============================
+           SUCCESS
+        =============================== */
+
+        mainContent.style.display =
+          "none";
+
+
+        statusBox.style.display =
+          "none";
+
+
+        successBox.style.display =
+          "block";
+
+
+      }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        enrollButton.disabled =
+          false;
+
+        enrollButton.textContent =
+          "আমি সম্মত — ডিভাইস এনরোল করুন";
+
+
+        if (
+          error?.code ===
+          "permission-denied"
+        ) {
+
+          showStatus(
+            "এনরোলমেন্ট অনুমোদিত হয়নি। Firebase Rules অথবা QR তথ্য যাচাই করুন।",
+            "error"
+          );
+
+        }
+
+        else if (
+          error?.message ===
+          "TOKEN_NOT_FOUND"
+        ) {
+
+          showStatus(
+            "এই এনরোলমেন্ট লিংক আর পাওয়া যাচ্ছে না।",
+            "error"
+          );
+
+        }
+
+        else {
+
+          showStatus(
+            "এনরোলমেন্ট সম্পন্ন করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।",
+            "error"
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+
+  /* ===============================
+     START
+  =============================== */
+
+  loadToken();
+
+</script>
+
+</body>
+</html>
