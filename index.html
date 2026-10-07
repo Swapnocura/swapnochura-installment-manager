@@ -6,6 +6,9 @@
 
 <title>স্বপ্নচূড়া কিস্তি ডিভাইস ম্যানেজার</title>
 
+<link rel="icon" type="image/png" href="Logo.png">
+<link rel="apple-touch-icon" href="Logo.png">
+
 <style>
 *{box-sizing:border-box}
 
@@ -242,6 +245,17 @@ td{
   background:#e5e7eb;
 }
 
+.delete-btn{
+  background:#dc2626;
+  color:white;
+  padding:7px 10px;
+  font-size:12px;
+}
+
+.delete-btn:hover{
+  background:#b91c1c;
+}
+
 @media(max-width:600px){
 
   header{
@@ -283,6 +297,10 @@ td{
   th,
   td{
     font-size:12px;
+  }
+
+  .delete-btn{
+    padding:6px 8px;
   }
 }
 </style>
@@ -486,6 +504,7 @@ td{
             <th>নাম</th>
             <th>ফোন</th>
             <th>ঠিকানা</th>
+            <th>অ্যাকশন</th>
           </tr>
         </thead>
 
@@ -983,6 +1002,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   serverTimestamp
 } from
 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
@@ -991,7 +1011,7 @@ import {
 const cfg={
 
   apiKey:
-  'AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg',
+  'AIzaSyCzkbjG0mTeEmGZ6xrSBoADSRK7XcczgIPg',
 
   authDomain:
   'swapnochura-lock-management.firebaseapp.com',
@@ -1374,12 +1394,55 @@ function render(){
     C.map(
       x=>`
         <tr>
-          <td>${escapeHTML(x.name)}</td>
-          <td>${escapeHTML(x.phone)}</td>
-          <td>${escapeHTML(x.address)}</td>
+
+          <td>
+            ${escapeHTML(x.name)}
+          </td>
+
+          <td>
+            ${escapeHTML(x.phone)}
+          </td>
+
+          <td>
+            ${escapeHTML(x.address)}
+          </td>
+
+          <td>
+
+            <button
+              type="button"
+              class="danger delete-btn"
+              data-delete-customer="${escapeHTML(x.id)}"
+            >
+              🗑️ ডিলেট
+            </button>
+
+          </td>
+
         </tr>
       `
     ).join('');
+
+
+  /* CUSTOMER DELETE BUTTONS */
+
+  document
+    .querySelectorAll(
+      '[data-delete-customer]'
+    )
+    .forEach(
+      button=>{
+
+        button.onclick=()=>{
+
+          deleteCustomer(
+            button.dataset.deleteCustomer
+          );
+
+        };
+
+      }
+    );
 
 
   /* DEVICES */
@@ -1976,6 +2039,167 @@ async()=>{
   $('cp').value='';
   $('ca').value='';
   $('nid').value='';
+
+};
+
+
+/* =========================================================
+   DELETE CUSTOMER
+========================================================= */
+
+async function deleteCustomer(id){
+
+  const customer=
+    C.find(
+      x=>x.id===id
+    );
+
+
+  if(!customer){
+
+    showMessage(
+      'কাস্টমার পাওয়া যায়নি।',
+      'warn'
+    );
+
+    return;
+
+  }
+
+
+  /*
+    সম্পর্কিত ডিভাইস পরীক্ষা
+  */
+
+  const linkedDevices=
+    D.filter(
+      x=>x.customerId===id
+    );
+
+
+  /*
+    সম্পর্কিত কিস্তির চুক্তি পরীক্ষা
+  */
+
+  const linkedContracts=
+    K.filter(
+      x=>x.customerId===id
+    );
+
+
+  /*
+    সম্পর্কিত পেমেন্ট পরীক্ষা
+  */
+
+  const linkedPayments=
+    P.filter(
+      x=>x.customerId===id
+    );
+
+
+  /*
+    সম্পর্কিত রেকর্ড থাকলে
+    কাস্টমার ডিলেট করা যাবে না
+  */
+
+  if(
+    linkedDevices.length||
+    linkedContracts.length||
+    linkedPayments.length
+  ){
+
+    const parts=[];
+
+
+    if(linkedDevices.length){
+
+      parts.push(
+        `ডিভাইস ${linkedDevices.length}টি`
+      );
+
+    }
+
+
+    if(linkedContracts.length){
+
+      parts.push(
+        `কিস্তির চুক্তি ${linkedContracts.length}টি`
+      );
+
+    }
+
+
+    if(linkedPayments.length){
+
+      parts.push(
+        `পেমেন্ট ${linkedPayments.length}টি`
+      );
+
+    }
+
+
+    showMessage(
+      `এই কাস্টমারের ${parts.join(', ')} যুক্ত আছে। আগে সম্পর্কিত রেকর্ড সরাতে হবে।`,
+      'warn'
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Confirmation
+  */
+
+  const confirmed=
+    confirm(
+      `"${customer.name||'এই কাস্টমার'}" কাস্টমারকে ডিলেট করতে চান?\n\nএই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।`
+    );
+
+
+  if(!confirmed)return;
+
+
+  /*
+    Delete customer
+  */
+
+  const result=
+    await safeRun(
+      async()=>{
+
+        await deleteDoc(
+          doc(
+            db,
+            'customers',
+            id
+          )
+        );
+
+
+        /*
+          Audit Log
+        */
+
+        await log(
+          'কাস্টমার ডিলেট',
+          `${customer.name||''} / ${customer.phone||''}`
+        );
+
+
+        /*
+          সব ডেটা আবার লোড
+        */
+
+        await all();
+
+      },
+      'কাস্টমার সফলভাবে ডিলেট হয়েছে।'
+    );
+
+
+  if(result===null)return;
 
 };
 
