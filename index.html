@@ -1,3228 +1,3835 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>স্বপ্নচূড়া | Installment Manager</title>
-
-<meta name="description"
-content="স্বপ্নচূড়া কিস্তি ও ডিভাইস ম্যানেজমেন্ট অ্যাডমিন প্যানেল">
-
-<style>
-:root{
-  --blue:#073b8f;
-  --blue2:#0a5bc4;
-  --red:#e21d2f;
-  --green:#16834b;
-  --orange:#d97706;
-  --dark:#0b1730;
-  --light:#f5f8fc;
-  --white:#fff;
-  --gray:#64748b;
-  --border:#dbe4f0;
-  --shadow:0 12px 35px rgba(4,25,60,.12)
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--light);
-  color:var(--dark);
-  font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif
-}
-
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-
-.hidden{display:none!important}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 18px;
-  box-shadow:0 4px 15px rgba(0,0,0,.05)
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:800;
-  color:var(--blue)
-}
-
-.header-logo{
-  width:45px;
-  height:45px;
-  object-fit:contain;
-  border-radius:10px
-}
-
-.logout{
-  background:#fff0f2;
-  color:var(--red);
-  border:1px solid #ffc8cf;
-  padding:9px 14px;
-  border-radius:10px
-}
-
-.wrap{
-  max-width:1400px;
-  margin:auto;
-  padding:18px
-}
-
-.login-wrap{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:linear-gradient(135deg,#eef5ff,#fff)
-}
-
-.login-card{
-  width:min(430px,100%);
-  background:#fff;
-  border-radius:22px;
-  padding:28px;
-  box-shadow:var(--shadow)
-}
-
-.login-logo{
-  width:90px;
-  height:90px;
-  object-fit:contain;
-  display:block;
-  margin:0 auto 12px
-}
-
-h1,h2,h3{margin-top:0}
-
-.muted{color:var(--gray)}
-
-.field{margin-bottom:13px}
-
-.field label{
-  display:block;
-  font-weight:700;
-  margin-bottom:6px
-}
-
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  padding:11px 12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  outline:none;
-  background:#fff
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  border-color:var(--blue2);
-  box-shadow:0 0 0 3px rgba(10,91,196,.1)
-}
-
-.btn{
-  border:0;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:700
-}
-
-.btn:disabled{
-  opacity:.65;
-  cursor:not-allowed
-}
-
-.primary{
-  background:var(--blue2);
-  color:#fff
-}
-
-.danger{
-  background:#ffe9ec;
-  color:#b91c2b;
-  border:1px solid #ffc4cb
-}
-
-.success{
-  background:#e8f8ef;
-  color:#08743f;
-  border:1px solid #bce7cd
-}
-
-.warning{
-  background:#fff5df;
-  color:#9a5a00;
-  border:1px solid #f5d48a
-}
-
-.secondary{
-  background:#edf3fb;
-  color:var(--blue);
-  border:1px solid #d6e3f4
-}
-
-.wide{width:100%}
-
-.reset-btn{
-  display:block;
-  width:100%;
-  margin-top:10px;
-  border:0;
-  background:transparent;
-  color:var(--blue2);
-  font-weight:700;
-  padding:8px;
-  cursor:pointer
-}
-
-.reset-btn:hover{
-  text-decoration:underline
-}
-
-.error-detail{
-  margin-top:8px;
-  padding-top:8px;
-  border-top:1px solid rgba(167,25,41,.18);
-  font-size:12px;
-  word-break:break-word
-}
-
-.msg{
-  padding:10px 12px;
-  border-radius:10px;
-  margin:10px 0;
-  font-size:14px
-}
-
-.msg.error{
-  background:#ffe9ec;
-  color:#a71929
-}
-
-.msg.ok{
-  background:#e8f8ef;
-  color:#08743f
-}
-
-.msg.warn{
-  background:#fff5df;
-  color:#8a5600
-}
-
-.msg.info{
-  background:#e9f2ff;
-  color:#0754ad
-}
-
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:12px;
-  margin-bottom:18px
-}
-
-.metric{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:16px;
-  box-shadow:0 5px 18px rgba(0,0,0,.04)
-}
-
-.metric .num{
-  font-size:27px;
-  font-weight:800;
-  color:var(--blue);
-  margin-top:4px
-}
-
-.tabs{
-  display:flex;
-  gap:7px;
-  overflow:auto;
-  padding-bottom:8px;
-  margin-bottom:14px
-}
-
-.tab{
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:#fff;
-  color:#334155;
-  padding:10px 13px;
-  border-radius:10px;
-  font-weight:700
-}
-
-.tab.active{
-  background:var(--blue);
-  color:#fff;
-  border-color:var(--blue)
-}
-
-.panel{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 5px 18px rgba(0,0,0,.04)
-}
-
-.section-head{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap
-}
-
-.grid2{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px
-}
-
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:14px
-}
-
-.table-wrap{
-  overflow:auto;
-  margin-top:14px
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:650px
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid #edf1f6;
-  text-align:left;
-  vertical-align:top
-}
-
-th{
-  background:#f7f9fc;
-  color:#334155;
-  font-size:14px
-}
-
-.badge{
-  display:inline-block;
-  padding:4px 8px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:800
-}
-
-.badge.green{
-  background:#e8f8ef;
-  color:#08743f
-}
-
-.badge.red{
-  background:#ffe9ec;
-  color:#b91c2b
-}
-
-.badge.yellow{
-  background:#fff5df;
-  color:#8a5600
-}
-
-.badge.blue{
-  background:#e9f2ff;
-  color:#0754ad
-}
-
-.footer{
-  text-align:center;
-  color:#718096;
-  padding:25px 0;
-  font-size:13px
-}
-
-@media(max-width:900px){
-  .dashboard{
-    grid-template-columns:repeat(2,1fr)
-  }
-
-  .grid3{
-    grid-template-columns:1fr 1fr
-  }
-}
-
-@media(max-width:620px){
-  .wrap{padding:10px}
-
-  .dashboard,
-  .grid2,
-  .grid3{
-    grid-template-columns:1fr
-  }
-
-  .topbar{
-    padding:8px 10px
-  }
-
-  .brand span{
-    font-size:14px
-  }
-
-  .login-card{
-    padding:22px
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <title>স্বপ্নচূড়া | Installment Manager</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;
+      background:#f5f8fc;
+      color:#0b1730;
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    .container{
+      width:min(1200px,94%);
+      margin:auto;
+    }
+
+    /* LOGIN */
+    #loginPage{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:linear-gradient(135deg,#073b8f,#0a5bc4);
+    }
+
+    .login-card{
+      width:min(430px,100%);
+      background:#fff;
+      border-radius:22px;
+      padding:30px;
+      box-shadow:0 20px 60px rgba(0,0,0,.20);
+    }
+
+    .login-logo{
+      width:90px;
+      height:90px;
+      object-fit:contain;
+      display:block;
+      margin:0 auto 15px;
+      border-radius:18px;
+    }
+
+    .login-title{
+      text-align:center;
+      color:#073b8f;
+      font-size:28px;
+      font-weight:800;
+    }
+
+    .login-subtitle{
+      text-align:center;
+      color:#667085;
+      margin:5px 0 25px;
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    .field label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid #d5dce8;
+      border-radius:11px;
+      padding:12px 13px;
+      outline:none;
+      background:#fff;
+    }
+
+    .field textarea{
+      min-height:80px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:#0a5bc4;
+      box-shadow:0 0 0 3px rgba(10,91,196,.10);
+    }
+
+    .btn{
+      border:0;
+      border-radius:10px;
+      padding:11px 16px;
+      font-weight:700;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      background:#073b8f;
+      color:#fff;
+    }
+
+    .btn-blue{
+      background:#0a5bc4;
+      color:#fff;
+    }
+
+    .btn-green{
+      background:#16803c;
+      color:#fff;
+    }
+
+    .btn-red{
+      background:#e21d2f;
+      color:#fff;
+    }
+
+    .btn-gray{
+      background:#e9eef5;
+      color:#25324a;
+    }
+
+    .btn-warning{
+      background:#f7c948;
+      color:#111;
+    }
+
+    .login-actions{
+      display:flex;
+      gap:10px;
+      flex-direction:column;
+    }
+
+    .reset-btn{
+      border:0;
+      background:none;
+      color:#0a5bc4;
+      font-weight:700;
+      cursor:pointer;
+      padding:8px;
+    }
+
+    .msg{
+      padding:11px 13px;
+      border-radius:10px;
+      margin-top:12px;
+      font-size:14px;
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .msg.ok{
+      background:#e8f7ee;
+      color:#126b32;
+      border:1px solid #bce5ca;
+    }
+
+    .msg.error{
+      background:#fff0f1;
+      color:#a31322;
+      border:1px solid #f2c1c6;
+    }
+
+    .msg.warn{
+      background:#fff8df;
+      color:#735600;
+      border:1px solid #f1dd91;
+    }
+
+    .msg.info{
+      background:#eaf3ff;
+      color:#07519e;
+      border:1px solid #bfd8f7;
+    }
+
+    code{
+      background:#eef2f7;
+      padding:2px 5px;
+      border-radius:4px;
+      word-break:break-all;
+    }
+
+    /* HEADER */
+    .topbar{
+      background:#073b8f;
+      color:#fff;
+      padding:14px 0;
+      box-shadow:0 3px 15px rgba(0,0,0,.12);
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+
+    .topbar-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+    }
+
+    .brand{
+      font-size:22px;
+      font-weight:800;
+    }
+
+    .brand small{
+      display:block;
+      font-size:11px;
+      font-weight:500;
+      opacity:.85;
+    }
+
+    .logout{
+      background:#e21d2f;
+      color:#fff;
+      border:0;
+      border-radius:9px;
+      padding:9px 14px;
+      font-weight:700;
+    }
+
+    /* TABS */
+    .tabs-wrap{
+      background:#fff;
+      border-bottom:1px solid #e1e7ef;
+      overflow-x:auto;
+    }
+
+    .tabs{
+      display:flex;
+      gap:4px;
+      min-width:max-content;
+    }
+
+    .tab{
+      border:0;
+      background:transparent;
+      padding:14px 16px;
+      font-weight:700;
+      color:#56647a;
+      border-bottom:3px solid transparent;
+    }
+
+    .tab.active{
+      color:#073b8f;
+      border-bottom-color:#073b8f;
+    }
+
+    /* MAIN */
+    main{
+      padding:22px 0 50px;
+    }
+
+    .panel{
+      background:#fff;
+      border-radius:15px;
+      padding:20px;
+      margin-bottom:20px;
+      box-shadow:0 8px 25px rgba(4,25,60,.07);
+    }
+
+    .panel-title{
+      font-size:20px;
+      font-weight:800;
+      color:#073b8f;
+      margin-bottom:15px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+
+    .full{
+      grid-column:1/-1;
+    }
+
+    .form-actions{
+      margin-top:5px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    /* TABLE */
+    .table-wrap{
+      width:100%;
+      overflow-x:auto;
+      margin-top:15px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:700px;
+    }
+
+    th,td{
+      padding:11px 10px;
+      border-bottom:1px solid #e8edf3;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      background:#f3f6fa;
+      color:#334155;
+      font-size:14px;
+    }
+
+    td{
+      font-size:14px;
+    }
+
+    tr:hover td{
+      background:#fafcff;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .badge-green{
+      background:#e5f7eb;
+      color:#126b32;
+    }
+
+    .badge-red{
+      background:#ffe7e9;
+      color:#a31322;
+    }
+
+    .badge-yellow{
+      background:#fff3c7;
+      color:#765800;
+    }
+
+    .badge-blue{
+      background:#e7f1ff;
+      color:#07519e;
+    }
+
+    .empty{
+      text-align:center;
+      color:#77849a;
+      padding:25px!important;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:20px;
+    }
+
+    .stat{
+      background:#fff;
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 7px 22px rgba(4,25,60,.07);
+    }
+
+    .stat-label{
+      color:#6b778c;
+      font-size:13px;
+    }
+
+    .stat-value{
+      font-size:26px;
+      font-weight:800;
+      color:#073b8f;
+      margin-top:5px;
+    }
+
+    .qr-box{
+      min-height:100px;
+      border:2px dashed #ccd6e5;
+      border-radius:13px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      margin-top:15px;
+      text-align:center;
+    }
+
+    .qr-box img{
+      max-width:250px;
+      width:100%;
+      height:auto;
+    }
+
+    .code-box{
+      background:#0b1730;
+      color:#fff;
+      padding:14px;
+      border-radius:10px;
+      word-break:break-all;
+      font-family:monospace;
+      margin-top:10px;
+    }
+
+    footer{
+      text-align:center;
+      color:#78859a;
+      font-size:13px;
+      padding:20px;
+    }
+
+    @media(max-width:800px){
+      .grid,
+      .grid-3{
+        grid-template-columns:1fr;
+      }
+
+      .stats{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:500px){
+      .login-card{
+        padding:22px;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .stat-value{
+        font-size:21px;
+      }
+
+      .panel{
+        padding:15px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- =====================================================
-     LOGIN PAGE
-===================================================== -->
+<!-- ================= LOGIN ================= -->
 
-<div id="loginPage" class="login-wrap">
+<section id="loginPage">
 
   <div class="login-card">
 
     <img
       src="Logo.png"
-      alt="স্বপ্নচূড়া"
       class="login-logo"
+      alt="স্বপ্নচূড়া"
       onerror="this.style.display='none'"
     >
 
-    <h1 style="text-align:center;color:var(--blue)">
-      স্বপ্নচূড়া
-    </h1>
-
-    <p style="text-align:center" class="muted">
-      Installment & Device Manager
-    </p>
-
-    <div id="loginMsg"></div>
+    <div class="login-title">স্বপ্নচূড়া</div>
+    <div class="login-subtitle">Installment Manager Admin</div>
 
     <div class="field">
-
-      <label>ইমেইল</label>
-
+      <label for="email">ইমেইল</label>
       <input
         id="email"
         type="email"
+        placeholder="Admin Email"
         autocomplete="username"
-        placeholder="Admin email"
       >
-
     </div>
 
     <div class="field">
-
-      <label>পাসওয়ার্ড</label>
-
+      <label for="password">পাসওয়ার্ড</label>
       <input
         id="password"
         type="password"
-        autocomplete="current-password"
         placeholder="Password"
+        autocomplete="current-password"
       >
+    </div>
+
+    <div class="login-actions">
+
+      <button
+        id="loginBtn"
+        class="btn btn-primary"
+        type="button"
+      >
+        লগইন
+      </button>
+
+      <button
+        id="resetPasswordBtn"
+        class="reset-btn"
+        type="button"
+      >
+        পাসওয়ার্ড ভুলে গেছেন?
+      </button>
 
     </div>
 
-    <button
-      id="loginBtn"
-      class="btn primary wide"
-      type="button"
-    >
-      লগইন
-    </button>
+    <div id="loginMsg"></div>
 
-    <button
-      id="resetPasswordBtn"
-      class="reset-btn"
-      type="button"
-    >
-      পাসওয়ার্ড ভুলে গেছেন?
-    </button>
+    <div id="loginDebug" class="hidden"></div>
 
   </div>
 
-</div>
+</section>
 
 
-<!-- =====================================================
-     MAIN APP
-===================================================== -->
+<!-- ================= APP ================= -->
 
-<div id="app" class="hidden">
+<section id="app" class="hidden">
 
-<header class="topbar">
+  <header class="topbar">
 
-  <div class="brand">
+    <div class="container topbar-inner">
 
-    <img
-      src="Logo.png"
-      alt="স্বপ্নচূড়া"
-      class="header-logo"
-      onerror="this.style.display='none'"
-    >
+      <div class="brand">
+        স্বপ্নচূড়া
+        <small>Installment Manager</small>
+      </div>
 
-    <span>
-      স্বপ্নচূড়া — Installment Manager
-    </span>
+      <button id="logoutBtn" class="logout">
+        লগআউট
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="tabs-wrap">
+
+    <div class="container tabs">
+
+      <button class="tab active" data-tab="customers">
+        কাস্টমার
+      </button>
+
+      <button class="tab" data-tab="devices">
+        ডিভাইস
+      </button>
+
+      <button class="tab" data-tab="contracts">
+        কিস্তি চুক্তি
+      </button>
+
+      <button class="tab" data-tab="payments">
+        পেমেন্ট
+      </button>
+
+      <button class="tab" data-tab="control">
+        Lock / Unlock
+      </button>
+
+      <button class="tab" data-tab="qr">
+        QR Enrollment
+      </button>
+
+      <button class="tab" data-tab="audit">
+        Audit Log
+      </button>
+
+    </div>
 
   </div>
 
-  <button
-    id="logoutBtn"
-    class="logout"
-    type="button"
-  >
-    লগআউট
-  </button>
 
-</header>
+  <main class="container">
+
+    <!-- ================= CUSTOMERS ================= -->
+
+    <section id="tab-customers" class="tab-content">
+
+      <div class="stats">
+
+        <div class="stat">
+          <div class="stat-label">মোট কাস্টমার</div>
+          <div id="customerCount" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">মোট ডিভাইস</div>
+          <div id="deviceCount" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">মোট চুক্তি</div>
+          <div id="contractCount" class="stat-value">0</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-label">মোট পেমেন্ট</div>
+          <div id="paymentCount" class="stat-value">0</div>
+        </div>
+
+      </div>
 
 
-<main class="wrap">
+      <div class="panel">
 
-<div id="globalMsg"></div>
+        <div class="panel-title">
+          নতুন কাস্টমার
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>নাম</label>
+            <input id="cName" placeholder="কাস্টমারের নাম">
+          </div>
+
+          <div class="field">
+            <label>মোবাইল</label>
+            <input id="cPhone" placeholder="০১XXXXXXXXX">
+          </div>
+
+          <div class="field full">
+            <label>ঠিকানা</label>
+            <textarea id="cAddress" placeholder="কাস্টমারের ঠিকানা"></textarea>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="addCustomerBtn"
+            class="btn btn-primary"
+          >
+            কাস্টমার যুক্ত করুন
+          </button>
+
+        </div>
+
+        <div id="cr"></div>
+
+      </div>
 
 
-<!-- DASHBOARD -->
+      <div class="panel">
 
-<section class="dashboard">
+        <div class="panel-title">
+          কাস্টমার তালিকা
+        </div>
 
-  <div class="metric">
-    <div class="muted">কাস্টমার</div>
-    <div id="mCustomers" class="num">0</div>
-  </div>
+        <div class="table-wrap">
 
-  <div class="metric">
-    <div class="muted">ডিভাইস</div>
-    <div id="mDevices" class="num">0</div>
-  </div>
+          <table>
 
-  <div class="metric">
-    <div class="muted">চুক্তি</div>
-    <div id="mContracts" class="num">0</div>
-  </div>
+            <thead>
+              <tr>
+                <th>নাম</th>
+                <th>মোবাইল</th>
+                <th>ঠিকানা</th>
+                <th>তারিখ</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
 
-  <div class="metric">
-    <div class="muted">পেমেন্ট</div>
-    <div id="mPayments" class="num">0</div>
-  </div>
+            <tbody id="customerTable">
+            </tbody>
 
-  <div class="metric">
-    <div class="muted">Pending Command</div>
-    <div id="mCommands" class="num">0</div>
-  </div>
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= DEVICES ================= -->
+
+    <section id="tab-devices" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          নতুন ডিভাইস যুক্ত করুন
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>কাস্টমার</label>
+            <select id="dCustomer">
+              <option value="">কাস্টমার নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ডিভাইসের নাম</label>
+            <input id="dName" placeholder="যেমন: Samsung A15">
+          </div>
+
+          <div class="field full">
+            <label>Device ID / IMEI</label>
+            <input id="dDeviceId" placeholder="IMEI / Device ID">
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="addDeviceBtn"
+            class="btn btn-primary"
+          >
+            ডিভাইস যুক্ত করুন
+          </button>
+
+        </div>
+
+        <div id="dr"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          ডিভাইস তালিকা
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>কাস্টমার</th>
+                <th>ডিভাইস</th>
+                <th>Device ID</th>
+                <th>Status</th>
+                <th>অ্যাকশন</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="deviceTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CONTRACTS ================= -->
+
+    <section id="tab-contracts" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          নতুন কিস্তি চুক্তি
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>কাস্টমার</label>
+            <select id="kCustomer">
+              <option value="">কাস্টমার নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ডিভাইস</label>
+            <select id="kDevice">
+              <option value="">ডিভাইস নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>মোট দাম</label>
+            <input id="kTotal" type="number" min="0" placeholder="0">
+          </div>
+
+          <div class="field">
+            <label>ডাউন পেমেন্ট</label>
+            <input id="kDown" type="number" min="0" placeholder="0">
+          </div>
+
+          <div class="field">
+            <label>কিস্তির সংখ্যা</label>
+            <input id="kCount" type="number" min="1" placeholder="12">
+          </div>
+
+          <div class="field">
+            <label>প্রতি কিস্তি</label>
+            <input id="kInstallment" type="number" min="0" placeholder="0">
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="addContractBtn"
+            class="btn btn-primary"
+          >
+            চুক্তি তৈরি করুন
+          </button>
+
+        </div>
+
+        <div id="kr"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          কিস্তি চুক্তির তালিকা
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>কাস্টমার</th>
+                <th>ডিভাইস</th>
+                <th>মোট</th>
+                <th>ডাউন</th>
+                <th>কিস্তি</th>
+                <th>পরিমাণ</th>
+                <th>Status</th>
+                <th>অ্যাকশন</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="contractTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= PAYMENTS ================= -->
+
+    <section id="tab-payments" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          পেমেন্ট যুক্ত করুন
+        </div>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>কাস্টমার</label>
+            <select id="pCustomer">
+              <option value="">কাস্টমার নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>চুক্তি</label>
+            <select id="pContract">
+              <option value="">চুক্তি নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>পেমেন্টের পরিমাণ</label>
+            <input id="pAmount" type="number" min="0" placeholder="0">
+          </div>
+
+          <div class="field">
+            <label>পেমেন্ট মাধ্যম</label>
+            <select id="pMethod">
+
+              <option value="CASH">
+                Cash
+              </option>
+
+              <option value="BKASH">
+                bKash
+              </option>
+
+              <option value="NAGAD">
+                Nagad
+              </option>
+
+              <option value="BANK">
+                Bank
+              </option>
+
+              <option value="OTHER">
+                Other
+              </option>
+
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Reference</label>
+            <input id="pRef" placeholder="Transaction ID / Reference">
+          </div>
+
+          <div class="field">
+            <label>নোট</label>
+            <input id="pNote" placeholder="অতিরিক্ত তথ্য">
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="addPaymentBtn"
+            class="btn btn-green"
+          >
+            পেমেন্ট সংরক্ষণ করুন
+          </button>
+
+        </div>
+
+        <div id="pr"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          পেমেন্ট ইতিহাস
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>কাস্টমার</th>
+                <th>চুক্তি</th>
+                <th>পরিমাণ</th>
+                <th>মাধ্যম</th>
+                <th>Reference</th>
+                <th>তারিখ</th>
+                <th>অ্যাকশন</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="paymentTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CONTROL ================= -->
+
+    <section id="tab-control" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          ডিভাইস Lock / Unlock Command
+        </div>
+
+        <div class="msg info">
+          এখানে Command Firestore-এ <b>PENDING</b> হিসেবে যাবে।
+          Android Device Owner / DPC Agent সেই Command গ্রহণ করলে
+          বাস্তবে ডিভাইস Lock/Unlock করা যাবে।
+        </div>
+
+        <br>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>ডিভাইস</label>
+            <select id="xDevice">
+              <option value="">ডিভাইস নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Command</label>
+            <select id="xCommand">
+
+              <option value="LOCK">
+                LOCK
+              </option>
+
+              <option value="UNLOCK">
+                UNLOCK
+              </option>
+
+            </select>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="sendCommandBtn"
+            class="btn btn-red"
+          >
+            Command পাঠান
+          </button>
+
+        </div>
+
+        <div id="xr"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          Command History
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Device</th>
+                <th>Command</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>অ্যাকশন</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="commandTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= QR ================= -->
+
+    <section id="tab-qr" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div class="panel-title">
+          Customer Device Enrollment
+        </div>
+
+        <div class="msg info">
+          এই QR enrollment record তৈরি করবে। এটি Android Enterprise
+          provisioning QR-এর সঙ্গে একই বিষয় নয়।
+        </div>
+
+        <br>
+
+        <div class="grid">
+
+          <div class="field">
+            <label>কাস্টমার</label>
+            <select id="eCustomer">
+              <option value="">কাস্টমার নির্বাচন করুন</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>ডিভাইসের নাম</label>
+            <input id="eDeviceName" placeholder="যেমন: Samsung A15">
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <button
+            id="createEnrollmentBtn"
+            class="btn btn-blue"
+          >
+            Enrollment QR তৈরি করুন
+          </button>
+
+        </div>
+
+        <div id="qrResult"></div>
+
+        <div class="qr-box" id="qrBox">
+          QR এখানে দেখাবে
+        </div>
+
+        <div id="er"></div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-title">
+          Enrollment Records
+        </div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>কাস্টমার</th>
+                <th>ডিভাইস</th>
+                <th>Enrollment ID</th>
+                <th>Status</th>
+                <th>তারিখ</th>
+                <th>অ্যাকশন</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="enrollmentTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= AUDIT ================= -->
+
+    <section id="tab-audit" class="tab-content hidden">
+
+      <div class="panel">
+
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+
+          <div class="panel-title" style="margin-bottom:0">
+            Audit Log
+          </div>
+
+          <button
+            id="refreshBtn"
+            class="btn btn-blue"
+          >
+            Refresh
+          </button>
+
+        </div>
+
+        <div id="ar"></div>
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Action</th>
+                <th>User</th>
+                <th>Details</th>
+                <th>Time</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="auditTable">
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    স্বপ্নচূড়া — Installment Management System
+  </footer>
 
 </section>
 
 
-<!-- TABS -->
+<!-- QR CODE LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<nav class="tabs">
 
-<button class="tab active" data-tab="customers" type="button">
-কাস্টমার
-</button>
-
-<button class="tab" data-tab="devices" type="button">
-ডিভাইস
-</button>
-
-<button class="tab" data-tab="contracts" type="button">
-চুক্তি
-</button>
-
-<button class="tab" data-tab="payments" type="button">
-পেমেন্ট
-</button>
-
-<button class="tab" data-tab="control" type="button">
-কন্ট্রোল
-</button>
-
-<button class="tab" data-tab="qr" type="button">
-QR Enrollment
-</button>
-
-<button class="tab" data-tab="audit" type="button">
-Audit Log
-</button>
-
-</nav>
-
-
-<!-- CUSTOMERS -->
-
-<section id="customers" class="panel tab-panel">
-
-<div class="section-head">
-
-<div>
-
-<h2>কাস্টমার</h2>
-
-<p class="muted">
-নতুন কাস্টমার যোগ ও নিরাপদে ডিলেট করুন।
-</p>
-
-</div>
-
-</div>
-
-<div class="grid3">
-
-<div class="field">
-<label>নাম</label>
-<input id="cName" placeholder="কাস্টমারের নাম">
-</div>
-
-<div class="field">
-<label>মোবাইল</label>
-<input id="cPhone" placeholder="01XXXXXXXXX">
-</div>
-
-<div class="field">
-<label>ঠিকানা</label>
-<input id="cAddress" placeholder="ঠিকানা">
-</div>
-
-</div>
-
-<button id="addCustomerBtn" class="btn primary" type="button">
-কাস্টমার যোগ করুন
-</button>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>নাম</th>
-<th>মোবাইল</th>
-<th>ঠিকানা</th>
-<th>অ্যাকশন</th>
-</tr>
-</thead>
-
-<tbody id="cr"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- DEVICES -->
-
-<section id="devices" class="panel tab-panel hidden">
-
-<h2>ডিভাইস</h2>
-
-<p class="muted">
-গ্রাহকের Android ডিভাইস সংযুক্ত করুন।
-</p>
-
-<div class="grid3">
-
-<div class="field">
-<label>কাস্টমার</label>
-<select id="dCustomer"></select>
-</div>
-
-<div class="field">
-<label>ডিভাইস নাম</label>
-<input id="dName" placeholder="Samsung A15">
-</div>
-
-<div class="field">
-<label>Device ID</label>
-<input id="dDeviceId" placeholder="Android Device ID">
-</div>
-
-</div>
-
-<button id="addDeviceBtn" class="btn primary" type="button">
-ডিভাইস যোগ করুন
-</button>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>ডিভাইস</th>
-<th>কাস্টমার</th>
-<th>Device ID</th>
-<th>স্ট্যাটাস</th>
-</tr>
-</thead>
-
-<tbody id="dr"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- CONTRACTS -->
-
-<section id="contracts" class="panel tab-panel hidden">
-
-<h2>কিস্তি চুক্তি</h2>
-
-<p class="muted">
-মোট মূল্য, ডাউন পেমেন্ট ও কিস্তির তথ্য।
-</p>
-
-<div class="grid3">
-
-<div class="field">
-<label>কাস্টমার</label>
-<select id="kCustomer"></select>
-</div>
-
-<div class="field">
-<label>ডিভাইস</label>
-<select id="kDevice"></select>
-</div>
-
-<div class="field">
-<label>মোট মূল্য</label>
-<input id="kTotal" type="number" min="0" placeholder="0">
-</div>
-
-<div class="field">
-<label>ডাউন পেমেন্ট</label>
-<input id="kDown" type="number" min="0" value="0">
-</div>
-
-<div class="field">
-<label>কিস্তির সংখ্যা</label>
-<input id="kCount" type="number" min="1" placeholder="12">
-</div>
-
-<div class="field">
-<label>প্রতি কিস্তি</label>
-<input id="kInstallment" type="number" min="0" placeholder="0">
-</div>
-
-</div>
-
-<button id="addContractBtn" class="btn primary" type="button">
-চুক্তি যোগ করুন
-</button>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>কাস্টমার</th>
-<th>ডিভাইস</th>
-<th>মোট</th>
-<th>ডাউন</th>
-<th>কিস্তি</th>
-<th>স্ট্যাটাস</th>
-</tr>
-</thead>
-
-<tbody id="kr"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- PAYMENTS -->
-
-<section id="payments" class="panel tab-panel hidden">
-
-<h2>পেমেন্ট</h2>
-
-<p class="muted">
-কিস্তি বা পেমেন্ট রেকর্ড করুন।
-</p>
-
-<div class="grid3">
-
-<div class="field">
-<label>কাস্টমার</label>
-<select id="pCustomer"></select>
-</div>
-
-<div class="field">
-<label>চুক্তি</label>
-<select id="pContract"></select>
-</div>
-
-<div class="field">
-<label>পরিমাণ</label>
-<input id="pAmount" type="number" min="0" placeholder="0">
-</div>
-
-<div class="field">
-
-<label>পদ্ধতি</label>
-
-<select id="pMethod">
-<option value="Cash">Cash</option>
-<option value="bKash">bKash</option>
-<option value="Nagad">Nagad</option>
-<option value="Bank">Bank</option>
-</select>
-
-</div>
-
-<div class="field">
-<label>রেফারেন্স</label>
-<input id="pRef" placeholder="Transaction ID">
-</div>
-
-<div class="field">
-<label>নোট</label>
-<input id="pNote" placeholder="নোট">
-</div>
-
-</div>
-
-<button id="addPaymentBtn" class="btn primary" type="button">
-পেমেন্ট যোগ করুন
-</button>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>তারিখ</th>
-<th>কাস্টমার</th>
-<th>পরিমাণ</th>
-<th>পদ্ধতি</th>
-<th>রেফারেন্স</th>
-</tr>
-</thead>
-
-<tbody id="pr"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- DEVICE CONTROL -->
-
-<section id="control" class="panel tab-panel hidden">
-
-<h2>ডিভাইস কন্ট্রোল</h2>
-
-<p class="muted">
-এখানে Firebase-এ PENDING command তৈরি হবে।
-Android Device Owner/DPC অ্যাপকে command execute করতে হবে।
-</p>
-
-<div class="grid2">
-
-<div class="field">
-<label>ডিভাইস</label>
-<select id="xDevice"></select>
-</div>
-
-<div class="field">
-
-<label>কমান্ড</label>
-
-<select id="xCommand">
-<option value="LOCK">LOCK</option>
-<option value="UNLOCK">UNLOCK</option>
-<option value="REBOOT">REBOOT</option>
-<option value="SYNC">SYNC</option>
-</select>
-
-</div>
-
-</div>
-
-<button id="sendCommandBtn" class="btn primary" type="button">
-কমান্ড পাঠান
-</button>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>ডিভাইস</th>
-<th>কমান্ড</th>
-<th>স্ট্যাটাস</th>
-<th>সময়</th>
-</tr>
-</thead>
-
-<tbody id="xr"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- QR -->
-
-<section id="qr" class="panel tab-panel hidden">
-
-<h2>QR Enrollment</h2>
-
-<p class="muted">
-Enrollment token তৈরি করুন।
-</p>
-
-<div class="grid2">
-
-<div class="field">
-<label>কাস্টমার</label>
-<select id="eCustomer"></select>
-</div>
-
-<div class="field">
-<label>ডিভাইস নাম</label>
-<input id="eDeviceName" placeholder="Samsung A15">
-</div>
-
-</div>
-
-<button id="createEnrollmentBtn" class="btn primary" type="button">
-Enrollment Token তৈরি করুন
-</button>
-
-<div id="qrResult" class="msg hidden"></div>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>কাস্টমার</th>
-<th>ডিভাইস</th>
-<th>Token</th>
-<th>স্ট্যাটাস</th>
-</tr>
-</thead>
-
-<tbody id="er"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- AUDIT -->
-
-<section id="audit" class="panel tab-panel hidden">
-
-<div class="section-head">
-
-<h2>Audit Log</h2>
-
-<button id="refreshBtn" class="btn secondary" type="button">
-Refresh
-</button>
-
-</div>
-
-<div class="table-wrap">
-
-<table>
-
-<thead>
-<tr>
-<th>সময়</th>
-<th>অ্যাকশন</th>
-<th>বিবরণ</th>
-<th>Admin UID</th>
-</tr>
-</thead>
-
-<tbody id="ar"></tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<div class="footer">
-স্বপ্নচূড়া • Installment & Device Manager
-</div>
-
-</main>
-
-</div>
-
+<!-- ================= FIREBASE ================= -->
 
 <script type="module">
 
-/* =====================================================
-   FIREBASE IMPORT
-===================================================== */
+  import {
+    initializeApp
+  } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 
-import {
-  initializeApp
-} from
-'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    sendPasswordResetEmail
+  } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-  onAuthStateChanged,
-  signOut
-} from
-'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    doc,
+    deleteDoc,
+    serverTimestamp
+  } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  deleteDoc,
-  serverTimestamp
-} from
-'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 
+  /* =====================================================
+     FIREBASE CONFIG
+     ===================================================== */
 
-/* =====================================================
-   FIREBASE CONFIG
-===================================================== */
+  const firebaseConfig = {
 
-const cfg={
+    apiKey: "AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg",
 
-  apiKey:
-  'AIzaSyCzkbjG0mTeEmGZ6xrSBoADSRK7XcczgIPg',
+    authDomain:
+      "swapnochura-lock-management.firebaseapp.com",
 
-  authDomain:
-  'swapnochura-lock-management.firebaseapp.com',
+    projectId:
+      "swapnochura-lock-management",
 
-  projectId:
-  'swapnochura-lock-management',
+    storageBucket:
+      "swapnochura-lock-management.firebasestorage.app",
 
-  storageBucket:
-  'swapnochura-lock-management.firebasestorage.app',
+    messagingSenderId:
+      "414941510200",
 
-  messagingSenderId:
-  '414941510200',
+    appId:
+      "1:414941510200:web:2fabf0cc954c39a4e844cd",
 
-  appId:
-  '1:414941510200:web:2fabf0cc954c39a4e844cd'
-
-};
-
-
-/* =====================================================
-   ADMIN UID
-===================================================== */
-
-const UID=
-'L425ICXf7JVWjGconcbFoqG1vft1';
-
-
-/* =====================================================
-   INITIALIZE
-===================================================== */
-
-const app=
-initializeApp(cfg);
-
-const auth=
-getAuth(app);
-
-const db=
-getFirestore(app);
-
-
-/* =====================================================
-   DATA
-===================================================== */
-
-let C=[];
-let D=[];
-let K=[];
-let P=[];
-let X=[];
-let A=[];
-let E=[];
-
-
-/* =====================================================
-   HELPER
-===================================================== */
-
-const $=
-id=>document.getElementById(id);
-
-
-function escapeHTML(v){
-
-  return String(v??'')
-
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'","&#039;");
-
-}
-
-
-function dateText(v){
-
-  if(!v)return '-';
-
-  try{
-
-    if(typeof v.toDate==='function'){
-
-      return v
-        .toDate()
-        .toLocaleString('bn-BD');
-
-    }
-
-    return new Date(v)
-      .toLocaleString('bn-BD');
-
-  }catch{
-
-    return '-';
-
-  }
-
-}
-
-
-/* =====================================================
-   FIREBASE ERROR
-===================================================== */
-
-function firebaseBanglaError(
-  e,
-  defaultMsg='কাজটি সম্পন্ন করা যায়নি।'
-){
-
-  console.error(
-    'Firebase Error:',
-    e?.code,
-    e?.message,
-    e
-  );
-
-  const code=
-    e?.code||'';
-
-  const rawMessage=
-    e?.message||'';
-
-
-  const m={
-
-    'auth/invalid-credential':
-    'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
-
-    'auth/invalid-login-credentials':
-    'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।',
-
-    'auth/wrong-password':
-    'পাসওয়ার্ড সঠিক নয়।',
-
-    'auth/user-not-found':
-    'এই ইমেইল দিয়ে কোনো Firebase অ্যাকাউন্ট পাওয়া যায়নি।',
-
-    'auth/invalid-email':
-    'ইমেইল ঠিকানা সঠিক নয়।',
-
-    'auth/too-many-requests':
-    'অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।',
-
-    'auth/user-disabled':
-    'এই Firebase অ্যাকাউন্টটি নিষ্ক্রিয় করা হয়েছে।',
-
-    'auth/operation-not-allowed':
-    'Firebase Authentication-এ Email/Password চালু করা নেই।',
-
-    'auth/admin-restricted-operation':
-    'এই Firebase Authentication অপারেশনটি অ্যাডমিন দ্বারা সীমাবদ্ধ।',
-
-    'auth/network-request-failed':
-    'ইন্টারনেট সংযোগে সমস্যা হয়েছে।',
-
-    'auth/api-key-not-valid':
-    'Firebase API Key সঠিক নয়।',
-
-    'auth/invalid-api-key':
-    'Firebase API Key সঠিক নয়।',
-
-    'auth/app-not-authorized':
-    'এই ডোমেইন Firebase-এ অনুমোদিত নয়।',
-
-    'auth/configuration-not-found':
-    'Firebase Authentication configuration পাওয়া যায়নি।',
-
-    'auth/internal-error':
-    'Firebase-এ একটি অভ্যন্তরীণ সমস্যা হয়েছে।',
-
-    'auth/invalid-user-token':
-    'লগইন সেশন আর বৈধ নেই। আবার লগইন করুন।',
-
-    'auth/requires-recent-login':
-    'নিরাপত্তার কারণে আবার লগইন করতে হবে।'
+    measurementId:
+      "G-13FNHDYZ7M"
 
   };
 
 
-  if(m[code])
-    return m[code];
+  /* =====================================================
+     FIREBASE INIT
+     ===================================================== */
+
+  const app = initializeApp(firebaseConfig);
+
+  const auth = getAuth(app);
+
+  const db = getFirestore(app);
 
 
-  if(
-    code.includes('permission-denied')
-  ){
+  /* =====================================================
+     ADMIN UID
+     ===================================================== */
 
-    return 'এই কাজটি করার অনুমতি আপনার নেই।';
+  const UID = "L425ICXf7JVWjGconcbFoqG1vft1";
+
+
+  /* =====================================================
+     HELPERS
+     ===================================================== */
+
+  const $ = id => document.getElementById(id);
+
+
+  function escapeHTML(value){
+
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
 
   }
 
 
-  if(
-    code.includes('unauthenticated')
-  ){
+  function dateValue(value){
 
-    return 'আপনার লগইন সেশন নেই। আবার লগইন করুন।';
+    if(!value){
+      return "—";
+    }
 
-  }
+    try{
 
+      if(typeof value.toDate === "function"){
+        return value.toDate().toLocaleString("bn-BD");
+      }
 
-  /*
-    অজানা error হলে এবার code এবং message
-    দেখা যাবে। এতে আসল সমস্যাটি বোঝা সহজ হবে।
-  */
+      return new Date(value).toLocaleString("bn-BD");
 
-  return `
-    ${defaultMsg}
-    <div class="error-detail">
-      <strong>Firebase Error Code:</strong>
-      ${escapeHTML(code||'অজানা')}
-      <br>
-      <strong>Message:</strong>
-      ${escapeHTML(rawMessage||'কোনো message পাওয়া যায়নি।')}
-    </div>
-  `;
+    }catch(e){
 
-}
-
-
-/* =====================================================
-   GLOBAL MESSAGE
-===================================================== */
-
-function showMessage(
-  msg,
-  type='ok'
-){
-
-  const el=
-    $('globalMsg');
-
-  if(!el)return;
-
-
-  el.innerHTML=
-  `<div class="msg ${type}">
-    ${escapeHTML(msg)}
-  </div>`;
-
-
-  setTimeout(()=>{
-
-    if(el)
-      el.innerHTML='';
-
-  },5000);
-
-}
-
-
-/* =====================================================
-   LOGIN MESSAGE
-===================================================== */
-
-function loginMessage(
-  msg,
-  type='error',
-  allowHTML=false
-){
-
-  const el=
-    $('loginMsg');
-
-  if(!el)return;
-
-
-  const content=
-    allowHTML
-    ? msg
-    : escapeHTML(msg);
-
-
-  el.innerHTML=
-  `<div class="msg ${type}">
-    ${content}
-  </div>`;
-
-}
-
-
-/* =====================================================
-   SAFE RUN
-===================================================== */
-
-async function safeRun(
-  fn,
-  successMsg
-){
-
-  try{
-
-    const result=
-      await fn();
-
-
-    if(successMsg){
-
-      showMessage(
-        successMsg,
-        'ok'
-      );
+      return "—";
 
     }
 
-
-    return result;
-
-  }catch(e){
-
-    console.error(e);
+  }
 
 
-    const error=
-      firebaseBanglaError(e);
+  function money(value){
+
+    return Number(value || 0).toLocaleString("bn-BD");
+
+  }
 
 
-    /*
-      firebaseBanglaError-এর HTML অংশ দরকার হতে পারে।
-    */
+  function randomId(){
 
-    const el=
-      $('globalMsg');
+    if(window.crypto && crypto.randomUUID){
 
-    if(el){
+      return crypto.randomUUID();
 
-      el.innerHTML=
-      `<div class="msg error">
-        ${error}
+    }
+
+    return Date.now().toString(36) +
+      Math.random().toString(36).slice(2);
+
+  }
+
+
+  /* =====================================================
+     MESSAGE
+     ===================================================== */
+
+  function showMessage(id,msg,type="info"){
+
+    const el=$(id);
+
+    if(!el)return;
+
+    el.innerHTML =
+      `<div class="msg ${type}">
+        ${escapeHTML(msg)}
       </div>`;
 
-    }
+  }
 
 
-    return null;
+  function loginMessage(msg,type="info"){
+
+    showMessage("loginMsg",msg,type);
 
   }
 
-}
+
+  function clearAuthDebug(){
+
+    const el=$("loginDebug");
+
+    if(!el)return;
+
+    el.innerHTML="";
+    el.classList.add("hidden");
+
+  }
 
 
-/* =====================================================
-   AUDIT
-===================================================== */
+  function showAuthDebug(e){
 
-async function log(
-  action,
-  details=''
-){
+    const el=$("loginDebug");
 
-  try{
+    if(!el)return;
 
-    await addDoc(
-      collection(db,'auditLogs'),
-      {
+    const code =
+      e?.code ||
+      "unknown-error";
 
-        action,
-        details,
+    const message =
+      e?.message ||
+      "কোনো Firebase error message পাওয়া যায়নি।";
 
-        adminUid:
-        auth.currentUser?.uid||'',
+    el.classList.remove("hidden");
 
-        createdAt:
-        serverTimestamp()
+    el.innerHTML = `
+
+      <div class="msg warn">
+
+        <strong>Firebase Error Code:</strong><br>
+
+        <code>${escapeHTML(code)}</code>
+
+        <br><br>
+
+        <strong>Message:</strong><br>
+
+        ${escapeHTML(message)}
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* =====================================================
+     FIREBASE ERROR TRANSLATION
+     ===================================================== */
+
+  function firebaseBanglaError(e,defaultMsg){
+
+    const code=e?.code || "";
+
+    const map={
+
+      "auth/invalid-credential":
+        "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।",
+
+      "auth/invalid-login-credentials":
+        "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।",
+
+      "auth/wrong-password":
+        "পাসওয়ার্ড সঠিক নয়।",
+
+      "auth/user-not-found":
+        "এই ইমেইল দিয়ে কোনো Firebase User পাওয়া যায়নি।",
+
+      "auth/invalid-email":
+        "ইমেইল ঠিকানাটি সঠিক নয়।",
+
+      "auth/missing-email":
+        "ইমেইল লিখুন।",
+
+      "auth/too-many-requests":
+        "অনেকবার চেষ্টা করা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।",
+
+      "auth/user-disabled":
+        "এই Firebase User নিষ্ক্রিয় করা হয়েছে।",
+
+      "auth/operation-not-allowed":
+        "Firebase Authentication-এ এই Sign-in method অনুমোদিত নয়।",
+
+      "auth/admin-restricted-operation":
+        "এই Authentication operation Admin দ্বারা সীমাবদ্ধ করা হয়েছে।",
+
+      "auth/network-request-failed":
+        "ইন্টারনেট সংযোগের সমস্যা হয়েছে।",
+
+      "auth/api-key-not-valid":
+        "Firebase API Key সঠিক নয়। Firebase Web App Config যাচাই করুন।",
+
+      "auth/invalid-api-key":
+        "Firebase API Key সঠিক নয়।",
+
+      "auth/configuration-not-found":
+        "Firebase Authentication configuration পাওয়া যায়নি।",
+
+      "auth/app-not-authorized":
+        "এই Firebase App অনুমোদিত নয়।",
+
+      "auth/unauthorized-domain":
+        "এই GitHub Pages domain Firebase Authentication-এ অনুমোদিত নয়।",
+
+      "auth/internal-error":
+        "Firebase-এর অভ্যন্তরীণ সমস্যা হয়েছে।",
+
+      "auth/invalid-user-token":
+        "Firebase login session আর বৈধ নেই। আবার লগইন করুন।"
+
+    };
+
+
+    if(map[code]){
+      return map[code];
+    }
+
+
+    if(
+      code.includes("permission-denied") ||
+      String(e?.message || "")
+        .toLowerCase()
+        .includes("permission-denied")
+    ){
+
+      return "Firestore permission denied। Firebase Security Rules যাচাই করুন।";
+
+    }
+
+
+    if(
+      code.includes("unauthenticated") ||
+      String(e?.message || "")
+        .toLowerCase()
+        .includes("unauthenticated")
+    ){
+
+      return "Firebase authentication প্রয়োজন। আবার লগইন করুন।";
+
+    }
+
+
+    return defaultMsg;
+
+  }
+
+
+  /* =====================================================
+     AUTH LOGIN
+     ===================================================== */
+
+  $("loginBtn").onclick = async ()=>{
+
+    const email =
+      $("email").value.trim();
+
+    const password =
+      $("password").value;
+
+    clearAuthDebug();
+
+    $("loginMsg").innerHTML="";
+
+
+    if(!email){
+
+      loginMessage(
+        "ইমেইল লিখুন।",
+        "warn"
+      );
+
+      return;
+
+    }
+
+
+    if(!password){
+
+      loginMessage(
+        "পাসওয়ার্ড লিখুন।",
+        "warn"
+      );
+
+      return;
+
+    }
+
+
+    const btn=$("loginBtn");
+
+    btn.disabled=true;
+
+    btn.textContent="লগইন হচ্ছে...";
+
+
+    loginMessage(
+      "Firebase-এর সাথে সংযোগ হচ্ছে...",
+      "info"
+    );
+
+
+    try{
+
+      const result =
+        await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+
+
+      console.log(
+        "Firebase login successful:",
+        result.user.uid,
+        result.user.email
+      );
+
+
+      if(result.user.uid !== UID){
+
+        await signOut(auth);
+
+        throw new Error(
+          "ADMIN_UID_MISMATCH"
+        );
 
       }
-    );
-
-  }catch(e){
-
-    console.error(
-      'Audit log error:',
-      e
-    );
-
-  }
-
-}
 
 
-/* =====================================================
-   GET COLLECTION
-===================================================== */
-
-async function getCollection(
-  name
-){
-
-  const snap=
-    await getDocs(
-      collection(db,name)
-    );
-
-
-  return snap.docs.map(
-    x=>({
-
-      id:x.id,
-      ...x.data()
-
-    })
-  );
-
-}
-
-
-/* =====================================================
-   LOAD ALL DATA
-===================================================== */
-
-async function all(){
-
-  try{
-
-    [
-      C,
-      D,
-      K,
-      P,
-      X,
-      A,
-      E
-
-    ]=await Promise.all([
-
-      getCollection('customers'),
-
-      getCollection('devices'),
-
-      getCollection('contracts'),
-
-      getCollection('payments'),
-
-      getCollection('lockCommands'),
-
-      getCollection('auditLogs'),
-
-      getCollection('deviceEnrollments')
-
-    ]);
-
-
-    render();
-
-
-  }catch(e){
-
-    console.error(e);
-
-
-    const error=
-      firebaseBanglaError(
-        e,
-        'ডেটা লোড করা যায়নি।'
+      loginMessage(
+        "লগইন সফল হয়েছে। Dashboard লোড হচ্ছে...",
+        "ok"
       );
 
 
-    const el=
-      $('globalMsg');
+      $("loginPage")
+        .classList
+        .add("hidden");
 
-    if(el){
+      $("app")
+        .classList
+        .remove("hidden");
 
-      el.innerHTML=
-      `<div class="msg error">
-        ${error}
-      </div>`;
+
+      await all();
+
+
+    }catch(e){
+
+      console.error(
+        "Login failed:",
+        e?.code,
+        e?.message,
+        e
+      );
+
+
+      if(e?.message === "ADMIN_UID_MISMATCH"){
+
+        loginMessage(
+          "এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।",
+          "error"
+        );
+
+        showAuthDebug({
+          code:"ADMIN_UID_MISMATCH",
+          message:"Login সফল হয়েছে, কিন্তু এই User UID admin UID-এর সঙ্গে মেলেনি।"
+        });
+
+      }else{
+
+        loginMessage(
+          firebaseBanglaError(
+            e,
+            "লগইন করা যায়নি।"
+          ),
+          "error"
+        );
+
+        showAuthDebug(e);
+
+      }
+
+    }finally{
+
+      btn.disabled=false;
+
+      btn.textContent="লগইন";
 
     }
 
-  }
-
-}
+  };
 
 
-/* =====================================================
-   NAME HELPERS
-===================================================== */
+  /* =====================================================
+     PASSWORD RESET
+     ===================================================== */
 
-function customerName(id){
+  $("resetPasswordBtn").onclick = async ()=>{
 
-  return C.find(
-    x=>x.id===id
-  )?.name||'-';
+    const email =
+      $("email").value.trim();
 
-}
-
-
-function deviceName(id){
-
-  return D.find(
-    x=>x.id===id
-  )?.name||id||'-';
-
-}
+    clearAuthDebug();
 
 
-/* =====================================================
-   SELECT HELPER
-===================================================== */
+    if(!email){
 
-function fillSelect(
-  id,
-  items,
-  placeholder='নির্বাচন করুন'
-){
+      loginMessage(
+        "আগে ইমেইল লিখুন, তারপর পাসওয়ার্ড রিসেট চাপুন।",
+        "warn"
+      );
 
-  const el=
-    $(id);
+      return;
 
-  if(!el)return;
+    }
 
 
-  el.innerHTML=
-  `<option value="">
-    ${escapeHTML(placeholder)}
-  </option>`+
+    const btn=$("resetPasswordBtn");
 
-  items.map(x=>
+    btn.disabled=true;
 
-    `<option value="${escapeHTML(x.id)}">
-      ${escapeHTML(x.label)}
-    </option>`
-
-  ).join('');
-
-}
+    btn.textContent="পাঠানো হচ্ছে...";
 
 
-/* =====================================================
-   REFRESH SELECTS
-===================================================== */
+    try{
 
-function refreshSelects(){
+      await sendPasswordResetEmail(
+        auth,
+        email
+      );
 
-  fillSelect(
-    'dCustomer',
 
-    C.map(x=>({
+      loginMessage(
+        "পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে। Spam/Junk ফোল্ডারও দেখুন।",
+        "ok"
+      );
 
-      id:x.id,
 
-      label:
-      x.name||
-      x.phone||
-      x.id
+    }catch(e){
 
-    }))
+      console.error(
+        "Password reset failed:",
+        e?.code,
+        e?.message,
+        e
+      );
 
+
+      loginMessage(
+        firebaseBanglaError(
+          e,
+          "পাসওয়ার্ড রিসেট ইমেইল পাঠানো যায়নি।"
+        ),
+        "error"
+      );
+
+
+      showAuthDebug(e);
+
+
+    }finally{
+
+      btn.disabled=false;
+
+      btn.textContent="পাসওয়ার্ড ভুলে গেছেন?";
+
+    }
+
+  };
+
+
+  /* =====================================================
+     ENTER KEY LOGIN
+     ===================================================== */
+
+  $("password").addEventListener(
+    "keydown",
+    e=>{
+
+      if(e.key==="Enter"){
+
+        $("loginBtn").click();
+
+      }
+
+    }
   );
 
 
-  fillSelect(
-    'kCustomer',
+  /* =====================================================
+     LOGOUT
+     ===================================================== */
 
-    C.map(x=>({
+  $("logoutBtn").onclick = async ()=>{
 
-      id:x.id,
+    try{
 
-      label:
-      x.name||
-      x.phone||
-      x.id
+      await signOut(auth);
 
-    }))
+    }catch(e){
 
+      console.error(e);
+
+    }
+
+  };
+
+
+  /* =====================================================
+     AUTH STATE
+     ===================================================== */
+
+  onAuthStateChanged(
+    auth,
+    async user=>{
+
+      console.log(
+        "Auth state:",
+        user?.uid,
+        user?.email
+      );
+
+
+      if(user && user.uid===UID){
+
+        $("loginPage")
+          .classList
+          .add("hidden");
+
+        $("app")
+          .classList
+          .remove("hidden");
+
+
+        try{
+
+          await all();
+
+        }catch(e){
+
+          console.error(
+            "Dashboard load failed:",
+            e
+          );
+
+        }
+
+        return;
+
+      }
+
+
+      if(user){
+
+        try{
+
+          await signOut(auth);
+
+        }catch(e){
+
+          console.error(e);
+
+        }
+
+
+        $("loginPage")
+          .classList
+          .remove("hidden");
+
+        $("app")
+          .classList
+          .add("hidden");
+
+
+        loginMessage(
+          "এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      $("loginPage")
+        .classList
+        .remove("hidden");
+
+      $("app")
+        .classList
+        .add("hidden");
+
+    }
   );
 
 
-  fillSelect(
-    'pCustomer',
-
-    C.map(x=>({
-
-      id:x.id,
-
-      label:
-      x.name||
-      x.phone||
-      x.id
-
-    }))
-
-  );
-
-
-  fillSelect(
-    'eCustomer',
-
-    C.map(x=>({
-
-      id:x.id,
-
-      label:
-      x.name||
-      x.phone||
-      x.id
-
-    }))
-
-  );
-
-
-  fillSelect(
-    'xDevice',
-
-    D.map(x=>({
-
-      id:x.id,
-
-      label:
-      `${x.name||'Device'} — ${x.deviceId||x.id}`
-
-    }))
-
-  );
-
-
-  fillSelect(
-    'kDevice',
-
-    D.map(x=>({
-
-      id:x.id,
-
-      label:
-      `${x.name||'Device'} — ${customerName(x.customerId)}`
-
-    }))
-
-  );
-
-
-  fillSelect(
-    'pContract',
-
-    K.map(x=>({
-
-      id:x.id,
-
-      label:
-      `${customerName(x.customerId)} — ${x.total||0} টাকা`
-
-    }))
-
-  );
-
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function render(){
-
-  if(!$('mCustomers'))return;
-
-
-  $('mCustomers').textContent=C.length;
-
-  $('mDevices').textContent=D.length;
-
-  $('mContracts').textContent=K.length;
-
-  $('mPayments').textContent=P.length;
-
-  $('mCommands').textContent=
-    X.filter(
-      x=>
-      String(
-        x.status||'PENDING'
-      ).toUpperCase()==='PENDING'
-    ).length;
-
-
-  $('cr').innerHTML=
-
-    C.map(x=>`
-
-      <tr>
-
-        <td>
-          ${escapeHTML(x.name)}
-        </td>
-
-        <td>
-          ${escapeHTML(x.phone)}
-        </td>
-
-        <td>
-          ${escapeHTML(x.address)}
-        </td>
-
-        <td>
-
-          <button
-            class="btn danger"
-            type="button"
-            data-delete-customer="${escapeHTML(x.id)}"
-          >
-            ডিলেট
-          </button>
-
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="4">
-        কোনো কাস্টমার নেই।
-      </td>
-    </tr>`;
-
-
-  $('dr').innerHTML=
-
-    D.map(x=>`
-
-      <tr>
-
-        <td>
-          ${escapeHTML(x.name)}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            customerName(x.customerId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(x.deviceId)}
-        </td>
-
-        <td>
-
-          <span class="badge blue">
-            ${escapeHTML(
-              x.status||'ACTIVE'
-            )}
-          </span>
-
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="4">
-        কোনো ডিভাইস নেই।
-      </td>
-    </tr>`;
-
-
-  $('kr').innerHTML=
-
-    K.map(x=>`
-
-      <tr>
-
-        <td>
-          ${escapeHTML(
-            customerName(x.customerId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            deviceName(x.deviceId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(x.total)}
-          টাকা
-        </td>
-
-        <td>
-          ${escapeHTML(x.down||0)}
-          টাকা
-        </td>
-
-        <td>
-          ${escapeHTML(x.installment||0)}
-          ×
-          ${escapeHTML(x.count||0)}
-        </td>
-
-        <td>
-
-          <span class="badge blue">
-            ${escapeHTML(
-              x.status||'ACTIVE'
-            )}
-          </span>
-
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="6">
-        কোনো চুক্তি নেই।
-      </td>
-    </tr>`;
-
-
-  $('pr').innerHTML=
-
-    P.map(x=>`
-
-      <tr>
-
-        <td>
-          ${dateText(x.createdAt)}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            customerName(x.customerId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(x.amount)}
-          টাকা
-        </td>
-
-        <td>
-          ${escapeHTML(x.method)}
-        </td>
-
-        <td>
-          ${escapeHTML(
-            x.reference||'-'
-          )}
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="5">
-        কোনো পেমেন্ট নেই।
-      </td>
-    </tr>`;
-
-
-  $('xr').innerHTML=
-
-    X.map(x=>`
-
-      <tr>
-
-        <td>
-          ${escapeHTML(
-            deviceName(x.deviceId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(x.command)}
-        </td>
-
-        <td>
-
-          <span class="badge yellow">
-            ${escapeHTML(
-              x.status||'PENDING'
-            )}
-          </span>
-
-        </td>
-
-        <td>
-          ${dateText(x.createdAt)}
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="4">
-        কোনো কমান্ড নেই।
-      </td>
-    </tr>`;
-
-
-  $('er').innerHTML=
-
-    E.map(x=>`
-
-      <tr>
-
-        <td>
-          ${escapeHTML(
-            customerName(x.customerId)
-          )}
-        </td>
-
-        <td>
-          ${escapeHTML(x.deviceName)}
-        </td>
-
-        <td>
-          <code>
-            ${escapeHTML(x.token)}
-          </code>
-        </td>
-
-        <td>
-          ${escapeHTML(
-            x.status||'PENDING'
-          )}
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="4">
-        কোনো enrollment নেই।
-      </td>
-    </tr>`;
-
-
-  $('ar').innerHTML=
-
-    A.map(x=>`
-
-      <tr>
-
-        <td>
-          ${dateText(x.createdAt)}
-        </td>
-
-        <td>
-          ${escapeHTML(x.action)}
-        </td>
-
-        <td>
-          ${escapeHTML(x.details)}
-        </td>
-
-        <td>
-          <code>
-            ${escapeHTML(x.adminUid)}
-          </code>
-        </td>
-
-      </tr>
-
-    `).join('')||
-
-    `<tr>
-      <td colspan="4">
-        কোনো audit log নেই।
-      </td>
-    </tr>`;
-
-
-  refreshSelects();
-
+  /* =====================================================
+     TABS
+     ===================================================== */
 
   document
-    .querySelectorAll(
-      '[data-delete-customer]'
-    )
+    .querySelectorAll(".tab")
     .forEach(btn=>{
 
       btn.onclick=()=>{
 
-        deleteCustomer(
-          btn.dataset.deleteCustomer
-        );
+        const tab=btn.dataset.tab;
+
+
+        document
+          .querySelectorAll(".tab")
+          .forEach(x=>
+            x.classList.remove("active")
+          );
+
+
+        btn.classList.add("active");
+
+
+        document
+          .querySelectorAll(".tab-content")
+          .forEach(x=>
+            x.classList.add("hidden")
+          );
+
+
+        const target=
+          $("tab-"+tab);
+
+        if(target){
+
+          target.classList.remove("hidden");
+
+        }
 
       };
 
     });
 
-}
+
+  /* =====================================================
+     DATA
+     ===================================================== */
+
+  let customers=[];
+  let devices=[];
+  let contracts=[];
+  let payments=[];
+  let commands=[];
+  let enrollments=[];
+  let audits=[];
 
 
-/* =====================================================
-   DELETE CUSTOMER
-===================================================== */
+  /* =====================================================
+     GENERIC COLLECTION READ
+     ===================================================== */
 
-async function deleteCustomer(id){
+  async function readCollection(name){
 
-  const customer=
-    C.find(x=>x.id===id);
+    const snap=
+      await getDocs(
+        collection(db,name)
+      );
 
+    return snap.docs.map(d=>({
 
-  if(!customer){
+      id:d.id,
 
-    showMessage(
-      'কাস্টমার পাওয়া যায়নি।',
-      'warn'
-    );
+      ...d.data()
 
-    return;
+    }));
 
   }
 
 
-  const linkedDevices=
-    D.filter(
-      x=>x.customerId===id
-    );
+  /* =====================================================
+     AUDIT
+     ===================================================== */
+
+  async function audit(action,details){
+
+    try{
+
+      await addDoc(
+        collection(db,"auditLogs"),
+        {
+          action,
+          details,
+          userUid:auth.currentUser?.uid || null,
+          userEmail:auth.currentUser?.email || null,
+          createdAt:serverTimestamp()
+        }
+      );
+
+    }catch(e){
+
+      console.error(
+        "Audit error:",
+        e
+      );
+
+    }
+
+  }
 
 
-  const linkedContracts=
-    K.filter(
-      x=>x.customerId===id
-    );
+  /* =====================================================
+     SAFE RUN
+     ===================================================== */
 
-
-  const linkedPayments=
-    P.filter(
-      x=>x.customerId===id
-    );
-
-
-  if(
-    linkedDevices.length||
-    linkedContracts.length||
-    linkedPayments.length
+  async function safeRun(
+    action,
+    successMsg,
+    errorId
   ){
 
-    const parts=[];
+    try{
 
+      await action();
 
-    if(linkedDevices.length)
-      parts.push(
-        `ডিভাইস ${linkedDevices.length}টি`
-      );
+      if(errorId){
 
-
-    if(linkedContracts.length)
-      parts.push(
-        `চুক্তি ${linkedContracts.length}টি`
-      );
-
-
-    if(linkedPayments.length)
-      parts.push(
-        `পেমেন্ট ${linkedPayments.length}টি`
-      );
-
-
-    showMessage(
-
-      `এই কাস্টমারের ${parts.join(', ')} যুক্ত আছে। আগে সম্পর্কিত রেকর্ড সরাতে হবে।`,
-
-      'warn'
-
-    );
-
-    return;
-
-  }
-
-
-  if(!confirm(
-
-    `"${customer.name||'এই কাস্টমার'}" কাস্টমারকে ডিলেট করতে চান?\n\nএই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।`
-
-  ))return;
-
-
-  await safeRun(
-
-    async()=>{
-
-      await deleteDoc(
-        doc(
-          db,
-          'customers',
-          id
-        )
-      );
-
-
-      await log(
-        'কাস্টমার ডিলেট',
-        customer.name||''
-      );
-
-
-      await all();
-
-    },
-
-    'কাস্টমার সফলভাবে ডিলেট হয়েছে।'
-
-  );
-
-}
-
-
-/* =====================================================
-   LOGIN
-===================================================== */
-
-$('loginBtn').onclick=
-async()=>{
-
-  const email=
-    $('email')
-      .value
-      .trim();
-
-
-  const password=
-    $('password')
-      .value;
-
-
-  $('loginMsg').innerHTML='';
-
-
-  if(!email||!password){
-
-    loginMessage(
-      'ইমেইল ও পাসওয়ার্ড দিন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  const btn=
-    $('loginBtn');
-
-
-  btn.disabled=true;
-
-  btn.textContent=
-    'লগইন হচ্ছে...';
-
-
-  loginMessage(
-    'Firebase-এর সাথে সংযোগ হচ্ছে...',
-    'info'
-  );
-
-
-  try{
-
-    const result=
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-
-    console.log(
-      'Firebase login successful:',
-      result.user.uid,
-      result.user.email
-    );
-
-
-    if(
-      result.user.uid!==UID
-    ){
-
-      await signOut(auth);
-
-      throw new Error(
-        'ADMIN_UID_MISMATCH'
-      );
-
-    }
-
-
-    loginMessage(
-      'লগইন সফল হয়েছে। Dashboard লোড হচ্ছে...',
-      'ok'
-    );
-
-
-    $('loginPage')
-      .classList
-      .add('hidden');
-
-
-    $('app')
-      .classList
-      .remove('hidden');
-
-
-    await all();
-
-
-  }catch(e){
-
-    console.error(
-      'Login failed:',
-      e?.code,
-      e?.message,
-      e
-    );
-
-
-    let m;
-
-
-    if(
-      e?.message===
-      'ADMIN_UID_MISMATCH'
-    ){
-
-      m=
-      'এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।';
-
-      loginMessage(
-        m,
-        'error'
-      );
-
-    }else{
-
-      m=
-      firebaseBanglaError(
-
-        e,
-
-        'লগইন করা যায়নি। ইমেইল ও পাসওয়ার্ড যাচাই করুন।'
-
-      );
-
-
-      loginMessage(
-        m,
-        'error',
-        true
-      );
-
-    }
-
-
-  }finally{
-
-    btn.disabled=false;
-
-    btn.textContent=
-      'লগইন';
-
-  }
-
-};
-
-
-/* =====================================================
-   PASSWORD RESET
-===================================================== */
-
-$('resetPasswordBtn').onclick=
-async()=>{
-
-  const email=
-    $('email')
-      .value
-      .trim();
-
-
-  if(!email){
-
-    loginMessage(
-      'পাসওয়ার্ড রিসেট করতে আগে আপনার ইমেইল লিখুন।',
-      'warn'
-    );
-
-    $('email').focus();
-
-    return;
-
-  }
-
-
-  const btn=
-    $('resetPasswordBtn');
-
-
-  btn.disabled=true;
-
-  btn.textContent=
-    'রিসেট লিংক পাঠানো হচ্ছে...';
-
-
-  try{
-
-    await sendPasswordResetEmail(
-      auth,
-      email
-    );
-
-
-    loginMessage(
-      'পাসওয়ার্ড রিসেট করার লিংক আপনার ইমেইলে পাঠানো হয়েছে। Email Inbox এবং Spam/Junk ফোল্ডারও দেখুন।',
-      'ok'
-    );
-
-
-  }catch(e){
-
-    console.error(
-      'Password reset failed:',
-      e?.code,
-      e?.message,
-      e
-    );
-
-
-    const m=
-      firebaseBanglaError(
-        e,
-        'পাসওয়ার্ড রিসেট লিংক পাঠানো যায়নি।'
-      );
-
-
-    loginMessage(
-      m,
-      'error',
-      true
-    );
-
-
-  }finally{
-
-    btn.disabled=false;
-
-    btn.textContent=
-      'পাসওয়ার্ড ভুলে গেছেন?';
-
-  }
-
-};
-
-
-/* =====================================================
-   PASSWORD ENTER
-===================================================== */
-
-$('password')
-  .addEventListener(
-    'keydown',
-    e=>{
-
-      if(e.key==='Enter'){
-
-        $('loginBtn').click();
-
-      }
-
-    }
-  );
-
-
-/* =====================================================
-   LOGOUT
-===================================================== */
-
-$('logoutBtn').onclick=
-async()=>{
-
-  try{
-
-    await signOut(auth);
-
-  }catch(e){
-
-    console.error(e);
-
-    const error=
-      firebaseBanglaError(e);
-
-
-    const el=
-      $('globalMsg');
-
-    if(el){
-
-      el.innerHTML=
-      `<div class="msg error">
-        ${error}
-      </div>`;
-
-    }
-
-  }
-
-};
-
-
-/* =====================================================
-   TABS
-===================================================== */
-
-document
-  .querySelectorAll('.tab')
-  .forEach(btn=>{
-
-    btn.onclick=()=>{
-
-      document
-        .querySelectorAll('.tab')
-        .forEach(x=>
-          x.classList.remove(
-            'active'
-          )
-        );
-
-
-      document
-        .querySelectorAll('.tab-panel')
-        .forEach(x=>
-          x.classList.add(
-            'hidden'
-          )
-        );
-
-
-      btn.classList.add('active');
-
-
-      const panel=
-        $(btn.dataset.tab);
-
-
-      if(panel){
-
-        panel.classList.remove(
-          'hidden'
+        showMessage(
+          errorId,
+          successMsg,
+          "ok"
         );
 
       }
 
-    };
+      await all();
 
-  });
+    }catch(e){
 
+      console.error(e);
 
-/* =====================================================
-   ADD CUSTOMER
-===================================================== */
+      if(errorId){
 
-$('addCustomerBtn').onclick=
-async()=>{
+        showMessage(
+          errorId,
+          firebaseBanglaError(
+            e,
+            "কাজটি সম্পন্ন করা যায়নি।"
+          ),
+          "error"
+        );
 
-  const name=
-    $('cName')
-      .value
-      .trim();
+      }
 
-
-  const phone=
-    $('cPhone')
-      .value
-      .trim();
-
-
-  const address=
-    $('cAddress')
-      .value
-      .trim();
-
-
-  if(!name||!phone){
-
-    showMessage(
-      'কাস্টমারের নাম ও মোবাইল দিন।',
-      'warn'
-    );
-
-    return;
+    }
 
   }
 
 
-  await safeRun(
+  /* =====================================================
+     CUSTOMERS
+     ===================================================== */
 
-    async()=>{
+  $("addCustomerBtn").onclick=async()=>{
 
-      await addDoc(
-        collection(
-          db,
-          'customers'
-        ),
-        {
+    const name=
+      $("cName").value.trim();
 
-          name,
-          phone,
-          address,
+    const phone=
+      $("cPhone").value.trim();
 
-          createdAt:
-          serverTimestamp()
+    const address=
+      $("cAddress").value.trim();
 
-        }
+
+    if(!name){
+
+      showMessage(
+        "cr",
+        "কাস্টমারের নাম লিখুন।",
+        "warn"
       );
-
-
-      await log(
-        'কাস্টমার যোগ',
-        name
-      );
-
-
-      $('cName').value='';
-      $('cPhone').value='';
-      $('cAddress').value='';
-
-
-      await all();
-
-    },
-
-    'কাস্টমার সফলভাবে যোগ হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   ADD DEVICE
-===================================================== */
-
-$('addDeviceBtn').onclick=
-async()=>{
-
-  const customerId=
-    $('dCustomer').value;
-
-
-  const name=
-    $('dName')
-      .value
-      .trim();
-
-
-  const deviceId=
-    $('dDeviceId')
-      .value
-      .trim();
-
-
-  if(
-    !customerId||
-    !name||
-    !deviceId
-  ){
-
-    showMessage(
-      'কাস্টমার, ডিভাইস নাম ও Device ID দিন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  await safeRun(
-
-    async()=>{
-
-      await addDoc(
-        collection(
-          db,
-          'devices'
-        ),
-        {
-
-          customerId,
-          name,
-          deviceId,
-
-          status:
-          'ACTIVE',
-
-          createdAt:
-          serverTimestamp()
-
-        }
-      );
-
-
-      await log(
-        'ডিভাইস যোগ',
-        `${name} / ${deviceId}`
-      );
-
-
-      $('dName').value='';
-      $('dDeviceId').value='';
-
-
-      await all();
-
-    },
-
-    'ডিভাইস সফলভাবে যোগ হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   ADD CONTRACT
-===================================================== */
-
-$('addContractBtn').onclick=
-async()=>{
-
-  const customerId=
-    $('kCustomer').value;
-
-
-  const deviceId=
-    $('kDevice').value;
-
-
-  const total=
-    Number(
-      $('kTotal').value||0
-    );
-
-
-  const down=
-    Number(
-      $('kDown').value||0
-    );
-
-
-  const count=
-    Number(
-      $('kCount').value||0
-    );
-
-
-  const installment=
-    Number(
-      $('kInstallment').value||0
-    );
-
-
-  if(
-    !customerId||
-    !deviceId||
-    total<=0||
-    count<=0
-  ){
-
-    showMessage(
-      'কাস্টমার, ডিভাইস, মোট মূল্য ও কিস্তির সংখ্যা দিন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  await safeRun(
-
-    async()=>{
-
-      await addDoc(
-        collection(
-          db,
-          'contracts'
-        ),
-        {
-
-          customerId,
-          deviceId,
-          total,
-          down,
-          count,
-          installment,
-
-          status:
-          'ACTIVE',
-
-          createdAt:
-          serverTimestamp()
-
-        }
-      );
-
-
-      await log(
-        'চুক্তি যোগ',
-        `${customerName(customerId)} / ${total} টাকা`
-      );
-
-
-      await all();
-
-    },
-
-    'চুক্তি সফলভাবে যোগ হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   ADD PAYMENT
-===================================================== */
-
-$('addPaymentBtn').onclick=
-async()=>{
-
-  const customerId=
-    $('pCustomer').value;
-
-
-  const contractId=
-    $('pContract').value;
-
-
-  const amount=
-    Number(
-      $('pAmount').value||0
-    );
-
-
-  const method=
-    $('pMethod').value;
-
-
-  const reference=
-    $('pRef')
-      .value
-      .trim();
-
-
-  const note=
-    $('pNote')
-      .value
-      .trim();
-
-
-  if(
-    !customerId||
-    !contractId||
-    amount<=0
-  ){
-
-    showMessage(
-      'কাস্টমার, চুক্তি ও পেমেন্টের পরিমাণ দিন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  await safeRun(
-
-    async()=>{
-
-      await addDoc(
-        collection(
-          db,
-          'payments'
-        ),
-        {
-
-          customerId,
-          contractId,
-          amount,
-          method,
-          reference,
-          note,
-
-          createdAt:
-          serverTimestamp()
-
-        }
-      );
-
-
-      await log(
-        'পেমেন্ট যোগ',
-        `${amount} টাকা / ${method}`
-      );
-
-
-      $('pAmount').value='';
-      $('pRef').value='';
-      $('pNote').value='';
-
-
-      await all();
-
-    },
-
-    'পেমেন্ট সফলভাবে যোগ হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   DEVICE COMMAND
-===================================================== */
-
-$('sendCommandBtn').onclick=
-async()=>{
-
-  const deviceId=
-    $('xDevice').value;
-
-
-  const command=
-    $('xCommand').value;
-
-
-  if(!deviceId){
-
-    showMessage(
-      'একটি ডিভাইস নির্বাচন করুন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  if(!confirm(
-
-    `${deviceName(deviceId)} ডিভাইসে ${command} কমান্ড পাঠাবেন?`
-
-  ))return;
-
-
-  await safeRun(
-
-    async()=>{
-
-      await addDoc(
-        collection(
-          db,
-          'lockCommands'
-        ),
-        {
-
-          deviceId,
-          command,
-
-          status:
-          'PENDING',
-
-          createdAt:
-          serverTimestamp(),
-
-          createdBy:
-          auth.currentUser?.uid||''
-
-        }
-      );
-
-
-      await log(
-        'ডিভাইস কমান্ড',
-        `${command} → ${deviceName(deviceId)}`
-      );
-
-
-      await all();
-
-    },
-
-    'কমান্ড PENDING হিসেবে পাঠানো হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   ENROLLMENT
-===================================================== */
-
-$('createEnrollmentBtn').onclick=
-async()=>{
-
-  const customerId=
-    $('eCustomer').value;
-
-
-  const deviceNameValue=
-    $('eDeviceName')
-      .value
-      .trim();
-
-
-  if(
-    !customerId||
-    !deviceNameValue
-  ){
-
-    showMessage(
-      'কাস্টমার ও ডিভাইসের নাম দিন।',
-      'warn'
-    );
-
-    return;
-
-  }
-
-
-  let token;
-
-
-  try{
-
-    token=
-      'ENR-' +
-
-      crypto
-        .randomUUID()
-        .replaceAll('-','')
-        .slice(0,20)
-        .toUpperCase();
-
-  }catch{
-
-    token=
-      'ENR-' +
-
-      Date.now()
-        .toString(36)
-        .toUpperCase() +
-
-      Math.random()
-        .toString(36)
-        .slice(2,12)
-        .toUpperCase();
-
-  }
-
-
-  await safeRun(
-
-    async()=>{
-
-      await addDoc(
-        collection(
-          db,
-          'deviceEnrollments'
-        ),
-        {
-
-          customerId,
-
-          deviceName:
-          deviceNameValue,
-
-          token,
-
-          status:
-          'PENDING',
-
-          createdAt:
-          serverTimestamp(),
-
-          createdBy:
-          auth.currentUser?.uid||''
-
-        }
-      );
-
-
-      await log(
-        'Enrollment token তৈরি',
-        `${deviceNameValue} / ${token}`
-      );
-
-
-      $('eDeviceName').value='';
-
-
-      const qrResult=
-        $('qrResult');
-
-
-      qrResult.classList.remove(
-        'hidden'
-      );
-
-
-      qrResult.className=
-        'msg ok';
-
-
-      qrResult.innerHTML=
-        `Token তৈরি হয়েছে:
-        <strong>
-        ${escapeHTML(token)}
-        </strong>`;
-
-
-      await all();
-
-    },
-
-    'Enrollment token সফলভাবে তৈরি হয়েছে।'
-
-  );
-
-};
-
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-$('refreshBtn').onclick=
-()=>{
-
-  all();
-
-};
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-onAuthStateChanged(
-
-  auth,
-
-  async u=>{
-
-    console.log(
-      'Auth state:',
-      u?.uid,
-      u?.email
-    );
-
-
-    if(
-      u &&
-      u.uid===UID
-    ){
-
-      $('loginPage')
-        .classList
-        .add('hidden');
-
-
-      $('app')
-        .classList
-        .remove('hidden');
-
-
-      await all();
-
 
       return;
 
     }
 
 
-    if(u){
+    await safeRun(
 
-      try{
+      async()=>{
 
-        await signOut(auth);
-
-      }catch(e){
-
-        console.error(e);
-
-      }
-
-
-      $('loginPage')
-        .classList
-        .remove('hidden');
-
-
-      $('app')
-        .classList
-        .add('hidden');
+        const ref=
+          await addDoc(
+            collection(db,"customers"),
+            {
+              name,
+              phone,
+              address,
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
 
 
-      loginMessage(
-        'এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।',
-        'error'
+        await audit(
+          "CUSTOMER_CREATED",
+          `Customer ID: ${ref.id}; Name: ${name}`
+        );
+
+
+        $("cName").value="";
+        $("cPhone").value="";
+        $("cAddress").value="";
+
+      },
+
+      "কাস্টমার সফলভাবে যুক্ত হয়েছে।",
+
+      "cr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DELETE CUSTOMER
+     ===================================================== */
+
+  window.deleteCustomer=async id=>{
+
+    if(!confirm(
+      "এই কাস্টমার মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"customers",id)
+        );
+
+
+        await audit(
+          "CUSTOMER_DELETED",
+          `Customer ID: ${id}`
+        );
+
+      },
+
+      "কাস্টমার মুছে ফেলা হয়েছে।",
+
+      "cr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DEVICES
+     ===================================================== */
+
+  $("addDeviceBtn").onclick=async()=>{
+
+    const customerId=
+      $("dCustomer").value;
+
+    const name=
+      $("dName").value.trim();
+
+    const deviceId=
+      $("dDeviceId").value.trim();
+
+
+    if(!customerId || !name || !deviceId){
+
+      showMessage(
+        "dr",
+        "কাস্টমার, ডিভাইসের নাম এবং Device ID দিন।",
+        "warn"
       );
-
 
       return;
 
     }
 
 
-    $('loginPage')
-      .classList
-      .remove('hidden');
+    await safeRun(
+
+      async()=>{
+
+        const ref=
+          await addDoc(
+            collection(db,"devices"),
+            {
+              customerId,
+              name,
+              deviceId,
+              status:"ACTIVE",
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
 
 
-    $('app')
-      .classList
-      .add('hidden');
-
-  }
-
-);
+        await audit(
+          "DEVICE_CREATED",
+          `Device ID: ${ref.id}; Device: ${deviceId}`
+        );
 
 
-console.log(
-  'স্বপ্নচূড়া Installment Manager loaded successfully.'
-);
+        $("dName").value="";
+        $("dDeviceId").value="";
 
-</script>
+      },
 
+      "ডিভাইস সফলভাবে যুক্ত হয়েছে।",
 
-<script>
+      "dr"
 
-window.addEventListener(
-  'error',
-  function(event){
-
-    console.error(
-      'Global JavaScript Error:',
-      event.error || event.message
     );
 
-    const el=
-      document.getElementById(
-        'loginMsg'
+  };
+
+
+  /* =====================================================
+     DELETE DEVICE
+     ===================================================== */
+
+  window.deleteDevice=async id=>{
+
+    if(!confirm(
+      "এই ডিভাইস মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"devices",id)
+        );
+
+
+        await audit(
+          "DEVICE_DELETED",
+          `Device ID: ${id}`
+        );
+
+      },
+
+      "ডিভাইস মুছে ফেলা হয়েছে।",
+
+      "dr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     CONTRACTS
+     ===================================================== */
+
+  $("addContractBtn").onclick=async()=>{
+
+    const customerId=
+      $("kCustomer").value;
+
+    const deviceId=
+      $("kDevice").value;
+
+    const total=
+      Number($("kTotal").value || 0);
+
+    const down=
+      Number($("kDown").value || 0);
+
+    const count=
+      Number($("kCount").value || 0);
+
+    const installment=
+      Number($("kInstallment").value || 0);
+
+
+    if(
+      !customerId ||
+      !deviceId ||
+      total<=0 ||
+      count<=0
+    ){
+
+      showMessage(
+        "kr",
+        "সব প্রয়োজনীয় তথ্য সঠিকভাবে দিন।",
+        "warn"
       );
 
-    if(el){
-
-      el.innerHTML=
-      `<div class="msg error">
-        JavaScript Error হয়েছে।
-        পেজটি আবার Refresh করুন।
-      </div>`;
+      return;
 
     }
 
+
+    await safeRun(
+
+      async()=>{
+
+        const ref=
+          await addDoc(
+            collection(db,"contracts"),
+            {
+              customerId,
+              deviceId,
+              total,
+              downPayment:down,
+              installmentCount:count,
+              installmentAmount:installment,
+              paidAmount:down,
+              status:"ACTIVE",
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
+
+
+        await audit(
+          "CONTRACT_CREATED",
+          `Contract ID: ${ref.id}`
+        );
+
+
+        $("kTotal").value="";
+        $("kDown").value="";
+        $("kCount").value="";
+        $("kInstallment").value="";
+
+      },
+
+      "কিস্তি চুক্তি সফলভাবে তৈরি হয়েছে।",
+
+      "kr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DELETE CONTRACT
+     ===================================================== */
+
+  window.deleteContract=async id=>{
+
+    if(!confirm(
+      "এই চুক্তি মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"contracts",id)
+        );
+
+
+        await audit(
+          "CONTRACT_DELETED",
+          `Contract ID: ${id}`
+        );
+
+      },
+
+      "চুক্তি মুছে ফেলা হয়েছে।",
+
+      "kr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     PAYMENTS
+     ===================================================== */
+
+  $("addPaymentBtn").onclick=async()=>{
+
+    const customerId=
+      $("pCustomer").value;
+
+    const contractId=
+      $("pContract").value;
+
+    const amount=
+      Number($("pAmount").value || 0);
+
+    const method=
+      $("pMethod").value;
+
+    const refNo=
+      $("pRef").value.trim();
+
+    const note=
+      $("pNote").value.trim();
+
+
+    if(
+      !customerId ||
+      !contractId ||
+      amount<=0
+    ){
+
+      showMessage(
+        "pr",
+        "কাস্টমার, চুক্তি এবং পেমেন্টের পরিমাণ দিন।",
+        "warn"
+      );
+
+      return;
+
+    }
+
+
+    await safeRun(
+
+      async()=>{
+
+        const ref=
+          await addDoc(
+            collection(db,"payments"),
+            {
+              customerId,
+              contractId,
+              amount,
+              method,
+              reference:refNo,
+              note,
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
+
+
+        await audit(
+          "PAYMENT_CREATED",
+          `Payment ID: ${ref.id}; Amount: ${amount}`
+        );
+
+
+        $("pAmount").value="";
+        $("pRef").value="";
+        $("pNote").value="";
+
+      },
+
+      "পেমেন্ট সফলভাবে সংরক্ষণ হয়েছে।",
+
+      "pr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DELETE PAYMENT
+     ===================================================== */
+
+  window.deletePayment=async id=>{
+
+    if(!confirm(
+      "এই পেমেন্ট রেকর্ড মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"payments",id)
+        );
+
+
+        await audit(
+          "PAYMENT_DELETED",
+          `Payment ID: ${id}`
+        );
+
+      },
+
+      "পেমেন্ট রেকর্ড মুছে ফেলা হয়েছে।",
+
+      "pr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     LOCK / UNLOCK COMMAND
+     ===================================================== */
+
+  $("sendCommandBtn").onclick=async()=>{
+
+    const deviceId=
+      $("xDevice").value;
+
+    const command=
+      $("xCommand").value;
+
+
+    if(!deviceId){
+
+      showMessage(
+        "xr",
+        "ডিভাইস নির্বাচন করুন।",
+        "warn"
+      );
+
+      return;
+
+    }
+
+
+    await safeRun(
+
+      async()=>{
+
+        const ref=
+          await addDoc(
+            collection(db,"lockCommands"),
+            {
+              deviceId,
+              command,
+              status:"PENDING",
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
+
+
+        await audit(
+          "LOCK_COMMAND_CREATED",
+          `Command ID: ${ref.id}; ${command}; Device: ${deviceId}`
+        );
+
+      },
+
+      "Command সফলভাবে PENDING অবস্থায় পাঠানো হয়েছে।",
+
+      "xr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DELETE COMMAND
+     ===================================================== */
+
+  window.deleteCommand=async id=>{
+
+    if(!confirm(
+      "এই Command record মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"lockCommands",id)
+        );
+
+
+        await audit(
+          "COMMAND_DELETED",
+          `Command ID: ${id}`
+        );
+
+      },
+
+      "Command record মুছে ফেলা হয়েছে।",
+
+      "xr"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     ENROLLMENT QR
+     ===================================================== */
+
+  $("createEnrollmentBtn").onclick=async()=>{
+
+    const customerId=
+      $("eCustomer").value;
+
+    const deviceName=
+      $("eDeviceName").value.trim();
+
+
+    if(!customerId || !deviceName){
+
+      showMessage(
+        "er",
+        "কাস্টমার এবং ডিভাইসের নাম দিন।",
+        "warn"
+      );
+
+      return;
+
+    }
+
+
+    await safeRun(
+
+      async()=>{
+
+        const enrollmentId=
+          randomId();
+
+
+        const payload={
+
+          type:
+            "SWAPNOCHURA_DEVICE_ENROLLMENT",
+
+          enrollmentId,
+
+          customerId,
+
+          deviceName,
+
+          projectId:
+            firebaseConfig.projectId
+
+        };
+
+
+        const ref=
+          await addDoc(
+            collection(db,"enrollments"),
+            {
+              enrollmentId,
+              customerId,
+              deviceName,
+              status:"CREATED",
+              payload:JSON.stringify(payload),
+              createdAt:serverTimestamp(),
+              createdBy:auth.currentUser?.uid || null
+            }
+          );
+
+
+        const qrBox=$("qrBox");
+
+        qrBox.innerHTML="";
+
+
+        if(window.QRCode){
+
+          new QRCode(
+            qrBox,
+            {
+              text:JSON.stringify(payload),
+              width:220,
+              height:220,
+              correctLevel:QRCode.CorrectLevel.M
+            }
+          );
+
+        }else{
+
+          qrBox.innerHTML=
+            "QR Library লোড হয়নি।";
+
+        }
+
+
+        $("qrResult").innerHTML=`
+
+          <div class="msg ok">
+
+            Enrollment QR তৈরি হয়েছে।
+
+          </div>
+
+          <div class="code-box">
+
+            ${escapeHTML(
+              JSON.stringify(
+                payload,
+                null,
+                2
+              )
+            )}
+
+          </div>
+
+        `;
+
+
+        await audit(
+          "ENROLLMENT_CREATED",
+          `Enrollment ID: ${ref.id}`
+        );
+
+      },
+
+      "Enrollment তৈরি হয়েছে।",
+
+      "er"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DELETE ENROLLMENT
+     ===================================================== */
+
+  window.deleteEnrollment=async id=>{
+
+    if(!confirm(
+      "এই Enrollment record মুছে ফেলতে চান?"
+    ))return;
+
+
+    await safeRun(
+
+      async()=>{
+
+        await deleteDoc(
+          doc(db,"enrollments",id)
+        );
+
+
+        await audit(
+          "ENROLLMENT_DELETED",
+          `Enrollment ID: ${id}`
+        );
+
+      },
+
+      "Enrollment record মুছে ফেলা হয়েছে।",
+
+      "er"
+
+    );
+
+  };
+
+
+  /* =====================================================
+     DROPDOWN HELPERS
+     ===================================================== */
+
+  function fillSelect(
+    id,
+    items,
+    placeholder,
+    valueKey,
+    labelFn
+  ){
+
+    const select=$(id);
+
+    if(!select)return;
+
+    select.innerHTML=
+      `<option value="">${placeholder}</option>`;
+
+
+    items.forEach(item=>{
+
+      const option=
+        document.createElement("option");
+
+      option.value=
+        item[valueKey];
+
+      option.textContent=
+        labelFn(item);
+
+      select.appendChild(option);
+
+    });
+
   }
-);
 
 
-window.addEventListener(
-  'unhandledrejection',
-  function(event){
+  function refreshDropdowns(){
 
-    console.error(
-      'Unhandled Promise Error:',
-      event.reason
+    fillSelect(
+      "dCustomer",
+      customers,
+      "কাস্টমার নির্বাচন করুন",
+      "id",
+      c=>`${c.name || "নাম নেই"} — ${c.phone || ""}`
+    );
+
+
+    fillSelect(
+      "kCustomer",
+      customers,
+      "কাস্টমার নির্বাচন করুন",
+      "id",
+      c=>`${c.name || "নাম নেই"} — ${c.phone || ""}`
+    );
+
+
+    fillSelect(
+      "pCustomer",
+      customers,
+      "কাস্টমার নির্বাচন করুন",
+      "id",
+      c=>`${c.name || "নাম নেই"} — ${c.phone || ""}`
+    );
+
+
+    fillSelect(
+      "eCustomer",
+      customers,
+      "কাস্টমার নির্বাচন করুন",
+      "id",
+      c=>`${c.name || "নাম নেই"} — ${c.phone || ""}`
+    );
+
+
+    fillSelect(
+      "xDevice",
+      devices,
+      "ডিভাইস নির্বাচন করুন",
+      "id",
+      d=>`${d.name || "ডিভাইস"} — ${d.deviceId || ""}`
+    );
+
+
+    fillSelect(
+      "kDevice",
+      devices,
+      "ডিভাইস নির্বাচন করুন",
+      "id",
+      d=>`${d.name || "ডিভাইস"} — ${d.deviceId || ""}`
+    );
+
+
+    fillSelect(
+      "pContract",
+      contracts,
+      "চুক্তি নির্বাচন করুন",
+      "id",
+      c=>`চুক্তি ${c.id.slice(0,8)} — ${money(c.total)} টাকা`
     );
 
   }
-);
+
+
+  /* =====================================================
+     CUSTOMER NAME
+     ===================================================== */
+
+  function customerName(id){
+
+    const c=
+      customers.find(
+        x=>x.id===id
+      );
+
+    return c?.name || "—";
+
+  }
+
+
+  /* =====================================================
+     DEVICE NAME
+     ===================================================== */
+
+  function deviceName(id){
+
+    const d=
+      devices.find(
+        x=>x.id===id
+      );
+
+    if(!d)return "—";
+
+    return `${d.name || "Device"} (${d.deviceId || ""})`;
+
+  }
+
+
+  /* =====================================================
+     RENDER CUSTOMERS
+     ===================================================== */
+
+  function renderCustomers(){
+
+    const tbody=
+      $("customerTable");
+
+    tbody.innerHTML="";
+
+
+    if(!customers.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="5" class="empty">
+            কোনো কাস্টমার নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    customers.forEach(c=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          <strong>
+            ${escapeHTML(c.name)}
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHTML(c.phone || "—")}
+        </td>
+
+        <td>
+          ${escapeHTML(c.address || "—")}
+        </td>
+
+        <td>
+          ${escapeHTML(dateValue(c.createdAt))}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteCustomer('${c.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER DEVICES
+     ===================================================== */
+
+  function renderDevices(){
+
+    const tbody=
+      $("deviceTable");
+
+    tbody.innerHTML="";
+
+
+    if(!devices.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="5" class="empty">
+            কোনো ডিভাইস নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    devices.forEach(d=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          ${escapeHTML(
+            customerName(d.customerId)
+          )}
+        </td>
+
+        <td>
+          <strong>
+            ${escapeHTML(d.name || "—")}
+          </strong>
+        </td>
+
+        <td>
+          <code>
+            ${escapeHTML(d.deviceId || "—")}
+          </code>
+        </td>
+
+        <td>
+
+          <span class="badge badge-green">
+            ${escapeHTML(d.status || "ACTIVE")}
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteDevice('${d.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER CONTRACTS
+     ===================================================== */
+
+  function renderContracts(){
+
+    const tbody=
+      $("contractTable");
+
+    tbody.innerHTML="";
+
+
+    if(!contracts.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="8" class="empty">
+            কোনো চুক্তি নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    contracts.forEach(c=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          ${escapeHTML(
+            customerName(c.customerId)
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            deviceName(c.deviceId)
+          )}
+        </td>
+
+        <td>
+          ${money(c.total)} টাকা
+        </td>
+
+        <td>
+          ${money(c.downPayment)} টাকা
+        </td>
+
+        <td>
+          ${escapeHTML(
+            String(c.installmentCount || 0)
+          )}
+        </td>
+
+        <td>
+          ${money(c.installmentAmount)} টাকা
+        </td>
+
+        <td>
+
+          <span class="badge badge-blue">
+            ${escapeHTML(c.status || "ACTIVE")}
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteContract('${c.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER PAYMENTS
+     ===================================================== */
+
+  function renderPayments(){
+
+    const tbody=
+      $("paymentTable");
+
+    tbody.innerHTML="";
+
+
+    if(!payments.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="7" class="empty">
+            কোনো পেমেন্ট নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    payments.forEach(p=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          ${escapeHTML(
+            customerName(p.customerId)
+          )}
+        </td>
+
+        <td>
+          <code>
+            ${escapeHTML(
+              String(p.contractId || "").slice(0,10)
+            )}
+          </code>
+        </td>
+
+        <td>
+          <strong>
+            ${money(p.amount)} টাকা
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHTML(p.method || "—")}
+        </td>
+
+        <td>
+          ${escapeHTML(p.reference || "—")}
+        </td>
+
+        <td>
+          ${escapeHTML(dateValue(p.createdAt))}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deletePayment('${p.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER COMMANDS
+     ===================================================== */
+
+  function renderCommands(){
+
+    const tbody=
+      $("commandTable");
+
+    tbody.innerHTML="";
+
+
+    if(!commands.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="5" class="empty">
+            কোনো Command নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    commands.forEach(c=>{
+
+      const status=
+        String(c.status || "PENDING");
+
+
+      const badge=
+        status==="COMPLETED"
+          ? "badge-green"
+          : status==="FAILED"
+            ? "badge-red"
+            : "badge-yellow";
+
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          ${escapeHTML(
+            deviceName(c.deviceId)
+          )}
+        </td>
+
+        <td>
+          <strong>
+            ${escapeHTML(c.command || "—")}
+          </strong>
+        </td>
+
+        <td>
+
+          <span class="badge ${badge}">
+            ${escapeHTML(status)}
+          </span>
+
+        </td>
+
+        <td>
+          ${escapeHTML(
+            dateValue(c.createdAt)
+          )}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteCommand('${c.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER ENROLLMENTS
+     ===================================================== */
+
+  function renderEnrollments(){
+
+    const tbody=
+      $("enrollmentTable");
+
+    tbody.innerHTML="";
+
+
+    if(!enrollments.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="6" class="empty">
+            কোনো Enrollment নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    enrollments.forEach(e=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          ${escapeHTML(
+            customerName(e.customerId)
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            e.deviceName || "—"
+          )}
+        </td>
+
+        <td>
+          <code>
+            ${escapeHTML(
+              e.enrollmentId || e.id
+            )}
+          </code>
+        </td>
+
+        <td>
+
+          <span class="badge badge-blue">
+            ${escapeHTML(
+              e.status || "CREATED"
+            )}
+          </span>
+
+        </td>
+
+        <td>
+          ${escapeHTML(
+            dateValue(e.createdAt)
+          )}
+        </td>
+
+        <td>
+
+          <button
+            class="btn btn-red"
+            onclick="deleteEnrollment('${e.id}')"
+          >
+            Delete
+          </button>
+
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     RENDER AUDIT
+     ===================================================== */
+
+  function renderAudit(){
+
+    const tbody=
+      $("auditTable");
+
+    tbody.innerHTML="";
+
+
+    if(!audits.length){
+
+      tbody.innerHTML=
+        `<tr>
+          <td colspan="4" class="empty">
+            কোনো Audit Log নেই।
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    audits.forEach(a=>{
+
+      const tr=
+        document.createElement("tr");
+
+
+      tr.innerHTML=`
+
+        <td>
+          <strong>
+            ${escapeHTML(a.action || "—")}
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHTML(
+            a.userEmail || a.userUid || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            a.details || "—"
+          )}
+        </td>
+
+        <td>
+          ${escapeHTML(
+            dateValue(a.createdAt)
+          )}
+        </td>
+
+      `;
+
+
+      tbody.appendChild(tr);
+
+    });
+
+  }
+
+
+  /* =====================================================
+     LOAD ALL DATA
+     ===================================================== */
+
+  async function all(){
+
+    if(
+      !auth.currentUser ||
+      auth.currentUser.uid !== UID
+    ){
+
+      return;
+
+    }
+
+
+    try{
+
+      customers=
+        await readCollection(
+          "customers"
+        );
+
+    }catch(e){
+
+      console.error(
+        "customers:",
+        e
+      );
+
+      customers=[];
+
+    }
+
+
+    try{
+
+      devices=
+        await readCollection(
+          "devices"
+        );
+
+    }catch(e){
+
+      console.error(
+        "devices:",
+        e
+      );
+
+      devices=[];
+
+    }
+
+
+    try{
+
+      contracts=
+        await readCollection(
+          "contracts"
+        );
+
+    }catch(e){
+
+      console.error(
+        "contracts:",
+        e
+      );
+
+      contracts=[];
+
+    }
+
+
+    try{
+
+      payments=
+        await readCollection(
+          "payments"
+        );
+
+    }catch(e){
+
+      console.error(
+        "payments:",
+        e
+      );
+
+      payments=[];
+
+    }
+
+
+    try{
+
+      commands=
+        await readCollection(
+          "lockCommands"
+        );
+
+    }catch(e){
+
+      console.error(
+        "lockCommands:",
+        e
+      );
+
+      commands=[];
+
+    }
+
+
+    try{
+
+      enrollments=
+        await readCollection(
+          "enrollments"
+        );
+
+    }catch(e){
+
+      console.error(
+        "enrollments:",
+        e
+      );
+
+      enrollments=[];
+
+    }
+
+
+    try{
+
+      audits=
+        await readCollection(
+          "auditLogs"
+        );
+
+    }catch(e){
+
+      console.error(
+        "auditLogs:",
+        e
+      );
+
+      audits=[];
+
+    }
+
+
+    /* COUNTERS */
+
+    $("customerCount").textContent=
+      customers.length.toLocaleString("bn-BD");
+
+    $("deviceCount").textContent=
+      devices.length.toLocaleString("bn-BD");
+
+    $("contractCount").textContent=
+      contracts.length.toLocaleString("bn-BD");
+
+    $("paymentCount").textContent=
+      payments.length.toLocaleString("bn-BD");
+
+
+    /* RENDER */
+
+    renderCustomers();
+
+    renderDevices();
+
+    renderContracts();
+
+    renderPayments();
+
+    renderCommands();
+
+    renderEnrollments();
+
+    renderAudit();
+
+
+    /* DROPDOWNS */
+
+    refreshDropdowns();
+
+  }
+
+
+  /* =====================================================
+     CUSTOMER CHANGE → DEVICES
+     ===================================================== */
+
+  $("kCustomer").addEventListener(
+    "change",
+    ()=>{
+
+      const customerId=
+        $("kCustomer").value;
+
+      const filtered=
+        customerId
+          ? devices.filter(
+              d=>d.customerId===customerId
+            )
+          : devices;
+
+
+      fillSelect(
+        "kDevice",
+        filtered,
+        "ডিভাইস নির্বাচন করুন",
+        "id",
+        d=>`${d.name || "Device"} — ${d.deviceId || ""}`
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     PAYMENT CUSTOMER → CONTRACTS
+     ===================================================== */
+
+  $("pCustomer").addEventListener(
+    "change",
+    ()=>{
+
+      const customerId=
+        $("pCustomer").value;
+
+      const filtered=
+        customerId
+          ? contracts.filter(
+              c=>c.customerId===customerId
+            )
+          : contracts;
+
+
+      fillSelect(
+        "pContract",
+        filtered,
+        "চুক্তি নির্বাচন করুন",
+        "id",
+        c=>`চুক্তি ${c.id.slice(0,8)} — ${money(c.total)} টাকা`
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     REFRESH
+     ===================================================== */
+
+  $("refreshBtn").onclick=async()=>{
+
+    showMessage(
+      "ar",
+      "ডেটা Refresh হচ্ছে...",
+      "info"
+    );
+
+
+    try{
+
+      await all();
+
+
+      showMessage(
+        "ar",
+        "Audit Log Refresh হয়েছে।",
+        "ok"
+      );
+
+
+    }catch(e){
+
+      showMessage(
+        "ar",
+        firebaseBanglaError(
+          e,
+          "Refresh করা যায়নি।"
+        ),
+        "error"
+      );
+
+    }
+
+  };
+
+
+  /* =====================================================
+     GLOBAL JS ERROR
+     ===================================================== */
+
+  window.addEventListener(
+    "error",
+    event=>{
+
+      console.error(
+        "Global JS Error:",
+        event.error || event.message
+      );
+
+    }
+  );
+
+
+  window.addEventListener(
+    "unhandledrejection",
+    event=>{
+
+      console.error(
+        "Unhandled Promise Error:",
+        event.reason
+      );
+
+    }
+  );
+
 
 </script>
 
