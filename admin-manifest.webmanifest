@@ -10,12 +10,13 @@
   "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#073b8f",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "./logo.png",
       "sizes": "1536x1536",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
