@@ -1,1 +1,28 @@
-
+{
+  "name": "স্বপ্নচূড়া Admin",
+  "short_name": "স্বপ্নচূড়া",
+  "description": "স্বপ্নচূড়া Installment Management Admin Panel",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f8fc",
+  "theme_color": "#073b8f",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
