@@ -1,1 +1,5103 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
+  <title>স্বপ্নচূড়া | Installment Manager</title>
+
+  <!-- ===== PWA / APP ICON ===== -->
+  <link rel="manifest" href="admin-manifest.webmanifest">
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+
+  <meta name="theme-color" content="#073b8f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="স্বপ্নচূড়া Admin">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="স্বপ্নচূড়া Admin">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      font-family:
+        "Noto Sans Bengali",
+        "Noto Sans",
+        Arial,
+        sans-serif;
+      background:#f4f7fb;
+      color:#172033;
+      min-height:100vh;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    /* ================= LOGIN ================= */
+
+    #loginPage{
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+      background:
+        linear-gradient(
+          135deg,
+          #073b8f,
+          #0b5ed7,
+          #4f8df7
+        );
+    }
+
+    .login-box{
+      width:100%;
+      max-width:430px;
+      background:#fff;
+      border-radius:22px;
+      padding:30px 25px;
+      box-shadow:0 20px 60px rgba(0,0,0,.20);
+      text-align:center;
+    }
+
+    .login-logo{
+      width:105px;
+      height:105px;
+      object-fit:contain;
+      border-radius:20px;
+      margin-bottom:15px;
+    }
+
+    .login-box h1{
+      font-size:25px;
+      color:#073b8f;
+      margin-bottom:5px;
+    }
+
+    .login-box p{
+      color:#697386;
+      margin-bottom:24px;
+    }
+
+    .field{
+      text-align:left;
+      margin-bottom:15px;
+    }
+
+    .field label{
+      display:block;
+      font-weight:700;
+      margin-bottom:7px;
+      color:#344054;
+    }
+
+    .field input,
+    .field select,
+    .field textarea{
+      width:100%;
+      border:1px solid #d8dee9;
+      border-radius:11px;
+      padding:12px 13px;
+      outline:none;
+      background:#fff;
+    }
+
+    .field textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus{
+      border-color:#0b5ed7;
+      box-shadow:0 0 0 3px rgba(11,94,215,.10);
+    }
+
+    .btn{
+      border:0;
+      border-radius:10px;
+      padding:11px 16px;
+      font-weight:700;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .btn-primary{
+      background:#073b8f;
+      color:#fff;
+    }
+
+    .btn-success{
+      background:#198754;
+      color:#fff;
+    }
+
+    .btn-danger{
+      background:#dc3545;
+      color:#fff;
+    }
+
+    .btn-warning{
+      background:#ffc107;
+      color:#111;
+    }
+
+    .btn-secondary{
+      background:#667085;
+      color:#fff;
+    }
+
+    .btn-light{
+      background:#eef2f7;
+      color:#172033;
+    }
+
+    .full{
+      width:100%;
+    }
+
+    .login-error{
+      background:#fff0f0;
+      color:#b42318;
+      border:1px solid #ffd0d0;
+      padding:10px;
+      border-radius:9px;
+      margin-bottom:15px;
+      display:none;
+      text-align:left;
+    }
+
+    .login-loading{
+      margin-top:12px;
+      color:#667085;
+      display:none;
+    }
+
+    /* ================= APP ================= */
+
+    #appPage{
+      display:none;
+      min-height:100vh;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:#073b8f;
+      color:#fff;
+      min-height:65px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 18px;
+      box-shadow:0 3px 15px rgba(0,0,0,.12);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .brand img{
+      width:43px;
+      height:43px;
+      border-radius:9px;
+      object-fit:contain;
+      background:#fff;
+    }
+
+    .brand-title{
+      font-size:19px;
+      font-weight:800;
+    }
+
+    .brand-sub{
+      font-size:11px;
+      opacity:.8;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .menu-btn{
+      display:none;
+      border:0;
+      background:rgba(255,255,255,.14);
+      color:#fff;
+      font-size:24px;
+      width:42px;
+      height:42px;
+      border-radius:8px;
+    }
+
+    .logout-btn{
+      border:0;
+      background:#fff;
+      color:#073b8f;
+      padding:9px 13px;
+      border-radius:9px;
+      font-weight:800;
+    }
+
+    .layout{
+      display:flex;
+      min-height:calc(100vh - 65px);
+    }
+
+    .sidebar{
+      width:245px;
+      background:#fff;
+      border-right:1px solid #e4e7ec;
+      padding:15px 10px;
+      flex-shrink:0;
+    }
+
+    .nav-btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:0;
+      background:transparent;
+      padding:12px 13px;
+      margin-bottom:4px;
+      border-radius:9px;
+      text-align:left;
+      color:#344054;
+      font-weight:700;
+    }
+
+    .nav-btn:hover{
+      background:#eef5ff;
+      color:#073b8f;
+    }
+
+    .nav-btn.active{
+      background:#073b8f;
+      color:#fff;
+    }
+
+    .content{
+      flex:1;
+      padding:20px;
+      min-width:0;
+    }
+
+    .page{
+      display:none;
+    }
+
+    .page.active{
+      display:block;
+    }
+
+    .page-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .page-head h2{
+      font-size:23px;
+      color:#172033;
+    }
+
+    .page-head p{
+      color:#667085;
+      margin-top:3px;
+      font-size:13px;
+    }
+
+    /* ================= CARDS ================= */
+
+    .stats{
+      display:grid;
+      grid-template-columns:
+        repeat(4,minmax(0,1fr));
+      gap:15px;
+      margin-bottom:20px;
+    }
+
+    .stat-card{
+      background:#fff;
+      border:1px solid #e7eaf0;
+      border-radius:15px;
+      padding:18px;
+      box-shadow:0 3px 12px rgba(16,24,40,.04);
+    }
+
+    .stat-label{
+      color:#667085;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+
+    .stat-number{
+      font-size:28px;
+      font-weight:900;
+      color:#073b8f;
+    }
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .panel{
+      background:#fff;
+      border:1px solid #e7eaf0;
+      border-radius:15px;
+      padding:18px;
+      box-shadow:0 3px 12px rgba(16,24,40,.04);
+      margin-bottom:18px;
+    }
+
+    .panel h3{
+      font-size:17px;
+      margin-bottom:15px;
+    }
+
+    /* ================= TOOLBAR ================= */
+
+    .toolbar{
+      background:#fff;
+      border:1px solid #e7eaf0;
+      padding:13px;
+      border-radius:13px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:15px;
+    }
+
+    .toolbar input,
+    .toolbar select{
+      padding:10px 12px;
+      border:1px solid #d8dee9;
+      border-radius:9px;
+      min-width:190px;
+      outline:none;
+    }
+
+    /* ================= TABLE ================= */
+
+    .table-wrap{
+      overflow:auto;
+      background:#fff;
+      border:1px solid #e7eaf0;
+      border-radius:13px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:800px;
+    }
+
+    th,
+    td{
+      padding:12px;
+      border-bottom:1px solid #eef0f3;
+      text-align:left;
+      vertical-align:middle;
+      font-size:13px;
+    }
+
+    th{
+      background:#f8fafc;
+      color:#475467;
+      font-weight:800;
+      position:sticky;
+      top:0;
+      z-index:2;
+    }
+
+    tr:hover td{
+      background:#fbfcfe;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:5px 8px;
+      border-radius:20px;
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .badge-green{
+      background:#e8f7ee;
+      color:#087443;
+    }
+
+    .badge-red{
+      background:#ffebeb;
+      color:#b42318;
+    }
+
+    .badge-yellow{
+      background:#fff5cc;
+      color:#8a5b00;
+    }
+
+    .badge-blue{
+      background:#e8f1ff;
+      color:#175cd3;
+    }
+
+    .actions{
+      display:flex;
+      gap:5px;
+      flex-wrap:wrap;
+    }
+
+    .actions .btn{
+      padding:7px 9px;
+      font-size:11px;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      z-index:3000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:15px;
+    }
+
+    .modal.show{
+      display:flex;
+    }
+
+    .modal-box{
+      width:100%;
+      max-width:700px;
+      max-height:92vh;
+      overflow:auto;
+      background:#fff;
+      border-radius:17px;
+      padding:20px;
+    }
+
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+      gap:10px;
+    }
+
+    .modal-head h3{
+      font-size:20px;
+    }
+
+    .close-btn{
+      width:35px;
+      height:35px;
+      border:0;
+      border-radius:50%;
+      background:#eef2f6;
+      font-size:21px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:
+        repeat(2,minmax(0,1fr));
+      gap:13px;
+    }
+
+    .form-full{
+      grid-column:1/-1;
+    }
+
+    .form-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+      margin-top:18px;
+    }
+
+    /* ================= EMPTY / LOADING ================= */
+
+    .loading{
+      padding:30px;
+      text-align:center;
+      color:#667085;
+    }
+
+    .empty{
+      padding:30px;
+      text-align:center;
+      color:#667085;
+    }
+
+    .error-box{
+      padding:15px;
+      border-radius:10px;
+      background:#fff0f0;
+      border:1px solid #ffd0d0;
+      color:#b42318;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:
+          repeat(2,minmax(0,1fr));
+      }
+
+      .dashboard-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:700px){
+      .topbar{
+        padding:9px 12px;
+      }
+
+      .menu-btn{
+        display:block;
+      }
+
+      .brand-title{
+        font-size:16px;
+      }
+
+      .brand-sub{
+        display:none;
+      }
+
+      .sidebar{
+        position:fixed;
+        top:65px;
+        bottom:0;
+        left:-270px;
+        z-index:2000;
+        width:255px;
+        transition:.25s;
+        box-shadow:10px 0 30px rgba(0,0,0,.15);
+      }
+
+      .sidebar.open{
+        left:0;
+      }
+
+      .content{
+        padding:13px;
+      }
+
+      .stats{
+        gap:10px;
+      }
+
+      .stat-card{
+        padding:13px;
+      }
+
+      .stat-number{
+        font-size:23px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .form-full{
+        grid-column:auto;
+      }
+
+      .logout-btn{
+        padding:8px 9px;
+        font-size:11px;
+      }
+    }
+
+    @media(max-width:430px){
+      .stats{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .stat-label{
+        font-size:11px;
+      }
+
+      .stat-number{
+        font-size:21px;
+      }
+
+      .page-head h2{
+        font-size:19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN
+========================================================= -->
+
+<section id="loginPage">
+
+  <div class="login-box">
+
+    <img
+      src="logo.png"
+      class="login-logo"
+      alt="স্বপ্নচূড়া"
+      onerror="this.style.display='none'"
+    >
+
+    <h1>স্বপ্নচূড়া</h1>
+
+    <p>Installment Management Admin Panel</p>
+
+    <div id="loginError" class="login-error"></div>
+
+    <form id="loginForm">
+
+      <div class="field">
+        <label>ইমেইল</label>
+        <input
+          id="loginEmail"
+          type="email"
+          autocomplete="username"
+          placeholder="Admin Email"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label>পাসওয়ার্ড</label>
+        <input
+          id="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Password"
+          required
+        >
+      </div>
+
+      <button
+        id="loginBtn"
+        class="btn btn-primary full"
+        type="submit"
+      >
+        লগইন
+      </button>
+
+      <div id="loginLoading" class="login-loading">
+        লগইন হচ্ছে...
+      </div>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     ADMIN APP
+========================================================= -->
+
+<section id="appPage">
+
+  <header class="topbar">
+
+    <div class="brand">
+
+      <button
+        class="menu-btn"
+        id="menuBtn"
+        type="button"
+      >
+        ☰
+      </button>
+
+      <img
+        src="logo.png"
+        alt="স্বপ্নচূড়া"
+      >
+
+      <div>
+        <div class="brand-title">
+          স্বপ্নচূড়া Admin
+        </div>
+
+        <div class="brand-sub">
+          Installment Management
+        </div>
+      </div>
+
+    </div>
+
+    <div class="top-actions">
+
+      <span
+        id="adminEmailDisplay"
+        style="font-size:11px;opacity:.85"
+      ></span>
+
+      <button
+        class="logout-btn"
+        id="logoutBtn"
+        type="button"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="layout">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <button
+        class="nav-btn active"
+        data-page="dashboard"
+      >
+        📊 Dashboard
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="customers"
+      >
+        👥 Customers
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="devices"
+      >
+        📱 Devices
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="contracts"
+      >
+        📄 Contracts
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="payments"
+      >
+        💰 Payments
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="locks"
+      >
+        🔐 Lock / Unlock
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="enrollments"
+      >
+        📲 QR Enrollment
+      </button>
+
+      <button
+        class="nav-btn"
+        data-page="audit"
+      >
+        📝 Audit Log
+      </button>
+
+    </aside>
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <main class="content">
+
+
+      <!-- =================================================
+           DASHBOARD
+      ================================================== -->
+
+      <section
+        class="page active"
+        id="page-dashboard"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Dashboard</h2>
+            <p>
+              স্বপ্নচূড়া Installment Management Overview
+            </p>
+          </div>
+
+          <button
+            class="btn btn-light"
+            id="refreshDashboard"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div class="stats">
+
+          <div class="stat-card">
+            <div class="stat-label">
+              মোট Customer
+            </div>
+
+            <div
+              class="stat-number"
+              id="statCustomers"
+            >
+              0
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              মোট Device
+            </div>
+
+            <div
+              class="stat-number"
+              id="statDevices"
+            >
+              0
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              মোট Contract
+            </div>
+
+            <div
+              class="stat-number"
+              id="statContracts"
+            >
+              0
+            </div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-label">
+              মোট Payment
+            </div>
+
+            <div
+              class="stat-number"
+              id="statPayments"
+            >
+              0
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <div class="panel">
+
+            <h3>
+              🔐 Device Status
+            </h3>
+
+            <div id="deviceStatusSummary">
+              Loading...
+            </div>
+
+          </div>
+
+
+          <div class="panel">
+
+            <h3>
+              💰 Payment Summary
+            </h3>
+
+            <div id="paymentSummary">
+              Loading...
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <h3>
+            🕐 সাম্প্রতিক Audit Activity
+          </h3>
+
+          <div id="recentAudit">
+            Loading...
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           CUSTOMERS
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-customers"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Customers</h2>
+            <p>Customer management</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            id="addCustomerBtn"
+          >
+            + নতুন Customer
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="customerSearch"
+            type="search"
+            placeholder="Customer খুঁজুন..."
+          >
+
+          <button
+            class="btn btn-light"
+            id="refreshCustomers"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="customersTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           DEVICES
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-devices"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Devices</h2>
+            <p>Device management</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            id="addDeviceBtn"
+          >
+            + নতুন Device
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="deviceSearch"
+            type="search"
+            placeholder="Device / IMEI খুঁজুন..."
+          >
+
+          <select id="deviceStatusFilter">
+            <option value="">সব Status</option>
+            <option value="locked">Locked</option>
+            <option value="unlocked">Unlocked</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+
+          <button
+            class="btn btn-light"
+            id="refreshDevices"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="devicesTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           CONTRACTS
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-contracts"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Contracts</h2>
+            <p>Installment contract management</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            id="addContractBtn"
+          >
+            + নতুন Contract
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="contractSearch"
+            type="search"
+            placeholder="Contract / Customer খুঁজুন..."
+          >
+
+          <select id="contractStatusFilter">
+            <option value="">সব Status</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="overdue">Overdue</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+
+          <button
+            class="btn btn-light"
+            id="refreshContracts"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="contractsTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           PAYMENTS
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-payments"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Payments</h2>
+            <p>Payment records</p>
+          </div>
+
+          <button
+            class="btn btn-primary"
+            id="addPaymentBtn"
+          >
+            + নতুন Payment
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="paymentSearch"
+            type="search"
+            placeholder="Payment / Customer খুঁজুন..."
+          >
+
+          <select id="paymentStatusFilter">
+            <option value="">সব Status</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+            <option value="verified">Verified</option>
+          </select>
+
+          <button
+            class="btn btn-light"
+            id="refreshPayments"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="paymentsTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           LOCKS
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-locks"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Lock / Unlock</h2>
+            <p>Device command management</p>
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Device ID</label>
+              <input
+                id="lockDeviceId"
+                placeholder="Device ID"
+              >
+            </div>
+
+            <div class="field">
+              <label>Command</label>
+
+              <select id="lockCommand">
+                <option value="lock">
+                  Lock
+                </option>
+
+                <option value="unlock">
+                  Unlock
+                </option>
+              </select>
+
+            </div>
+
+            <div class="field form-full">
+              <label>Reason</label>
+
+              <textarea
+                id="lockReason"
+                placeholder="Command reason"
+              ></textarea>
+            </div>
+
+          </div>
+
+          <button
+            class="btn btn-danger"
+            id="sendLockCommand"
+          >
+            🔐 Send Lock Command
+          </button>
+
+          <button
+            class="btn btn-success"
+            id="sendUnlockCommand"
+          >
+            🔓 Send Unlock Command
+          </button>
+
+        </div>
+
+
+        <div
+          id="lockCommandsTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           ENROLLMENTS
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-enrollments"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>QR Enrollment</h2>
+            <p>Device enrollment records</p>
+          </div>
+
+          <a
+            href="enroll.html"
+            class="btn btn-primary"
+            target="_blank"
+          >
+            📲 Enrollment Page
+          </a>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="enrollmentSearch"
+            type="search"
+            placeholder="Enrollment / Device খুঁজুন..."
+          >
+
+          <button
+            class="btn btn-light"
+            id="refreshEnrollments"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div
+          id="enrollmentsTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           AUDIT LOG
+      ================================================== -->
+
+      <section
+        class="page"
+        id="page-audit"
+      >
+
+        <div class="page-head">
+
+          <div>
+            <h2>Audit Log</h2>
+            <p>System activity history</p>
+          </div>
+
+          <button
+            class="btn btn-light"
+            id="refreshAudit"
+          >
+            🔄 Refresh
+          </button>
+
+        </div>
+
+
+        <div class="toolbar">
+
+          <input
+            id="auditSearch"
+            type="search"
+            placeholder="Activity / User / Action খুঁজুন..."
+          >
+
+        </div>
+
+
+        <div
+          id="auditTable"
+          class="table-wrap"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     MODAL
+========================================================= -->
+
+<div
+  class="modal"
+  id="mainModal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h3 id="modalTitle">
+        Form
+      </h3>
+
+      <button
+        class="close-btn"
+        id="modalClose"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="modalBody"></div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     FIREBASE
+========================================================= -->
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+  import {
+    getFirestore,
+    collection,
+    getDocs,
+    getDoc,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+    query,
+    orderBy,
+    limit,
+    serverTimestamp
+  } from
+  "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+  /* ========================================================
+     FIREBASE CONFIG
+  ======================================================== */
+
+  const firebaseConfig = {
+
+    apiKey:
+      "AIzaSyCzkjmG0TeEmGZ6xrSBoADSRK7XcczgIPg",
+
+    authDomain:
+      "swapnochura-lock-management.firebaseapp.com",
+
+    projectId:
+      "swapnochura-lock-management",
+
+    storageBucket:
+      "swapnochura-lock-management.firebasestorage.app",
+
+    messagingSenderId:
+      "414941510200",
+
+    appId:
+      "1:414941510200:web:2fabf0cc954c39a4e844cd",
+
+    measurementId:
+      "G-13FNHDYZ7M"
+
+  };
+
+
+  const app =
+    initializeApp(firebaseConfig);
+
+  const auth =
+    getAuth(app);
+
+  const db =
+    getFirestore(app);
+
+
+  /* ========================================================
+     ADMIN
+  ======================================================== */
+
+  const ADMIN_EMAIL =
+    "mdrazibulislam240@gmail.com";
+
+  const ADMIN_UID =
+    "L425ICXf7JVWjGconcbFoqG1vft1";
+
+
+  /* ========================================================
+     ELEMENTS
+  ======================================================== */
+
+  const loginPage =
+    document.getElementById("loginPage");
+
+  const appPage =
+    document.getElementById("appPage");
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const loginError =
+    document.getElementById("loginError");
+
+  const loginLoading =
+    document.getElementById("loginLoading");
+
+  const loginBtn =
+    document.getElementById("loginBtn");
+
+  const logoutBtn =
+    document.getElementById("logoutBtn");
+
+  const adminEmailDisplay =
+    document.getElementById("adminEmailDisplay");
+
+  const sidebar =
+    document.getElementById("sidebar");
+
+  const menuBtn =
+    document.getElementById("menuBtn");
+
+
+  /* ========================================================
+     UTILITIES
+  ======================================================== */
+
+  function esc(value){
+
+    if(value === null ||
+       value === undefined){
+
+      return "";
+
+    }
+
+    return String(value)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
+
+  }
+
+
+  function formatDate(value){
+
+    if(!value){
+      return "-";
+    }
+
+    try{
+
+      let d;
+
+      if(
+        value &&
+        typeof value.toDate === "function"
+      ){
+
+        d = value.toDate();
+
+      }else{
+
+        d = new Date(value);
+
+      }
+
+      if(isNaN(d.getTime())){
+        return "-";
+      }
+
+      return d.toLocaleString(
+        "bn-BD",
+        {
+          year:"numeric",
+          month:"short",
+          day:"numeric",
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+    }catch(e){
+
+      return "-";
+
+    }
+
+  }
+
+
+  function showError(message){
+
+    loginError.textContent =
+      message;
+
+    loginError.style.display =
+      "block";
+
+  }
+
+
+  function hideError(){
+
+    loginError.style.display =
+      "none";
+
+  }
+
+
+  function collectionDataToArray(snapshot){
+
+    return snapshot.docs.map(
+      item => ({
+        id:item.id,
+        ...item.data()
+      })
+    );
+
+  }
+
+
+  function statusBadge(value){
+
+    const v =
+      String(value || "")
+        .toLowerCase();
+
+    if(
+      v === "active" ||
+      v === "paid" ||
+      v === "verified" ||
+      v === "unlocked" ||
+      v === "completed"
+    ){
+
+      return `
+        <span class="badge badge-green">
+          ${esc(value)}
+        </span>
+      `;
+
+    }
+
+    if(
+      v === "locked" ||
+      v === "failed" ||
+      v === "cancelled" ||
+      v === "inactive"
+    ){
+
+      return `
+        <span class="badge badge-red">
+          ${esc(value)}
+        </span>
+      `;
+
+    }
+
+    if(
+      v === "pending" ||
+      v === "overdue"
+    ){
+
+      return `
+        <span class="badge badge-yellow">
+          ${esc(value)}
+        </span>
+      `;
+
+    }
+
+    return `
+      <span class="badge badge-blue">
+        ${esc(value || "N/A")}
+      </span>
+    `;
+
+  }
+
+
+  /* ========================================================
+     AUTH
+  ======================================================== */
+
+  loginForm.addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+      hideError();
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value;
+
+      if(!email || !password){
+
+        showError(
+          "ইমেইল এবং পাসওয়ার্ড দিন।"
+        );
+
+        return;
+
+      }
+
+      loginBtn.disabled = true;
+
+      loginLoading.style.display =
+        "block";
+
+      try{
+
+        const credential =
+          await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+
+        const user =
+          credential.user;
+
+        if(
+          user.email !== ADMIN_EMAIL &&
+          user.uid !== ADMIN_UID
+        ){
+
+          await signOut(auth);
+
+          throw new Error(
+            "এই অ্যাকাউন্টের Admin Access নেই।"
+          );
+
+        }
+
+      }catch(error){
+
+        console.error(error);
+
+        showError(
+          firebaseErrorMessage(error)
+        );
+
+      }finally{
+
+        loginBtn.disabled = false;
+
+        loginLoading.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+  function firebaseErrorMessage(error){
+
+    const code =
+      error?.code || "";
+
+    if(
+      code.includes(
+        "invalid-credential"
+      ) ||
+      code.includes(
+        "wrong-password"
+      ) ||
+      code.includes(
+        "user-not-found"
+      )
+    ){
+
+      return "ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।";
+
+    }
+
+    if(
+      code.includes(
+        "too-many-requests"
+      )
+    ){
+
+      return "অনেকবার চেষ্টা হয়েছে। কিছুক্ষণ পরে আবার চেষ্টা করুন।";
+
+    }
+
+    return error?.message ||
+      "Login করতে সমস্যা হয়েছে।";
+
+  }
+
+
+  logoutBtn.addEventListener(
+    "click",
+    async () => {
+
+      await signOut(auth);
+
+    }
+  );
+
+
+  onAuthStateChanged(
+    auth,
+    async user => {
+
+      if(!user){
+
+        loginPage.style.display =
+          "flex";
+
+        appPage.style.display =
+          "none";
+
+        return;
+
+      }
+
+      const allowed =
+        user.email === ADMIN_EMAIL ||
+        user.uid === ADMIN_UID;
+
+      if(!allowed){
+
+        await signOut(auth);
+
+        return;
+
+      }
+
+      loginPage.style.display =
+        "none";
+
+      appPage.style.display =
+        "block";
+
+      adminEmailDisplay.textContent =
+        user.email || "";
+
+      await loadDashboard();
+
+    }
+  );
+
+
+  /* ========================================================
+     NAVIGATION
+  ======================================================== */
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        async () => {
+
+          const page =
+            button.dataset.page;
+
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach(
+              b => b.classList.remove(
+                "active"
+              )
+            );
+
+          button.classList.add(
+            "active"
+          );
+
+          document
+            .querySelectorAll(".page")
+            .forEach(
+              p => p.classList.remove(
+                "active"
+              )
+            );
+
+          document
+            .getElementById(
+              "page-" + page
+            )
+            .classList.add(
+              "active"
+            );
+
+          sidebar.classList.remove(
+            "open"
+          );
+
+          await loadPage(page);
+
+        }
+      );
+
+    });
+
+
+  menuBtn.addEventListener(
+    "click",
+    () => {
+
+      sidebar.classList.toggle(
+        "open"
+      );
+
+    }
+  );
+
+
+  async function loadPage(page){
+
+    try{
+
+      if(page === "dashboard")
+        await loadDashboard();
+
+      if(page === "customers")
+        await loadCustomers();
+
+      if(page === "devices")
+        await loadDevices();
+
+      if(page === "contracts")
+        await loadContracts();
+
+      if(page === "payments")
+        await loadPayments();
+
+      if(page === "locks")
+        await loadLockCommands();
+
+      if(page === "enrollments")
+        await loadEnrollments();
+
+      if(page === "audit")
+        await loadAudit();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "ডাটা লোড করতে সমস্যা হয়েছে। Firebase Rules এবং collection name পরীক্ষা করুন।"
+      );
+
+    }
+
+  }
+
+
+  /* ========================================================
+     DASHBOARD
+  ======================================================== */
+
+  async function loadDashboard(){
+
+    try{
+
+      const [
+        customers,
+        devices,
+        contracts,
+        payments
+      ] = await Promise.all([
+
+        getDocs(
+          collection(db,"customers")
+        ),
+
+        getDocs(
+          collection(db,"devices")
+        ),
+
+        getDocs(
+          collection(db,"contracts")
+        ),
+
+        getDocs(
+          collection(db,"payments")
+        )
+
+      ]);
+
+      document.getElementById(
+        "statCustomers"
+      ).textContent =
+        customers.size;
+
+      document.getElementById(
+        "statDevices"
+      ).textContent =
+        devices.size;
+
+      document.getElementById(
+        "statContracts"
+      ).textContent =
+        contracts.size;
+
+      document.getElementById(
+        "statPayments"
+      ).textContent =
+        payments.size;
+
+
+      let locked = 0;
+      let unlocked = 0;
+      let active = 0;
+
+      devices.forEach(
+        d => {
+
+          const x = d.data();
+
+          const status =
+            String(
+              x.status ||
+              x.lockStatus ||
+              ""
+            ).toLowerCase();
+
+          if(status === "locked")
+            locked++;
+
+          if(status === "unlocked")
+            unlocked++;
+
+          if(
+            status === "active" ||
+            x.active === true
+          )
+            active++;
+
+        }
+      );
+
+
+      document.getElementById(
+        "deviceStatusSummary"
+      ).innerHTML = `
+
+        <div style="
+          display:grid;
+          grid-template-columns:
+          repeat(3,1fr);
+          gap:10px;
+        ">
+
+          <div>
+            <b>${locked}</b>
+            <small style="display:block">
+              Locked
+            </small>
+          </div>
+
+          <div>
+            <b>${unlocked}</b>
+            <small style="display:block">
+              Unlocked
+            </small>
+          </div>
+
+          <div>
+            <b>${active}</b>
+            <small style="display:block">
+              Active
+            </small>
+          </div>
+
+        </div>
+      `;
+
+
+      let paid = 0;
+      let pending = 0;
+      let totalAmount = 0;
+
+      payments.forEach(
+        p => {
+
+          const x = p.data();
+
+          const amount =
+            Number(
+              x.amount ||
+              x.paidAmount ||
+              x.paymentAmount ||
+              0
+            );
+
+          totalAmount += amount;
+
+          const status =
+            String(
+              x.status || ""
+            ).toLowerCase();
+
+          if(
+            status === "paid" ||
+            status === "verified"
+          )
+            paid++;
+
+          if(status === "pending")
+            pending++;
+
+        }
+      );
+
+
+      document.getElementById(
+        "paymentSummary"
+      ).innerHTML = `
+
+        <div style="
+          display:grid;
+          gap:9px;
+        ">
+
+          <div>
+            <b>৳ ${totalAmount.toLocaleString(
+              "bn-BD"
+            )}</b>
+            <small style="display:block">
+              মোট Amount
+            </small>
+          </div>
+
+          <div>
+            <b>${paid}</b>
+            <small style="display:block">
+              Paid / Verified
+            </small>
+          </div>
+
+          <div>
+            <b>${pending}</b>
+            <small style="display:block">
+              Pending
+            </small>
+          </div>
+
+        </div>
+      `;
+
+
+      await loadRecentAudit();
+
+    }catch(error){
+
+      console.error(
+        "Dashboard error:",
+        error
+      );
+
+      document.getElementById(
+        "deviceStatusSummary"
+      ).innerHTML =
+        `<div class="error-box">
+          Dashboard data load করতে সমস্যা হয়েছে।
+        </div>`;
+
+    }
+
+  }
+
+
+  /* ========================================================
+     CUSTOMERS
+  ======================================================== */
+
+  let customersData = [];
+
+
+  async function loadCustomers(){
+
+    const box =
+      document.getElementById(
+        "customersTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+    const snapshot =
+      await getDocs(
+        collection(db,"customers")
+      );
+
+    customersData =
+      collectionDataToArray(
+        snapshot
+      );
+
+    renderCustomers();
+
+  }
+
+
+  function renderCustomers(){
+
+    const search =
+      document
+        .getElementById(
+          "customerSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const data =
+      customersData.filter(
+        x => {
+
+          if(!search)
+            return true;
+
+          return JSON.stringify(x)
+            .toLowerCase()
+            .includes(search);
+
+        }
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "customersTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Customer পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+      x => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${esc(
+                x.name ||
+                x.customerName ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.phone ||
+                x.mobile ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.address ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(
+                x.status ||
+                (x.active === false
+                  ? "inactive"
+                  : "active")
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                x.createdAt
+              )}
+            </td>
+
+            <td>
+              <div class="actions">
+
+                <button
+                  class="btn btn-light"
+                  onclick="window.editCustomer('${x.id}')"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="btn btn-danger"
+                  onclick="window.deleteCustomer('${x.id}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    document.getElementById(
+      "customersTable"
+    ).innerHTML = html;
+
+  }
+
+
+  document.getElementById(
+    "customerSearch"
+  ).addEventListener(
+    "input",
+    renderCustomers
+  );
+
+
+  /* ========================================================
+     DEVICES
+  ======================================================== */
+
+  let devicesData = [];
+
+
+  async function loadDevices(){
+
+    const box =
+      document.getElementById(
+        "devicesTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+    const snapshot =
+      await getDocs(
+        collection(db,"devices")
+      );
+
+    devicesData =
+      collectionDataToArray(
+        snapshot
+      );
+
+    renderDevices();
+
+  }
+
+
+  function renderDevices(){
+
+    const search =
+      document
+        .getElementById(
+          "deviceSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filter =
+      document.getElementById(
+        "deviceStatusFilter"
+      ).value
+      .toLowerCase();
+
+
+    const data =
+      devicesData.filter(
+        x => {
+
+          const text =
+            JSON.stringify(x)
+              .toLowerCase();
+
+          const status =
+            String(
+              x.status ||
+              x.lockStatus ||
+              ""
+            ).toLowerCase();
+
+          return (
+            (!search ||
+             text.includes(search)) &&
+            (!filter ||
+             status === filter)
+          );
+
+        }
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "devicesTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Device পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Device ID</th>
+            <th>IMEI</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+      x => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${esc(
+                x.deviceId ||
+                x.id
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.imei ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.customerName ||
+                x.customerId ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(
+                x.status ||
+                x.lockStatus ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                x.createdAt
+              )}
+            </td>
+
+            <td>
+              <div class="actions">
+
+                <button
+                  class="btn btn-light"
+                  onclick="window.editDevice('${x.id}')"
+                >
+                  Edit
+                </button>
+
+                <button
+                  class="btn btn-danger"
+                  onclick="window.deleteDevice('${x.id}')"
+                >
+                  Delete
+                </button>
+
+              </div>
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    document.getElementById(
+      "devicesTable"
+    ).innerHTML = html;
+
+  }
+
+
+  document.getElementById(
+    "deviceSearch"
+  ).addEventListener(
+    "input",
+    renderDevices
+  );
+
+
+  document.getElementById(
+    "deviceStatusFilter"
+  ).addEventListener(
+    "change",
+    renderDevices
+  );
+
+
+  /* ========================================================
+     CONTRACTS
+  ======================================================== */
+
+  let contractsData = [];
+
+
+  async function loadContracts(){
+
+    const box =
+      document.getElementById(
+        "contractsTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+    const snapshot =
+      await getDocs(
+        collection(db,"contracts")
+      );
+
+    contractsData =
+      collectionDataToArray(
+        snapshot
+      );
+
+    renderContracts();
+
+  }
+
+
+  function renderContracts(){
+
+    const search =
+      document
+        .getElementById(
+          "contractSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filter =
+      document.getElementById(
+        "contractStatusFilter"
+      ).value
+      .toLowerCase();
+
+
+    const data =
+      contractsData.filter(
+        x => {
+
+          const text =
+            JSON.stringify(x)
+              .toLowerCase();
+
+          const status =
+            String(
+              x.status ||
+              ""
+            ).toLowerCase();
+
+          return (
+            (!search ||
+             text.includes(search)) &&
+            (!filter ||
+             status === filter)
+          );
+
+        }
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "contractsTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Contract পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Contract</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Installment</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+      x => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${esc(
+                x.contractId ||
+                x.id
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.customerName ||
+                x.customerId ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ৳ ${Number(
+                x.totalAmount ||
+                x.amount ||
+                0
+              ).toLocaleString(
+                "bn-BD"
+              )}
+            </td>
+
+            <td>
+              ৳ ${Number(
+                x.installmentAmount ||
+                x.monthlyAmount ||
+                0
+              ).toLocaleString(
+                "bn-BD"
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(
+                x.status ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                x.createdAt
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-light"
+                onclick="window.editContract('${x.id}')"
+              >
+                Edit
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document.getElementById(
+      "contractsTable"
+    ).innerHTML = html;
+
+  }
+
+
+  document.getElementById(
+    "contractSearch"
+  ).addEventListener(
+    "input",
+    renderContracts
+  );
+
+
+  document.getElementById(
+    "contractStatusFilter"
+  ).addEventListener(
+    "change",
+    renderContracts
+  );
+
+
+  /* ========================================================
+     PAYMENTS
+  ======================================================== */
+
+  let paymentsData = [];
+
+
+  async function loadPayments(){
+
+    const box =
+      document.getElementById(
+        "paymentsTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+    const snapshot =
+      await getDocs(
+        collection(db,"payments")
+      );
+
+    paymentsData =
+      collectionDataToArray(
+        snapshot
+      );
+
+    renderPayments();
+
+  }
+
+
+  function renderPayments(){
+
+    const search =
+      document
+        .getElementById(
+          "paymentSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filter =
+      document.getElementById(
+        "paymentStatusFilter"
+      ).value
+      .toLowerCase();
+
+
+    const data =
+      paymentsData.filter(
+        x => {
+
+          const text =
+            JSON.stringify(x)
+              .toLowerCase();
+
+          const status =
+            String(
+              x.status ||
+              ""
+            ).toLowerCase();
+
+          return (
+            (!search ||
+             text.includes(search)) &&
+            (!filter ||
+             status === filter)
+          );
+
+        }
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "paymentsTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Payment পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Payment ID</th>
+            <th>Customer</th>
+            <th>Amount</th>
+            <th>Method</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+      x => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${esc(
+                x.paymentId ||
+                x.id
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.customerName ||
+                x.customerId ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ৳ ${Number(
+                x.amount ||
+                x.paidAmount ||
+                x.paymentAmount ||
+                0
+              ).toLocaleString(
+                "bn-BD"
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.method ||
+                x.paymentMethod ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(
+                x.status ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                x.createdAt ||
+                x.date
+              )}
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-light"
+                onclick="window.editPayment('${x.id}')"
+              >
+                Edit
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document.getElementById(
+      "paymentsTable"
+    ).innerHTML = html;
+
+  }
+
+
+  document.getElementById(
+    "paymentSearch"
+  ).addEventListener(
+    "input",
+    renderPayments
+  );
+
+
+  document.getElementById(
+    "paymentStatusFilter"
+  ).addEventListener(
+    "change",
+    renderPayments
+  );
+
+
+  /* ========================================================
+     LOCK COMMANDS
+  ======================================================== */
+
+  async function loadLockCommands(){
+
+    const box =
+      document.getElementById(
+        "lockCommandsTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+    const snapshot =
+      await getDocs(
+        collection(db,"lockCommands")
+      );
+
+    const data =
+      collectionDataToArray(
+        snapshot
+      );
+
+
+    if(!data.length){
+
+      box.innerHTML =
+        `<div class="empty">
+          কোনো Lock Command পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Device</th>
+            <th>Command</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data
+      .sort(
+        (a,b) =>
+          String(
+            b.createdAt || ""
+          ).localeCompare(
+            String(
+              a.createdAt || ""
+            )
+          )
+      )
+      .forEach(
+        x => {
+
+          html += `
+
+            <tr>
+
+              <td>
+                ${esc(
+                  x.deviceId ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${esc(
+                  x.command ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${esc(
+                  x.reason ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${statusBadge(
+                  x.status ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${formatDate(
+                  x.createdAt
+                )}
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+    box.innerHTML =
+      html;
+
+  }
+
+
+  async function sendCommand(
+    command
+  ){
+
+    const deviceId =
+      document
+        .getElementById(
+          "lockDeviceId"
+        )
+        .value
+        .trim();
+
+    const reason =
+      document
+        .getElementById(
+          "lockReason"
+        )
+        .value
+        .trim();
+
+
+    if(!deviceId){
+
+      alert(
+        "Device ID দিন।"
+      );
+
+      return;
+
+    }
+
+
+    try{
+
+      await addDoc(
+        collection(
+          db,
+          "lockCommands"
+        ),
+        {
+
+          deviceId,
+
+          command,
+
+          reason,
+
+          status:"pending",
+
+          createdAt:
+            serverTimestamp(),
+
+          createdBy:
+            auth.currentUser?.email ||
+            ADMIN_EMAIL
+
+        }
+      );
+
+
+      await addDoc(
+        collection(
+          db,
+          "auditLogs"
+        ),
+        {
+
+          action:
+            command === "lock"
+              ? "LOCK_COMMAND"
+              : "UNLOCK_COMMAND",
+
+          deviceId,
+
+          reason,
+
+          user:
+            auth.currentUser?.email ||
+            ADMIN_EMAIL,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+
+      alert(
+        command === "lock"
+          ? "Lock command তৈরি হয়েছে।"
+          : "Unlock command তৈরি হয়েছে।"
+      );
+
+
+      document.getElementById(
+        "lockReason"
+      ).value = "";
+
+
+      await loadLockCommands();
+
+    }catch(error){
+
+      console.error(error);
+
+      alert(
+        "Command তৈরি করতে সমস্যা হয়েছে: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  document.getElementById(
+    "sendLockCommand"
+  ).addEventListener(
+    "click",
+    () => sendCommand("lock")
+  );
+
+
+  document.getElementById(
+    "sendUnlockCommand"
+  ).addEventListener(
+    "click",
+    () => sendCommand("unlock")
+  );
+
+
+  /* ========================================================
+     ENROLLMENTS
+  ======================================================== */
+
+  let enrollmentsData = [];
+
+
+  async function loadEnrollments(){
+
+    const box =
+      document.getElementById(
+        "enrollmentsTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "enrollments"
+        )
+      );
+
+
+    enrollmentsData =
+      collectionDataToArray(
+        snapshot
+      );
+
+
+    renderEnrollments();
+
+  }
+
+
+  function renderEnrollments(){
+
+    const search =
+      document
+        .getElementById(
+          "enrollmentSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const data =
+      enrollmentsData.filter(
+        x =>
+          !search ||
+          JSON.stringify(x)
+            .toLowerCase()
+            .includes(search)
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "enrollmentsTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Enrollment পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Enrollment ID</th>
+            <th>Device</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data.forEach(
+      x => {
+
+        html += `
+
+          <tr>
+
+            <td>
+              ${esc(
+                x.enrollmentId ||
+                x.id
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.deviceId ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${esc(
+                x.customerId ||
+                x.customerName ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(
+                x.status ||
+                "-"
+              )}
+            </td>
+
+            <td>
+              ${formatDate(
+                x.createdAt
+              )}
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+    );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document.getElementById(
+      "enrollmentsTable"
+    ).innerHTML =
+      html;
+
+  }
+
+
+  document.getElementById(
+    "enrollmentSearch"
+  ).addEventListener(
+    "input",
+    renderEnrollments
+  );
+
+
+  /* ========================================================
+     AUDIT LOG
+  ======================================================== */
+
+  let auditData = [];
+
+
+  async function loadAudit(){
+
+    const box =
+      document.getElementById(
+        "auditTable"
+      );
+
+    box.innerHTML =
+      `<div class="loading">
+        Loading...
+      </div>`;
+
+
+    const snapshot =
+      await getDocs(
+        collection(
+          db,
+          "auditLogs"
+        )
+      );
+
+
+    auditData =
+      collectionDataToArray(
+        snapshot
+      );
+
+
+    renderAudit();
+
+  }
+
+
+  function renderAudit(){
+
+    const search =
+      document
+        .getElementById(
+          "auditSearch"
+        )
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const data =
+      auditData.filter(
+        x =>
+          !search ||
+          JSON.stringify(x)
+            .toLowerCase()
+            .includes(search)
+      );
+
+
+    if(!data.length){
+
+      document.getElementById(
+        "auditTable"
+      ).innerHTML =
+        `<div class="empty">
+          কোনো Audit Log পাওয়া যায়নি।
+        </div>`;
+
+      return;
+
+    }
+
+
+    let html = `
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Action</th>
+            <th>User</th>
+            <th>Device</th>
+            <th>Details</th>
+            <th>Date</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+    `;
+
+
+    data
+      .sort(
+        (a,b) =>
+          String(
+            b.createdAt || ""
+          ).localeCompare(
+            String(
+              a.createdAt || ""
+            )
+          )
+      )
+      .forEach(
+        x => {
+
+          html += `
+
+            <tr>
+
+              <td>
+                ${esc(
+                  x.action ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${esc(
+                  x.user ||
+                  x.email ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${esc(
+                  x.deviceId ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${esc(
+                  x.reason ||
+                  x.details ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                ${formatDate(
+                  x.createdAt
+                )}
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      );
+
+
+    html += `
+        </tbody>
+      </table>
+    `;
+
+
+    document.getElementById(
+      "auditTable"
+    ).innerHTML =
+      html;
+
+  }
+
+
+  document.getElementById(
+    "auditSearch"
+  ).addEventListener(
+    "input",
+    renderAudit
+  );
+
+
+  async function loadRecentAudit(){
+
+    const box =
+      document.getElementById(
+        "recentAudit"
+      );
+
+    try{
+
+      const snapshot =
+        await getDocs(
+          collection(
+            db,
+            "auditLogs"
+          )
+        );
+
+      const data =
+        collectionDataToArray(
+          snapshot
+        )
+        .sort(
+          (a,b) =>
+            String(
+              b.createdAt || ""
+            ).localeCompare(
+              String(
+                a.createdAt || ""
+              )
+            )
+        )
+        .slice(0,5);
+
+
+      if(!data.length){
+
+        box.innerHTML =
+          `<div class="empty">
+            এখনো কোনো activity নেই।
+          </div>`;
+
+        return;
+
+      }
+
+
+      box.innerHTML =
+        data.map(
+          x => `
+
+            <div style="
+              padding:10px 0;
+              border-bottom:
+              1px solid #eef0f3;
+            ">
+
+              <b>
+                ${esc(
+                  x.action ||
+                  "Activity"
+                )}
+              </b>
+
+              <div style="
+                color:#667085;
+                font-size:12px;
+                margin-top:3px;
+              ">
+
+                ${esc(
+                  x.user ||
+                  x.email ||
+                  ""
+                )}
+
+                ${x.deviceId
+                  ? " • " +
+                    esc(x.deviceId)
+                  : ""}
+
+                <br>
+
+                ${formatDate(
+                  x.createdAt
+                )}
+
+              </div>
+
+            </div>
+
+          `
+        )
+        .join("");
+
+    }catch(error){
+
+      console.error(error);
+
+      box.innerHTML =
+        `<div class="empty">
+          Audit Log load করা যায়নি।
+        </div>`;
+
+    }
+
+  }
+
+
+  /* ========================================================
+     MODAL
+  ======================================================== */
+
+  const mainModal =
+    document.getElementById(
+      "mainModal"
+    );
+
+  const modalTitle =
+    document.getElementById(
+      "modalTitle"
+    );
+
+  const modalBody =
+    document.getElementById(
+      "modalBody"
+    );
+
+  const modalClose =
+    document.getElementById(
+      "modalClose"
+    );
+
+
+  function openModal(
+    title,
+    html
+  ){
+
+    modalTitle.textContent =
+      title;
+
+    modalBody.innerHTML =
+      html;
+
+    mainModal.classList.add(
+      "show"
+    );
+
+  }
+
+
+  function closeModal(){
+
+    mainModal.classList.remove(
+      "show"
+    );
+
+  }
+
+
+  modalClose.addEventListener(
+    "click",
+    closeModal
+  );
+
+
+  mainModal.addEventListener(
+    "click",
+    event => {
+
+      if(event.target === mainModal){
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+
+  /* ========================================================
+     CUSTOMER FORM
+  ======================================================== */
+
+  document.getElementById(
+    "addCustomerBtn"
+  ).addEventListener(
+    "click",
+    () => {
+
+      openCustomerForm();
+
+    }
+  );
+
+
+  function openCustomerForm(
+    existing = null
+  ){
+
+    openModal(
+      existing
+        ? "Customer Edit"
+        : "নতুন Customer",
+
+      `
+
+        <form id="customerForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Name</label>
+              <input
+                id="customerName"
+                required
+                value="${esc(
+                  existing?.name ||
+                  existing?.customerName ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Phone</label>
+              <input
+                id="customerPhone"
+                value="${esc(
+                  existing?.phone ||
+                  existing?.mobile ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field form-full">
+              <label>Address</label>
+              <textarea
+                id="customerAddress"
+              >${esc(
+                existing?.address ||
+                ""
+              )}</textarea>
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+              <select id="customerStatus">
+
+                <option value="active"
+                  ${
+                    (
+                      existing?.status ||
+                      "active"
+                    ) === "active"
+                    ? "selected"
+                    : ""
+                  }
+                >
+                  Active
+                </option>
+
+                <option value="inactive"
+                  ${
+                    existing?.status ===
+                    "inactive"
+                    ? "selected"
+                    : ""
+                  }
+                >
+                  Inactive
+                </option>
+
+              </select>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn btn-light"
+              onclick="window.closeAdminModal()"
+            >
+              Cancel
+            </button>
+
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
+              Save
+            </button>
+
+          </div>
+
+        </form>
+
+      `
+    );
+
+
+    document.getElementById(
+      "customerForm"
+    ).addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+        const data = {
+
+          name:
+            document.getElementById(
+              "customerName"
+            ).value.trim(),
+
+          phone:
+            document.getElementById(
+              "customerPhone"
+            ).value.trim(),
+
+          address:
+            document.getElementById(
+              "customerAddress"
+            ).value.trim(),
+
+          status:
+            document.getElementById(
+              "customerStatus"
+            ).value,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        try{
+
+          if(existing){
+
+            await updateDoc(
+              doc(
+                db,
+                "customers",
+                existing.id
+              ),
+              data
+            );
+
+          }else{
+
+            data.createdAt =
+              serverTimestamp();
+
+            await addDoc(
+              collection(
+                db,
+                "customers"
+              ),
+              data
+            );
+
+          }
+
+
+          closeModal();
+
+          await loadCustomers();
+
+          await writeAudit(
+            existing
+              ? "CUSTOMER_UPDATED"
+              : "CUSTOMER_CREATED"
+          );
+
+        }catch(error){
+
+          alert(
+            "Customer save করতে সমস্যা হয়েছে: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     DEVICE FORM
+  ======================================================== */
+
+  document.getElementById(
+    "addDeviceBtn"
+  ).addEventListener(
+    "click",
+    () => {
+
+      openDeviceForm();
+
+    }
+  );
+
+
+  function openDeviceForm(
+    existing = null
+  ){
+
+    openModal(
+      existing
+        ? "Device Edit"
+        : "নতুন Device",
+
+      `
+
+        <form id="deviceForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Device ID</label>
+              <input
+                id="deviceIdInput"
+                required
+                value="${esc(
+                  existing?.deviceId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>IMEI</label>
+              <input
+                id="deviceImei"
+                value="${esc(
+                  existing?.imei ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Customer ID</label>
+              <input
+                id="deviceCustomerId"
+                value="${esc(
+                  existing?.customerId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+
+              <select id="deviceStatus">
+
+                <option value="active">
+                  Active
+                </option>
+
+                <option value="inactive">
+                  Inactive
+                </option>
+
+                <option value="locked">
+                  Locked
+                </option>
+
+                <option value="unlocked">
+                  Unlocked
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn btn-light"
+              onclick="window.closeAdminModal()"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Save
+            </button>
+
+          </div>
+
+        </form>
+
+      `
+    );
+
+
+    if(existing){
+
+      document.getElementById(
+        "deviceStatus"
+      ).value =
+        existing.status ||
+        "active";
+
+    }
+
+
+    document.getElementById(
+      "deviceForm"
+    ).addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        const data = {
+
+          deviceId:
+            document.getElementById(
+              "deviceIdInput"
+            ).value.trim(),
+
+          imei:
+            document.getElementById(
+              "deviceImei"
+            ).value.trim(),
+
+          customerId:
+            document.getElementById(
+              "deviceCustomerId"
+            ).value.trim(),
+
+          status:
+            document.getElementById(
+              "deviceStatus"
+            ).value,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        try{
+
+          if(existing){
+
+            await updateDoc(
+              doc(
+                db,
+                "devices",
+                existing.id
+              ),
+              data
+            );
+
+          }else{
+
+            data.createdAt =
+              serverTimestamp();
+
+            await addDoc(
+              collection(
+                db,
+                "devices"
+              ),
+              data
+            );
+
+          }
+
+
+          closeModal();
+
+          await loadDevices();
+
+          await writeAudit(
+            existing
+              ? "DEVICE_UPDATED"
+              : "DEVICE_CREATED"
+          );
+
+        }catch(error){
+
+          alert(
+            "Device save করতে সমস্যা হয়েছে: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     CONTRACT FORM
+  ======================================================== */
+
+  document.getElementById(
+    "addContractBtn"
+  ).addEventListener(
+    "click",
+    () => {
+
+      openContractForm();
+
+    }
+  );
+
+
+  function openContractForm(
+    existing = null
+  ){
+
+    openModal(
+      existing
+        ? "Contract Edit"
+        : "নতুন Contract",
+
+      `
+
+        <form id="contractForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Contract ID</label>
+              <input
+                id="contractIdInput"
+                value="${esc(
+                  existing?.contractId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Customer ID</label>
+              <input
+                id="contractCustomerId"
+                value="${esc(
+                  existing?.customerId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Total Amount</label>
+              <input
+                id="contractTotal"
+                type="number"
+                min="0"
+                value="${
+                  existing?.totalAmount ||
+                  existing?.amount ||
+                  ""
+                }"
+              >
+            </div>
+
+            <div class="field">
+              <label>Installment Amount</label>
+              <input
+                id="contractInstallment"
+                type="number"
+                min="0"
+                value="${
+                  existing?.installmentAmount ||
+                  existing?.monthlyAmount ||
+                  ""
+                }"
+              >
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+
+              <select id="contractStatus">
+
+                <option value="active">
+                  Active
+                </option>
+
+                <option value="completed">
+                  Completed
+                </option>
+
+                <option value="overdue">
+                  Overdue
+                </option>
+
+                <option value="cancelled">
+                  Cancelled
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn btn-light"
+              onclick="window.closeAdminModal()"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Save
+            </button>
+
+          </div>
+
+        </form>
+
+      `
+    );
+
+
+    if(existing){
+
+      document.getElementById(
+        "contractStatus"
+      ).value =
+        existing.status ||
+        "active";
+
+    }
+
+
+    document.getElementById(
+      "contractForm"
+    ).addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        const data = {
+
+          contractId:
+            document.getElementById(
+              "contractIdInput"
+            ).value.trim(),
+
+          customerId:
+            document.getElementById(
+              "contractCustomerId"
+            ).value.trim(),
+
+          totalAmount:
+            Number(
+              document.getElementById(
+                "contractTotal"
+              ).value || 0
+            ),
+
+          installmentAmount:
+            Number(
+              document.getElementById(
+                "contractInstallment"
+              ).value || 0
+            ),
+
+          status:
+            document.getElementById(
+              "contractStatus"
+            ).value,
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        try{
+
+          if(existing){
+
+            await updateDoc(
+              doc(
+                db,
+                "contracts",
+                existing.id
+              ),
+              data
+            );
+
+          }else{
+
+            data.createdAt =
+              serverTimestamp();
+
+            await addDoc(
+              collection(
+                db,
+                "contracts"
+              ),
+              data
+            );
+
+          }
+
+
+          closeModal();
+
+          await loadContracts();
+
+          await writeAudit(
+            existing
+              ? "CONTRACT_UPDATED"
+              : "CONTRACT_CREATED"
+          );
+
+        }catch(error){
+
+          alert(
+            "Contract save করতে সমস্যা হয়েছে: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     PAYMENT FORM
+  ======================================================== */
+
+  document.getElementById(
+    "addPaymentBtn"
+  ).addEventListener(
+    "click",
+    () => {
+
+      openPaymentForm();
+
+    }
+  );
+
+
+  function openPaymentForm(
+    existing = null
+  ){
+
+    openModal(
+      existing
+        ? "Payment Edit"
+        : "নতুন Payment",
+
+      `
+
+        <form id="paymentForm">
+
+          <div class="form-grid">
+
+            <div class="field">
+              <label>Payment ID</label>
+              <input
+                id="paymentIdInput"
+                value="${esc(
+                  existing?.paymentId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Customer ID</label>
+              <input
+                id="paymentCustomerId"
+                value="${esc(
+                  existing?.customerId ||
+                  ""
+                )}"
+              >
+            </div>
+
+            <div class="field">
+              <label>Amount</label>
+              <input
+                id="paymentAmount"
+                type="number"
+                min="0"
+                value="${
+                  existing?.amount ||
+                  existing?.paidAmount ||
+                  ""
+                }"
+              >
+            </div>
+
+            <div class="field">
+              <label>Payment Method</label>
+
+              <select id="paymentMethod">
+
+                <option value="cash">
+                  Cash
+                </option>
+
+                <option value="bkash">
+                  bKash
+                </option>
+
+                <option value="nagad">
+                  Nagad
+                </option>
+
+                <option value="rocket">
+                  Rocket
+                </option>
+
+                <option value="bank">
+                  Bank
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Status</label>
+
+              <select id="paymentStatus">
+
+                <option value="pending">
+                  Pending
+                </option>
+
+                <option value="paid">
+                  Paid
+                </option>
+
+                <option value="verified">
+                  Verified
+                </option>
+
+                <option value="failed">
+                  Failed
+                </option>
+
+              </select>
+
+            </div>
+
+            <div class="field">
+              <label>Transaction ID</label>
+
+              <input
+                id="transactionId"
+                value="${esc(
+                  existing?.transactionId ||
+                  ""
+                )}"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="btn btn-light"
+              onclick="window.closeAdminModal()"
+            >
+              Cancel
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Save
+            </button>
+
+          </div>
+
+        </form>
+
+      `
+    );
+
+
+    if(existing){
+
+      document.getElementById(
+        "paymentMethod"
+      ).value =
+        existing.method ||
+        existing.paymentMethod ||
+        "cash";
+
+      document.getElementById(
+        "paymentStatus"
+      ).value =
+        existing.status ||
+        "pending";
+
+    }
+
+
+    document.getElementById(
+      "paymentForm"
+    ).addEventListener(
+      "submit",
+      async event => {
+
+        event.preventDefault();
+
+
+        const data = {
+
+          paymentId:
+            document.getElementById(
+              "paymentIdInput"
+            ).value.trim(),
+
+          customerId:
+            document.getElementById(
+              "paymentCustomerId"
+            ).value.trim(),
+
+          amount:
+            Number(
+              document.getElementById(
+                "paymentAmount"
+              ).value || 0
+            ),
+
+          method:
+            document.getElementById(
+              "paymentMethod"
+            ).value,
+
+          status:
+            document.getElementById(
+              "paymentStatus"
+            ).value,
+
+          transactionId:
+            document.getElementById(
+              "transactionId"
+            ).value.trim(),
+
+          updatedAt:
+            serverTimestamp()
+
+        };
+
+
+        try{
+
+          if(existing){
+
+            await updateDoc(
+              doc(
+                db,
+                "payments",
+                existing.id
+              ),
+              data
+            );
+
+          }else{
+
+            data.createdAt =
+              serverTimestamp();
+
+            await addDoc(
+              collection(
+                db,
+                "payments"
+              ),
+              data
+            );
+
+          }
+
+
+          closeModal();
+
+          await loadPayments();
+
+          await writeAudit(
+            existing
+              ? "PAYMENT_UPDATED"
+              : "PAYMENT_CREATED"
+          );
+
+        }catch(error){
+
+          alert(
+            "Payment save করতে সমস্যা হয়েছে: " +
+            error.message
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     EDIT / DELETE GLOBAL FUNCTIONS
+  ======================================================== */
+
+  window.closeAdminModal =
+    closeModal;
+
+
+  window.editCustomer =
+    async id => {
+
+      const item =
+        customersData.find(
+          x => x.id === id
+        );
+
+      if(item)
+        openCustomerForm(item);
+
+    };
+
+
+  window.deleteCustomer =
+    async id => {
+
+      if(
+        !confirm(
+          "এই Customer delete করতে চান?"
+        )
+      )
+        return;
+
+      try{
+
+        await deleteDoc(
+          doc(
+            db,
+            "customers",
+            id
+          )
+        );
+
+        await loadCustomers();
+
+        await writeAudit(
+          "CUSTOMER_DELETED"
+        );
+
+      }catch(error){
+
+        alert(
+          "Delete করা যায়নি: " +
+          error.message
+        );
+
+      }
+
+    };
+
+
+  window.editDevice =
+    async id => {
+
+      const item =
+        devicesData.find(
+          x => x.id === id
+        );
+
+      if(item)
+        openDeviceForm(item);
+
+    };
+
+
+  window.deleteDevice =
+    async id => {
+
+      if(
+        !confirm(
+          "এই Device delete করতে চান?"
+        )
+      )
+        return;
+
+      try{
+
+        await deleteDoc(
+          doc(
+            db,
+            "devices",
+            id
+          )
+        );
+
+        await loadDevices();
+
+        await writeAudit(
+          "DEVICE_DELETED"
+        );
+
+      }catch(error){
+
+        alert(
+          "Delete করা যায়নি: " +
+          error.message
+        );
+
+      }
+
+    };
+
+
+  window.editContract =
+    async id => {
+
+      const item =
+        contractsData.find(
+          x => x.id === id
+        );
+
+      if(item)
+        openContractForm(item);
+
+    };
+
+
+  window.editPayment =
+    async id => {
+
+      const item =
+        paymentsData.find(
+          x => x.id === id
+        );
+
+      if(item)
+        openPaymentForm(item);
+
+    };
+
+
+  /* ========================================================
+     AUDIT WRITER
+  ======================================================== */
+
+  async function writeAudit(
+    action
+  ){
+
+    try{
+
+      await addDoc(
+        collection(
+          db,
+          "auditLogs"
+        ),
+        {
+
+          action,
+
+          user:
+            auth.currentUser?.email ||
+            ADMIN_EMAIL,
+
+          createdAt:
+            serverTimestamp()
+
+        }
+      );
+
+    }catch(error){
+
+      console.warn(
+        "Audit write failed:",
+        error
+      );
+
+    }
+
+  }
+
+
+  /* ========================================================
+     REFRESH BUTTONS
+  ======================================================== */
+
+  document.getElementById(
+    "refreshDashboard"
+  ).addEventListener(
+    "click",
+    loadDashboard
+  );
+
+  document.getElementById(
+    "refreshCustomers"
+  ).addEventListener(
+    "click",
+    loadCustomers
+  );
+
+  document.getElementById(
+    "refreshDevices"
+  ).addEventListener(
+    "click",
+    loadDevices
+  );
+
+  document.getElementById(
+    "refreshContracts"
+  ).addEventListener(
+    "click",
+    loadContracts
+  );
+
+  document.getElementById(
+    "refreshPayments"
+  ).addEventListener(
+    "click",
+    loadPayments
+  );
+
+  document.getElementById(
+    "refreshEnrollments"
+  ).addEventListener(
+    "click",
+    loadEnrollments
+  );
+
+  document.getElementById(
+    "refreshAudit"
+  ).addEventListener(
+    "click",
+    loadAudit
+  );
+
+
+  /* ========================================================
+     SERVICE WORKER
+  ======================================================== */
+
+  if(
+    "serviceWorker" in navigator
+  ){
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        navigator.serviceWorker
+          .register(
+            "./admin-sw.js"
+          )
+          .catch(
+            error =>
+              console.log(
+                "Service Worker:",
+                error
+              )
+          );
+
+      }
+    );
+
+  }
+
+</script>
+
+</body>
+</html>
