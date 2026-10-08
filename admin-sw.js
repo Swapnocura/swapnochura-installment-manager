@@ -1,9 +1,11 @@
-const CACHE_NAME = "swapnochura-admin-v2";
+const CACHE_NAME = "swapnochura-admin-v3";
 
 const FILES = [
   "./",
   "./admin.html",
   "./logo.png",
+  "./icon-192.png",
+  "./icon-512.png",
   "./admin-manifest.webmanifest"
 ];
 
