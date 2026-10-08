@@ -1,4 +1,4 @@
-const CACHE_NAME = "swapnochura-admin-v1";
+const CACHE_NAME = "swapnochura-admin-v2";
 
 const FILES = [
   "./",
@@ -30,8 +30,6 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request)
-      .then(cached => {
-        return cached || fetch(event.request);
-      })
+      .then(cached => cached || fetch(event.request))
   );
 });
